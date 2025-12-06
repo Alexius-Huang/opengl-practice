@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 #include "initialize.h"
-#include "read-file.h"
+#include "read-shader-file.h"
 
 void processInput(GLFWwindow *window);
 
@@ -23,39 +23,8 @@ int main() {
         windowSize
     );
 
-    // Logging variables for reading vertex/fragment shaders and linking shader program
-    int success;
-    char infoLog[255];
-
-    // 1. Read shader file into a string
-    std::string vertexShaderCode = readFile("./src/shaders/basic-vertex-shader.vert");
-    const char* vertexShaderSource = vertexShaderCode.c_str();
-
-    // 2. Compile the vertex shader
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if(!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    // 3. Read fragment shader file into a string
-    std::string fragmentShaderCode = readFile("./src/shaders/basic-fragment-shader.frag");
-    const char* fragmentShaderSource = fragmentShaderCode.c_str();
-
-    // 4. Compile the fragment shader
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if(!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
+    unsigned int vertexShader = readShaderFile("./src/shaders/basic-vertex-shader.vert");
+    unsigned int fragmentShader = readShaderFile("./src/shaders/basic-fragment-shader.frag");
 
     // 5. Attach shader program
     unsigned int shaderProgram = glCreateProgram();
@@ -63,6 +32,8 @@ int main() {
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
 
+    int success;
+    char infoLog[255];
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if(!success) {
         glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);

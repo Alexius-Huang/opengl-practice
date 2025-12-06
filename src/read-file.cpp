@@ -2,9 +2,11 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <filesystem>
 #include "./read-file.h"
+namespace fs = std::__fs::filesystem;
 
-std::string readFile(std::string path) {
+std::string readFile(fs::path path) {
     std::ifstream file;
     std::stringstream stream;
     try {
