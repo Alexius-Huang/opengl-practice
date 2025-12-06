@@ -1,0 +1,15 @@
+# Build artifacts
+build/
+/build/
+*.o
+*.a
+*.so
+
+# macOS
+.DS_Store
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
