@@ -22,9 +22,9 @@ target_include_directories(glad PUBLIC libs/glad)
 add_executable(opengl_tutorial
     src/main.cpp
     src/initialize.cpp
-    src/read-file.cpp
-    src/read-shader-file.cpp
-    src/shader-program.cpp
+    src/helpers/read-file.cpp
+    src/helpers/read-shader-file.cpp
+    src/helpers/shader-program.cpp
 )
 
 # Link libraries

@@ -5,8 +5,8 @@
 #include <string>
 #include <sstream>
 #include "initialize.h"
-#include "read-shader-file.h"
-#include "shader-program.h"
+#include "helpers/read-shader-file.h"
+#include "helpers/shader-program.h"
 
 void processInput(GLFWwindow *window);
 
@@ -76,7 +76,6 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         shaderProgram.use();
-
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
