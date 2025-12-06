@@ -18,7 +18,7 @@ add_library(glad STATIC libs/glad/src/glad.c)
 target_include_directories(glad PUBLIC libs/glad)
 
 # Add executable
-add_executable(opengl_tutorial src/main.cpp)
+add_executable(opengl_tutorial src/main.cpp src/initialize.cpp)
 
 # Link libraries
 target_link_libraries(opengl_tutorial PRIVATE glfw glm::glm glad OpenGL::GL)
