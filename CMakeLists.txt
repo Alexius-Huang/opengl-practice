@@ -18,7 +18,13 @@ add_library(glad STATIC libs/glad/src/glad.c)
 target_include_directories(glad PUBLIC libs/glad)
 
 # Add executable
-add_executable(opengl_tutorial src/main.cpp src/initialize.cpp src/read-file.cpp src/read-shader-file.cpp)
+add_executable(opengl_tutorial
+    src/main.cpp
+    src/initialize.cpp
+    src/read-file.cpp
+    src/read-shader-file.cpp
+    src/shader-program.cpp
+)
 
 # Link libraries
 target_link_libraries(opengl_tutorial PRIVATE glfw glm::glm glad OpenGL::GL)

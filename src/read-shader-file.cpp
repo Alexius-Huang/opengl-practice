@@ -1,7 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
-// #include <iostream>
 #include <filesystem>
 #include "./read-file.h"
 #include "./read-shader-file.h"
@@ -31,7 +30,7 @@ unsigned int readShaderFile(fs::path path) {
     int success;
     char infoLog[255];
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if(!success) {
+    if (!success) {
         glGetShaderInfoLog(shader, 512, NULL, infoLog);
 
         std::string shaderName = shaderType == GL_VERTEX_SHADER

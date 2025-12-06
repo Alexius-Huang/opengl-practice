@@ -6,6 +6,7 @@
 #include <sstream>
 #include "initialize.h"
 #include "read-shader-file.h"
+#include "shader-program.h"
 
 void processInput(GLFWwindow *window);
 
@@ -26,23 +27,10 @@ int main() {
     unsigned int vertexShader = readShaderFile("./src/shaders/basic-vertex-shader.vert");
     unsigned int fragmentShader = readShaderFile("./src/shaders/basic-fragment-shader.frag");
 
-    // 5. Attach shader program
-    unsigned int shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    int success;
-    char infoLog[255];
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if(!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER_PROGRAM::LINK_FAILURE\n" << infoLog << std::endl;
-    }
-
-    // glUseProgram(shaderProgram);
-    glDeleteProgram(vertexShader);
-    glDeleteProgram(fragmentShader);
+    ShaderProgram shaderProgram;
+    shaderProgram.attachShader(vertexShader);
+    shaderProgram.attachShader(fragmentShader);
+    shaderProgram.link();
 
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
@@ -87,7 +75,8 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
+        shaderProgram.use();
+
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -99,7 +88,7 @@ int main() {
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
+    shaderProgram.dispose();
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
