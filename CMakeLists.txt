@@ -26,6 +26,7 @@ add_executable(opengl_tutorial
     src/helpers/read-shader-file.cpp
     src/helpers/shader-program.cpp
     src/helpers/close-window-on-esc-pressed.cpp
+    src/examples/01-hello-world.cpp
 )
 
 # Link libraries
