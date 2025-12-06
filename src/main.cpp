@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include "initialize.h"
+#include "read-file.h"
 
 void processInput(GLFWwindow *window);
 
@@ -27,16 +28,7 @@ int main() {
     char infoLog[255];
 
     // 1. Read shader file into a string
-    std::ifstream vertexShaderFile;
-    std::stringstream vertexShaderStream;
-    try {
-        vertexShaderFile.open("./src/shaders/basic-vertex-shader.vert");
-        vertexShaderStream << vertexShaderFile.rdbuf();
-        vertexShaderFile.close();
-    } catch (std::ifstream::failure& e) {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-    }
-    std::string vertexShaderCode = vertexShaderStream.str();
+    std::string vertexShaderCode = readFile("./src/shaders/basic-vertex-shader.vert");
     const char* vertexShaderSource = vertexShaderCode.c_str();
 
     // 2. Compile the vertex shader
@@ -51,16 +43,7 @@ int main() {
     }
 
     // 3. Read fragment shader file into a string
-    std::ifstream fragmentShaderFile;
-    std::stringstream fragmentShaderStream;
-    try {
-        fragmentShaderFile.open("./src/shaders/basic-fragment-shader.frag");
-        fragmentShaderStream << fragmentShaderFile.rdbuf();
-        fragmentShaderFile.close();
-    } catch (std::ifstream::failure& e) {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-    }
-    std::string fragmentShaderCode = fragmentShaderStream.str();
+    std::string fragmentShaderCode = readFile("./src/shaders/basic-fragment-shader.frag");
     const char* fragmentShaderSource = fragmentShaderCode.c_str();
 
     // 4. Compile the fragment shader
