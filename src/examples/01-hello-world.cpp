@@ -4,6 +4,11 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 #include "../initialize.h"
 #include "../helpers/read-shader-file.h"
 #include "../helpers/shader-program.h"
@@ -48,17 +53,19 @@ void _01_helloWorld() {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // Link vertex attributes
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) 0);
     glEnableVertexAttribArray(0);
 
-    // TODO: Clarify what are the following code means
-    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
-
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0); 
+
+    // --- ImGui Initialization ---
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
 
     // render loop
     // -----------
@@ -69,20 +76,45 @@ void _01_helloWorld() {
         closeWindowOnEscPressed(window);
         togglePolygonModeOnKeyPressed(window, GLFW_KEY_TAB);
 
+        // Start the ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
         // render
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Draw the triangle
         shaderProgram.use();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
+        // Create a simple ImGui window
+        ImGui::SetNextWindowPos(
+            ImVec2(10.0f, 10.0f),
+            ImGuiCond_FirstUseEver
+        );
+        ImGui::Begin("Hello, world!");
+        ImGui::Text("This is some useful text.");
+        ImGui::End();
+
+        // Render ImGui
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        // glfw: swap buffers and poll IO events
+        // -------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    // Cleanup
+    // -------
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
