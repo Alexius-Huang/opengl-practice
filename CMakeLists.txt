@@ -18,20 +18,33 @@ find_package(OpenGL REQUIRED)
 add_library(glad STATIC libs/glad/src/glad.c)
 target_include_directories(glad PUBLIC libs/glad)
 
+# --- Dependency Management (FetchContent) ---
+include(FetchContent)
+
+# Declare ImGui dependency from GitHub
+FetchContent_Declare(
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG        v1.92.5 # Pin to a specific, stable version
+)
+
+# Make the dependency available
+FetchContent_MakeAvailable(imgui)
+
 # --- ImGui Build ---
-# Define the source files for the ImGui library
+# Define the source files for the ImGui library using the path from FetchContent
 set(IMGUI_SOURCES
-    libs/imgui/imgui.cpp
-    libs/imgui/imgui_draw.cpp
-    libs/imgui/imgui_tables.cpp
-    libs/imgui/imgui_widgets.cpp
-    libs/imgui/backends/imgui_impl_glfw.cpp
-    libs/imgui/backends/imgui_impl_opengl3.cpp
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
 # Create a static library for ImGui
 add_library(imgui STATIC ${IMGUI_SOURCES})
-target_include_directories(imgui PUBLIC libs/imgui libs/imgui/backends)
+target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${imgui_SOURCE_DIR}/backends)
 target_link_libraries(imgui PRIVATE glfw)
 
 # --- Main Application ---
