@@ -8,6 +8,7 @@
 #include "../helpers/read-shader-file.h"
 #include "../helpers/shader-program.h"
 #include "../helpers/close-window-on-esc-pressed.h"
+#include "../helpers/toggle-polygon-mode-on-key-pressed.h"
 #include "./01-hello-world.h"
 
 void _01_helloWorld() {
@@ -59,9 +60,6 @@ void _01_helloWorld() {
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0); 
 
-    // uncomment this call to draw in wireframe polygons.
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -69,6 +67,7 @@ void _01_helloWorld() {
         // input
         // -----
         closeWindowOnEscPressed(window);
+        togglePolygonModeOnKeyPressed(window, GLFW_KEY_TAB);
 
         // render
         // ------
