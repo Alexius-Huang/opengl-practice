@@ -19,17 +19,8 @@ add_library(glad STATIC libs/glad/src/glad.c)
 target_include_directories(glad PUBLIC libs/glad)
 
 # Add executable
-add_executable(opengl_tutorial
-    src/main.cpp
-    src/initialize.cpp
-    src/helpers/read-file.cpp
-    src/helpers/read-shader-file.cpp
-    src/helpers/shader-program.cpp
-    src/helpers/close-window-on-esc-pressed.cpp
-    src/helpers/toggle-polygon-mode-on-key-pressed.cpp
-    src/examples/01-hello-world.cpp
-    src/examples/02-element-buffer-object.cpp
-)
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+add_executable(opengl_tutorial ${SOURCES})
 
 # Link libraries
 target_link_libraries(opengl_tutorial PRIVATE glfw glm::glm glad OpenGL::GL)
