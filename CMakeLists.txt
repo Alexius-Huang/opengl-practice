@@ -52,12 +52,12 @@ target_link_libraries(imgui PRIVATE glfw)
 file(GLOB_RECURSE APP_SOURCES "src/*.cpp")
 
 # Add executable using the found source files
-add_executable(opengl_tutorial ${APP_SOURCES})
+add_executable(opengl_practice ${APP_SOURCES})
 
 # Link libraries
-target_link_libraries(opengl_tutorial PRIVATE glfw glm::glm glad OpenGL::GL imgui)
+target_link_libraries(opengl_practice PRIVATE glfw glm::glm glad OpenGL::GL imgui)
 
 # On macOS, we need to add the CoreFoundation framework
 if (APPLE)
-    target_link_libraries(opengl_tutorial PRIVATE "-framework CoreFoundation")
+    target_link_libraries(opengl_practice PRIVATE "-framework CoreFoundation")
 endif()
