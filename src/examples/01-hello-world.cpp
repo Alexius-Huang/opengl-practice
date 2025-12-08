@@ -24,8 +24,8 @@ void _01_helloWorld() {
         windowSize
     );
 
-    unsigned int vertexShader = readShaderFile("./src/shaders/basic-vertex-shader.vert");
-    unsigned int fragmentShader = readShaderFile("./src/shaders/basic-fragment-shader.frag");
+    unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
+    unsigned int fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");
 
     ShaderProgram shaderProgram;
     shaderProgram.attachShader(vertexShader);
