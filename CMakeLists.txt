@@ -20,12 +20,12 @@ target_include_directories(glad PUBLIC libs/glad)
 
 # Add executable
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-add_executable(opengl_tutorial ${SOURCES})
+add_executable(opengl_practice ${SOURCES})
 
 # Link libraries
-target_link_libraries(opengl_tutorial PRIVATE glfw glm::glm glad OpenGL::GL)
+target_link_libraries(opengl_practice PRIVATE glfw glm::glm glad OpenGL::GL)
 
 # On macOS, we need to add the CoreFoundation framework
 if (APPLE)
-    target_link_libraries(opengl_tutorial PRIVATE "-framework CoreFoundation")
+    target_link_libraries(opengl_practice PRIVATE "-framework CoreFoundation")
 endif()
