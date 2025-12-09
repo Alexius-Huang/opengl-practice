@@ -40,7 +40,8 @@ unsigned int GUI::render(unsigned int selectedIndex) {
 
     vector<string> sentences = {
         "1. Hello World",
-        "2. Element Buffer Object"
+        "2. Element Buffer Object",
+        "3. Draw Two Triangles"
     };
 
     int selected = selectedIndex;

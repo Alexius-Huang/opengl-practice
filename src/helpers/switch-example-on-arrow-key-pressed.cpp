@@ -2,6 +2,8 @@
 
 // TODO: Program currently crashed if we pressed at least two keys at the same time
 //       Investigate to prevent this behaviour
+// TODO: Current implementation didn't handle the case of preventing further event
+//       emission
 bool switchExampleOnArrowKeyPressed(Context* ctx) {
     /* Navigate to Previous Example */
     if (
