@@ -9,6 +9,7 @@
 #include "03-draw-two-triangles/main.h"
 #include "04-using-multiple-vao-and-vbo/main.h"
 #include "05-using-multiple-shaders/main.h"
+#include "06-pass-data-between-shaders/main.h"
 
 using namespace std;
 

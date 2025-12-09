@@ -5,5 +5,6 @@ vector<ExampleFunc> examples = {
     _02_elementBufferObject,
     _03_drawTwoTriangles,
     _04_usingMultipleVAOAndVBO,
-    _05_usingMultipleShaders
+    _05_usingMultipleShaders,
+    _06_passDataBetweenShaders
 };
