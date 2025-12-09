@@ -1,6 +1,7 @@
 #include "examples/01-hello-world.h"
 #include "examples/02-element-buffer-object.h"
 #include "examples/03-draw-two-triangles.h"
+#include "examples/04-using-multiple-vao-and-vbo.h"
 using namespace std;
 
 int main() {
@@ -25,7 +26,7 @@ int main() {
     ctx.gui = &gui;
     ctx.selectedExampleIndex = 0;
 
-    ctx.totalExamplesCount = 3;
+    ctx.totalExamplesCount = 4;
 
     while (!glfwWindowShouldClose(ctx.window)) {
         if (ctx.selectedExampleIndex == 0) {
@@ -34,6 +35,8 @@ int main() {
             _02_elementBufferObject(&ctx);
         } else if (ctx.selectedExampleIndex == 2) {
             _03_drawTwoTriangles(&ctx);
+        } else if (ctx.selectedExampleIndex == 3) {
+            _04_usingMultipleVAOAndVBO(&ctx);
         } else {
             cout << "Index  " << ctx.selectedExampleIndex << " not existed" << endl;
             break;
