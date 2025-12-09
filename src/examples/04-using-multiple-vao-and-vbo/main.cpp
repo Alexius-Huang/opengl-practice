@@ -91,6 +91,8 @@ void _04_usingMultipleVAOAndVBO(Context* ctx) {
     // -------
     glDeleteVertexArrays(2, VAOs);
     glDeleteBuffers(2, VBOs);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
     shaderProgram.dispose();
 }
 

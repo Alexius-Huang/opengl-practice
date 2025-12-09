@@ -72,6 +72,8 @@ void _03_drawTwoTriangles(Context* ctx) {
     // -------
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
     shaderProgram.dispose();
 }
 

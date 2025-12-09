@@ -1,13 +1,19 @@
 #include "main.h"
 
-void _02_elementBufferObject(Context* ctx) {
-    unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
-    unsigned int fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");
+void _05_usingMultipleShaders(Context* ctx) {
+    unsigned int vertexShader = readShaderFile("./src/examples/05-using-multiple-shaders/vertex-shader.vert");
+    unsigned int fragmentShader1 = readShaderFile("./src/examples/05-using-multiple-shaders/fragment-shader-1.frag");
+    unsigned int fragmentShader2 = readShaderFile("./src/examples/05-using-multiple-shaders/fragment-shader-2.frag");
 
-    ShaderProgram shaderProgram;
-    shaderProgram.attachShader(vertexShader);
-    shaderProgram.attachShader(fragmentShader);
-    shaderProgram.link();
+    ShaderProgram shaderProgram1;
+    shaderProgram1.attachShader(vertexShader);
+    shaderProgram1.attachShader(fragmentShader1);
+    shaderProgram1.link();
+
+    ShaderProgram shaderProgram2;
+    shaderProgram2.attachShader(vertexShader);
+    shaderProgram2.attachShader(fragmentShader2);
+    shaderProgram2.link();
 
     // Instead of providing 6 vertices to represent 2 triangles, we can reuse vertex using
     // element buffer object (EBO)
@@ -41,12 +47,7 @@ void _02_elementBufferObject(Context* ctx) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) 0);
     glEnableVertexAttribArray(0);
 
-    // TODO: Clarify what are the following code means
-    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
-
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0); 
 
     while (!glfwWindowShouldClose(ctx->window))
@@ -58,14 +59,23 @@ void _02_elementBufferObject(Context* ctx) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        shaderProgram.use();
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+        shaderProgram1.use();
         glDrawElements(
             GL_TRIANGLES,
-            6,                // Draw six vertices in total
+            3,                // Draw 3 vertices
             GL_UNSIGNED_INT,
             0                 // Offset in EBO
+        );
+
+        shaderProgram2.use();
+        glDrawElements(
+            GL_TRIANGLES,
+            3,                                // Draw 3 vertices
+            GL_UNSIGNED_INT,
+            (void*)(3 * sizeof(unsigned int)) // Offset in EBO
         );
 
         int index = ctx->gui->render(ctx->selectedExampleIndex);
@@ -82,6 +92,8 @@ void _02_elementBufferObject(Context* ctx) {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    shaderProgram.dispose();
+    glDeleteShader(fragmentShader1);
+    glDeleteShader(fragmentShader2);
+    shaderProgram1.dispose();
+    shaderProgram2.dispose();
 }

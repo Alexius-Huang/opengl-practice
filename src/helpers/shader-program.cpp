@@ -49,10 +49,9 @@ void ShaderProgram::link() {
         throw std::runtime_error("ERROR::SHADER_PROGRAM::LINK_FAILURE\n" + std::string(infoLog));
     }
 
-    // After linking, detach and delete shaders
+    // After linking, detach the shaders
     for (size_t i = 0; i < shaders.size(); i++) {
         glDetachShader(program, shaders.at(i)); // Detach after linking
-        glDeleteShader(shaders.at(i));          // Delete individual shaders
     }
     shaders.clear(); // Clear the vector
 

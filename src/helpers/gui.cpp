@@ -42,7 +42,8 @@ unsigned int GUI::render(unsigned int selectedIndex) {
         "1. Hello World",
         "2. Element Buffer Object",
         "3. Draw Two Triangles",
-        "4. Using Multiple VAOs and VBOs"
+        "4. Using Multiple VAOs and VBOs",
+        "5. Using Multiple Shaders"
     };
 
     int selected = selectedIndex;
