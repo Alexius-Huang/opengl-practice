@@ -1,6 +1,6 @@
 #include "./02-element-buffer-object.h"
 
-ReturnType _02_elementBufferObject(Context ctx) {
+void _02_elementBufferObject(Context* ctx) {
     unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
     unsigned int fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");
 
@@ -49,19 +49,11 @@ ReturnType _02_elementBufferObject(Context ctx) {
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0); 
 
-    int selectedIndex = 1;
-
-    // render loop
-    // -----------
-    while (!glfwWindowShouldClose(ctx.window))
+    while (!glfwWindowShouldClose(ctx->window))
     {
-        // input
-        // -----
-        closeWindowOnEscPressed(ctx.window);
-        togglePolygonModeOnKeyPressed(ctx.window, GLFW_KEY_TAB);
+        closeWindowOnEscPressed(ctx->window);
+        togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
 
-        // render
-        // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -75,26 +67,18 @@ ReturnType _02_elementBufferObject(Context ctx) {
             0                 // Offset in EBO
         );
 
-        unsigned int index = ctx.gui->render(selectedIndex);
-        if (index != selectedIndex) {
+        int index = ctx->gui->render(ctx->selectedExampleIndex);
+        if (index != ctx->selectedExampleIndex) {
             // Switching to other examples
-            selectedIndex = index;
+            ctx->selectedExampleIndex = index;
             break;
         }
 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-        glfwSwapBuffers(ctx.window);
+        glfwSwapBuffers(ctx->window);
         glfwPollEvents();
     }
 
-    // Cleanup
-    // -------
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     shaderProgram.dispose();
-
-    ReturnType returnType;
-    returnType.selectedIndex = selectedIndex;
-    return returnType;
 }

@@ -1,6 +1,6 @@
 #include "./01-hello-world.h"
 
-ReturnType _01_helloWorld(Context ctx) {
+void _01_helloWorld(Context* ctx) {
     unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
     unsigned int fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");
 
@@ -30,14 +30,12 @@ ReturnType _01_helloWorld(Context ctx) {
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
     glBindVertexArray(0);
 
-    int selectedIndex = 0;
-
-    while (!glfwWindowShouldClose(ctx.window))
+    while (!glfwWindowShouldClose(ctx->window))
     {
         // input
         // -----
-        closeWindowOnEscPressed(ctx.window);
-        togglePolygonModeOnKeyPressed(ctx.window, GLFW_KEY_TAB);
+        closeWindowOnEscPressed(ctx->window);
+        togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
 
         // render
         // ------
@@ -49,16 +47,16 @@ ReturnType _01_helloWorld(Context ctx) {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        int index = ctx.gui->render(selectedIndex);
-        if (index != selectedIndex) {
+        int index = ctx->gui->render(ctx->selectedExampleIndex);
+        if (index != ctx->selectedExampleIndex) {
             // Switching to other examples
-            selectedIndex = index;
+            ctx->selectedExampleIndex = index;
             break;
         }
 
         // glfw: swap buffers and poll IO events
         // -------------------------------------
-        glfwSwapBuffers(ctx.window);
+        glfwSwapBuffers(ctx->window);
         glfwPollEvents();
     }
 
@@ -67,8 +65,4 @@ ReturnType _01_helloWorld(Context ctx) {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     shaderProgram.dispose();
-
-    ReturnType returnType;
-    returnType.selectedIndex = selectedIndex;
-    return returnType;
 }

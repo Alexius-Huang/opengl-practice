@@ -20,12 +20,9 @@
 #include "../helpers/gui.h"
 
 typedef struct {
-    int selectedIndex;
-} ReturnType;
-
-typedef struct {
     GUI* gui;
     GLFWwindow* window;
+    int selectedExampleIndex;
 } Context;
 
 #endif

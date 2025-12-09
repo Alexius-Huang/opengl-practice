@@ -22,17 +22,16 @@ int main() {
     Context ctx;
     ctx.window = window;
     ctx.gui = &gui;
-
-    ReturnType result;
-    result.selectedIndex = 0;
+    ctx.selectedExampleIndex = 0;
 
     while (!glfwWindowShouldClose(ctx.window)) {
-        if (result.selectedIndex == 0) {
-            result = _01_helloWorld(ctx);
-        } else if (result.selectedIndex == 1) {
-            result = _02_elementBufferObject(ctx);
+        cout << ctx.selectedExampleIndex;
+        if (ctx.selectedExampleIndex == 0) {
+            _01_helloWorld(&ctx);
+        } else if (ctx.selectedExampleIndex == 1) {
+            _02_elementBufferObject(&ctx);
         } else {    
-            cout << "Index  " << result.selectedIndex << " not existed" << endl;
+            cout << "Index  " << ctx.selectedExampleIndex << " not existed" << endl;
             break;
         }
     }

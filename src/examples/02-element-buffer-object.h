@@ -14,8 +14,8 @@
 #include "../helpers/toggle-polygon-mode-on-key-pressed.h"
 #include "../helpers/gui.h"
 
-#include "type.h"
+#include "context.h"
 
-ReturnType _02_elementBufferObject(Context ctx);
+void _02_elementBufferObject(Context* ctx);
 
 #endif // _02_ELEMENT_BUFFER_OBJECT_H
