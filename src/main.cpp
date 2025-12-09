@@ -8,10 +8,13 @@
 #include "helpers/read-shader-file.h"
 #include "helpers/shader-program.h"
 #include "helpers/close-window-on-esc-pressed.h"
+#include "helpers/gui.h"
 #include "examples/01-hello-world.h"
 #include "examples/02-element-buffer-object.h"
 
 int main() {
+    GUI gui;
+
     while (true) {
         std::cout << "There are currently following examples:" << std::endl << std::endl;
         std::cout << "1. Hello World: shows the basics of shader program, VBO, VAO to draw simple triangle" << std::endl << std::endl;
@@ -27,8 +30,8 @@ int main() {
         }
 
         if (option == 0) break;
-        else if (option == 1) _01_helloWorld();
-        else if (option == 2) _02_elementBufferObject();
+        else if (option == 1) _01_helloWorld(&gui);
+        else if (option == 2) _02_elementBufferObject(&gui);
         else {
             std::cout << "Option " << option << " not existed" << std::endl;
             return -1;

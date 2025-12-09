@@ -1,17 +1,6 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include "../initialize.h"
-#include "../helpers/read-shader-file.h"
-#include "../helpers/shader-program.h"
-#include "../helpers/close-window-on-esc-pressed.h"
-#include "../helpers/toggle-polygon-mode-on-key-pressed.h"
 #include "./02-element-buffer-object.h"
 
-void _02_elementBufferObject() {
+void _02_elementBufferObject(GUI* gui) {
     OpenGLVersion version;
     version.major = 3;
     version.minor = 3;
@@ -73,6 +62,8 @@ void _02_elementBufferObject() {
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0); 
 
+    gui->init(window);
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -97,6 +88,8 @@ void _02_elementBufferObject() {
             0                 // Offset in EBO
         );
 
+        gui->render();
+
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
@@ -106,6 +99,7 @@ void _02_elementBufferObject() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     shaderProgram.dispose();
+    gui->dispose();
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
