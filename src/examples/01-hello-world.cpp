@@ -1,19 +1,6 @@
 #include "./01-hello-world.h"
 
-ReturnType _01_helloWorld(GUI* gui) {
-    OpenGLVersion version;
-    version.major = 3;
-    version.minor = 3;
-
-    OpenGLWindowSize windowSize;
-    windowSize.width = 800;
-    windowSize.height = 600;
-
-    GLFWwindow* window = initialize(
-        version,
-        windowSize
-    );
-
+ReturnType _01_helloWorld(Context ctx) {
     unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
     unsigned int fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");
 
@@ -43,17 +30,14 @@ ReturnType _01_helloWorld(GUI* gui) {
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
     glBindVertexArray(0);
 
-    gui->init(window);
     int selectedIndex = 0;
 
-    // render loop
-    // -----------
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(ctx.window))
     {
         // input
         // -----
-        closeWindowOnEscPressed(window);
-        togglePolygonModeOnKeyPressed(window, GLFW_KEY_TAB);
+        closeWindowOnEscPressed(ctx.window);
+        togglePolygonModeOnKeyPressed(ctx.window, GLFW_KEY_TAB);
 
         // render
         // ------
@@ -65,15 +49,16 @@ ReturnType _01_helloWorld(GUI* gui) {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        int index = gui->render(selectedIndex);
+        int index = ctx.gui->render(selectedIndex);
         if (index != selectedIndex) {
-            glfwSetWindowShouldClose(window, true);
+            // Switching to other examples
             selectedIndex = index;
+            break;
         }
 
         // glfw: swap buffers and poll IO events
         // -------------------------------------
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(ctx.window);
         glfwPollEvents();
     }
 
@@ -82,11 +67,6 @@ ReturnType _01_helloWorld(GUI* gui) {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     shaderProgram.dispose();
-    gui->dispose();
-
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
-    glfwTerminate();
 
     ReturnType returnType;
     returnType.selectedIndex = selectedIndex;

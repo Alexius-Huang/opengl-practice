@@ -23,4 +23,9 @@ typedef struct {
     int selectedIndex;
 } ReturnType;
 
+typedef struct {
+    GUI* gui;
+    GLFWwindow* window;
+} Context;
+
 #endif

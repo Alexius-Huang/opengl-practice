@@ -3,6 +3,6 @@
 
 #include "type.h"
 
-ReturnType _01_helloWorld(GUI* gui);
+ReturnType _01_helloWorld(Context ctx);
 
 #endif // _01_HELLO_WORLD_H

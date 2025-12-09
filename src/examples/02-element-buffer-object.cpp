@@ -1,19 +1,6 @@
 #include "./02-element-buffer-object.h"
 
-ReturnType _02_elementBufferObject(GUI* gui) {
-    OpenGLVersion version;
-    version.major = 3;
-    version.minor = 3;
-
-    OpenGLWindowSize windowSize;
-    windowSize.width = 800;
-    windowSize.height = 600;
-
-    GLFWwindow* window = initialize(
-        version,
-        windowSize
-    );
-
+ReturnType _02_elementBufferObject(Context ctx) {
     unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
     unsigned int fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");
 
@@ -62,17 +49,16 @@ ReturnType _02_elementBufferObject(GUI* gui) {
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0); 
 
-    gui->init(window);
     int selectedIndex = 1;
 
     // render loop
     // -----------
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(ctx.window))
     {
         // input
         // -----
-        closeWindowOnEscPressed(window);
-        togglePolygonModeOnKeyPressed(window, GLFW_KEY_TAB);
+        closeWindowOnEscPressed(ctx.window);
+        togglePolygonModeOnKeyPressed(ctx.window, GLFW_KEY_TAB);
 
         // render
         // ------
@@ -89,26 +75,24 @@ ReturnType _02_elementBufferObject(GUI* gui) {
             0                 // Offset in EBO
         );
 
-        unsigned int index = gui->render(selectedIndex);
+        unsigned int index = ctx.gui->render(selectedIndex);
         if (index != selectedIndex) {
-            glfwSetWindowShouldClose(window, true);
+            // Switching to other examples
             selectedIndex = index;
+            break;
         }
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(ctx.window);
         glfwPollEvents();
     }
 
+    // Cleanup
+    // -------
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     shaderProgram.dispose();
-    gui->dispose();
-
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
-    glfwTerminate();
 
     ReturnType returnType;
     returnType.selectedIndex = selectedIndex;

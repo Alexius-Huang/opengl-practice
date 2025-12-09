@@ -16,6 +16,6 @@
 
 #include "type.h"
 
-ReturnType _02_elementBufferObject(GUI* gui);
+ReturnType _02_elementBufferObject(Context ctx);
 
 #endif // _02_ELEMENT_BUFFER_OBJECT_H

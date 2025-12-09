@@ -3,21 +3,42 @@
 using namespace std;
 
 int main() {
+    OpenGLVersion version;
+    version.major = 3;
+    version.minor = 3;
+
+    OpenGLWindowSize windowSize;
+    windowSize.width = 1200;
+    windowSize.height = 960;
+
+    GLFWwindow* window = initialize(
+        version,
+        windowSize
+    );
+
     GUI gui;
+    gui.init(window);
+
+    Context ctx;
+    ctx.window = window;
+    ctx.gui = &gui;
 
     ReturnType result;
     result.selectedIndex = 0;
 
-    while (true) {
+    while (!glfwWindowShouldClose(ctx.window)) {
         if (result.selectedIndex == 0) {
-            result = _01_helloWorld(&gui);
+            result = _01_helloWorld(ctx);
         } else if (result.selectedIndex == 1) {
-            result = _02_elementBufferObject(&gui);
-        } else {
+            result = _02_elementBufferObject(ctx);
+        } else {    
             cout << "Index  " << result.selectedIndex << " not existed" << endl;
-            return -1;
+            break;
         }
     }
+
+    gui.dispose();
+    glfwTerminate();
 
     return 0;
 }
