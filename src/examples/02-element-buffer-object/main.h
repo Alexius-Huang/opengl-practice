@@ -1,7 +1,7 @@
 #ifndef _02_ELEMENT_BUFFER_OBJECT_H
 #define _02_ELEMENT_BUFFER_OBJECT_H
 
-#include "includes.h"
+#include "../includes.h"
 
 void _02_elementBufferObject(Context* ctx);
 

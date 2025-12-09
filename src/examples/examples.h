@@ -4,10 +4,10 @@
 #include <vector>
 #include "context.h"
 
-#include "01-hello-world.h"
-#include "02-element-buffer-object.h"
-#include "03-draw-two-triangles.h"
-#include "04-using-multiple-vao-and-vbo.h"
+#include "01-hello-world/main.h"
+#include "02-element-buffer-object/main.h"
+#include "03-draw-two-triangles/main.h"
+#include "04-using-multiple-vao-and-vbo/main.h"
 
 using namespace std;
 

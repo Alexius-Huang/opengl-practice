@@ -1,4 +1,4 @@
-#include "04-using-multiple-vao-and-vbo.h"
+#include "main.h"
 
 void _04_usingMultipleVAOAndVBO(Context* ctx) {
     unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");

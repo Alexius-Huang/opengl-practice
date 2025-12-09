@@ -1,6 +1,6 @@
-#include "03-draw-two-triangles.h"
+#include "main.h"
 
-void _03_drawTwoTriangles(Context* ctx) {
+void _01_helloWorld(Context* ctx) {
     unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
     unsigned int fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");
 
@@ -10,15 +10,9 @@ void _03_drawTwoTriangles(Context* ctx) {
     shaderProgram.link();
 
     float vertices[] = {
-        /* top-left */
-        -.5f, .5f, .0f,
-        -.5f, -.5f, .0f,
-        .5f, .5f, .0f,
-
-        /* bottom-right */
-        .5f, -.5f, .0f,
-        .5f, .25f, .0f,
-        -.25f, -.5f, .0f
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f,  0.5f, 0.0f
     };
 
     unsigned int VAO;
@@ -49,11 +43,10 @@ void _03_drawTwoTriangles(Context* ctx) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Draw the triangle
         shaderProgram.use();
         glBindVertexArray(VAO);
-
-        // We have 6 vertices to draw
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         int index = ctx->gui->render(ctx->selectedExampleIndex);
         if (index != ctx->selectedExampleIndex) {
@@ -74,4 +67,3 @@ void _03_drawTwoTriangles(Context* ctx) {
     glDeleteBuffers(1, &VBO);
     shaderProgram.dispose();
 }
-
