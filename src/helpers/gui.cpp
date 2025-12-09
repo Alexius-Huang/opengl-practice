@@ -1,7 +1,7 @@
 #include "gui.h"
 
 void GUI::init(GLFWwindow* window) {
-    if (isInitialized) throw std::runtime_error("ERROR::GUI::GUI_ALREADY_INITIALIZED");
+    if (isInitialized) throw runtime_error("ERROR::GUI::GUI_ALREADY_INITIALIZED");
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -13,24 +13,65 @@ void GUI::init(GLFWwindow* window) {
 }
 
 void GUI::dispose() {
-    if (!isInitialized) throw std::runtime_error("ERROR::GUI::GUI_DISPOSE_BUT_NOT_INITIALIZED");
+    if (!isInitialized) throw runtime_error("ERROR::GUI::GUI_DISPOSE_BUT_NOT_INITIALIZED");
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
     isInitialized = false; 
 }
 
+const int MAX_VISIBLE_ITEMS = 4;
 void GUI::render() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
+
     ImGui::NewFrame();
 
     ImGui::SetNextWindowPos(
         ImVec2(10.0f, 10.0f),
-        ImGuiCond_FirstUseEver
+        ImGuiCond_Always
     );
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(0, 0),          // min size
+        ImVec2(FLT_MAX, 140)   // max size (height = 300 pixels)
+    );
+
     ImGui::Begin("Hello, world!");
-    ImGui::Text("This is some useful text.");
+    // ImGui::Text("This is some useful text.");
+
+    vector<string> sentences = {
+        "Hello world",
+        "This is line 2",
+        "Some long sentence...",
+        "Another entry here...",
+        "This is line 2",
+        "Some long sentence...",
+        "Another entry here...",
+        // Add as many as you want
+    };
+
+    static int selected = -1;
+    int previous = selected;
+    float fullWidth = ImGui::GetContentRegionAvail().x;
+    ImGui::SetNextItemWidth(fullWidth);
+
+    bool changed = ImGui::ListBox(
+        "##Sentences",
+        &selected,
+        [](void* data, int idx, const char** out_text) {
+            auto* v = (std::vector<std::string>*)data;
+            *out_text = (*v)[idx].c_str();
+            return true;
+        },
+        &sentences,
+        sentences.size(),
+        MAX_VISIBLE_ITEMS
+    );
+
+    if (changed && selected != previous) {
+        cout << "SELECTED" << selected << endl;
+    }
+
     ImGui::End();
 
     ImGui::Render();

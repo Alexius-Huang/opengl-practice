@@ -7,6 +7,11 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <stdexcept>
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
 
 class GUI {
 private:
