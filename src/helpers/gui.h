@@ -18,7 +18,7 @@ private:
     bool isInitialized = false;
 public:
     void init(GLFWwindow* window);
-    void render();
+    unsigned int render(unsigned int selectedIndex);
     void dispose();
 };
 

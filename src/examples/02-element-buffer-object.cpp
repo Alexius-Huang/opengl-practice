@@ -1,6 +1,6 @@
 #include "./02-element-buffer-object.h"
 
-void _02_elementBufferObject(GUI* gui) {
+ReturnType _02_elementBufferObject(GUI* gui) {
     OpenGLVersion version;
     version.major = 3;
     version.minor = 3;
@@ -63,6 +63,7 @@ void _02_elementBufferObject(GUI* gui) {
     glBindVertexArray(0); 
 
     gui->init(window);
+    int selectedIndex = 1;
 
     // render loop
     // -----------
@@ -88,7 +89,11 @@ void _02_elementBufferObject(GUI* gui) {
             0                 // Offset in EBO
         );
 
-        gui->render();
+        unsigned int index = gui->render(selectedIndex);
+        if (index != selectedIndex) {
+            glfwSetWindowShouldClose(window, true);
+            selectedIndex = index;
+        }
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -104,4 +109,8 @@ void _02_elementBufferObject(GUI* gui) {
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
+
+    ReturnType returnType;
+    returnType.selectedIndex = selectedIndex;
+    return returnType;
 }

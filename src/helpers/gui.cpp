@@ -21,7 +21,7 @@ void GUI::dispose() {
 }
 
 const int MAX_VISIBLE_ITEMS = 4;
-void GUI::render() {
+unsigned int GUI::render(unsigned int selectedIndex) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
 
@@ -40,18 +40,11 @@ void GUI::render() {
     // ImGui::Text("This is some useful text.");
 
     vector<string> sentences = {
-        "Hello world",
-        "This is line 2",
-        "Some long sentence...",
-        "Another entry here...",
-        "This is line 2",
-        "Some long sentence...",
-        "Another entry here...",
-        // Add as many as you want
+        "1. Hello World",
+        "2. Element Buffer Object"
     };
 
-    static int selected = -1;
-    int previous = selected;
+    int selected = selectedIndex;
     float fullWidth = ImGui::GetContentRegionAvail().x;
     ImGui::SetNextItemWidth(fullWidth);
 
@@ -68,12 +61,10 @@ void GUI::render() {
         MAX_VISIBLE_ITEMS
     );
 
-    if (changed && selected != previous) {
-        cout << "SELECTED" << selected << endl;
-    }
-
     ImGui::End();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    return selected;
 }

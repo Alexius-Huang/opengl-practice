@@ -1,5 +1,5 @@
-#ifndef _02_ELEMENT_BUFFER_OBJECT_H
-#define _02_ELEMENT_BUFFER_OBJECT_H
+#ifndef _TYPE_H
+#define _TYPE_H
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -7,6 +7,11 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 #include "../initialize.h"
 #include "../helpers/read-shader-file.h"
 #include "../helpers/shader-program.h"
@@ -14,8 +19,8 @@
 #include "../helpers/toggle-polygon-mode-on-key-pressed.h"
 #include "../helpers/gui.h"
 
-#include "type.h"
+typedef struct {
+    int selectedIndex;
+} ReturnType;
 
-ReturnType _02_elementBufferObject(GUI* gui);
-
-#endif // _02_ELEMENT_BUFFER_OBJECT_H
+#endif
