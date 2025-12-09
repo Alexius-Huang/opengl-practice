@@ -23,6 +23,7 @@ int main() {
     ctx.window = window;
     ctx.gui = &gui;
     ctx.selectedExampleIndex = 0;
+    ctx.totalExamplesCount = 2;
 
     while (!glfwWindowShouldClose(ctx.window)) {
         cout << ctx.selectedExampleIndex;

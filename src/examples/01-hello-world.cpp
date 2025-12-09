@@ -36,6 +36,7 @@ void _01_helloWorld(Context* ctx) {
         // -----
         closeWindowOnEscPressed(ctx->window);
         togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
+        if (switchExampleOnArrowKeyPressed(ctx)) break;
 
         // render
         // ------

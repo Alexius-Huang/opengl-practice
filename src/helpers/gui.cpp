@@ -32,12 +32,11 @@ unsigned int GUI::render(unsigned int selectedIndex) {
         ImGuiCond_Always
     );
     ImGui::SetNextWindowSizeConstraints(
-        ImVec2(0, 0),          // min size
-        ImVec2(FLT_MAX, 140)   // max size (height = 300 pixels)
+        ImVec2(300, 0),          // min size
+        ImVec2(FLT_MAX, 115)   // max size (height = 300 pixels)
     );
 
-    ImGui::Begin("Hello, world!");
-    // ImGui::Text("This is some useful text.");
+    ImGui::Begin("OpenGL Example");
 
     vector<string> sentences = {
         "1. Hello World",
