@@ -3,6 +3,6 @@
 #include "close-window-on-esc-pressed.h"
 
 void closeWindowOnEscPressed(GLFWwindow *window) {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }

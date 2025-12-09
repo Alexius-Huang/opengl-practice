@@ -1,6 +1,8 @@
 #ifndef _01_HELLO_WORLD_H
 #define _01_HELLO_WORLD_H
 
-void _01_helloWorld();
+#include "includes.h"
+
+void _01_helloWorld(Context* ctx);
 
 #endif // _01_HELLO_WORLD_H
