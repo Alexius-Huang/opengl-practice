@@ -15,8 +15,7 @@ int main() {
         windowSize
     );
 
-    GUI gui;
-    gui.init(window);
+    GUI gui { window, exampleTitles };
 
     Context ctx;
     ctx.window = window;

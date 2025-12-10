@@ -2,6 +2,7 @@
 #define _EXAMPLES_H
 
 #include <vector>
+#include <string>
 #include "context.h"
 
 #include "01-hello-world/main.h"
@@ -16,5 +17,7 @@ using namespace std;
 typedef void (*ExampleFunc)(Context*);
 
 extern vector<ExampleFunc> examples;
+
+extern vector<string> exampleTitles;
 
 #endif

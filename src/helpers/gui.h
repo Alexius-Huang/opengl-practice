@@ -16,8 +16,11 @@ using namespace std;
 class GUI {
 private:
     bool isInitialized = false;
+    vector<string> exampleTitles;
 public:
-    void init(GLFWwindow* window);
+    GUI(GLFWwindow* window, vector<string>& exampleTitles);
+
+    // void init(GLFWwindow* window, vector<string>& exampleTitles);
     unsigned int render(unsigned int selectedIndex);
     void dispose();
 };

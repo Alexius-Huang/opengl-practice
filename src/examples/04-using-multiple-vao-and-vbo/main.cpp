@@ -1,5 +1,7 @@
 #include "main.h"
 
+string _04_title = "Using Multiple VAOs and VBOs";
+
 void _04_usingMultipleVAOAndVBO(Context* ctx) {
     unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
     unsigned int fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");

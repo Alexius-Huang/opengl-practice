@@ -1,5 +1,7 @@
 #include "main.h"
 
+string _06_title = "Passing Data Between Shaders";
+
 /**
  *  This example's code is almost the same as 01-hello-world, the important part resides
  *  in the shader, please inspect how shader's data is passed from vertex to fragment shader 

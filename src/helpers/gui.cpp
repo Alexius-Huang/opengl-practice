@@ -1,7 +1,7 @@
 #include "gui.h"
 
-void GUI::init(GLFWwindow* window) {
-    if (isInitialized) throw runtime_error("ERROR::GUI::GUI_ALREADY_INITIALIZED");
+GUI::GUI(GLFWwindow* window, vector<string>& exampleTitles): exampleTitles(exampleTitles) {
+    if (this->isInitialized) throw runtime_error("ERROR::GUI::GUI_ALREADY_INITIALIZED");
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -9,15 +9,15 @@ void GUI::init(GLFWwindow* window) {
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-    isInitialized = true;
+    this->isInitialized = true;
 }
 
 void GUI::dispose() {
-    if (!isInitialized) throw runtime_error("ERROR::GUI::GUI_DISPOSE_BUT_NOT_INITIALIZED");
+    if (!this->isInitialized) throw runtime_error("ERROR::GUI::GUI_DISPOSE_BUT_NOT_INITIALIZED");
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    isInitialized = false; 
+    this->isInitialized = false; 
 }
 
 const int MAX_VISIBLE_ITEMS = 4;
@@ -38,15 +38,6 @@ unsigned int GUI::render(unsigned int selectedIndex) {
 
     ImGui::Begin("OpenGL Example");
 
-    vector<string> sentences = {
-        "1. Hello World",
-        "2. Element Buffer Object",
-        "3. Draw Two Triangles",
-        "4. Using Multiple VAOs and VBOs",
-        "5. Using Multiple Shaders",
-        "6. Passing Data Between Shaders"
-    };
-
     int selected = selectedIndex;
     float fullWidth = ImGui::GetContentRegionAvail().x;
     ImGui::SetNextItemWidth(fullWidth);
@@ -59,8 +50,8 @@ unsigned int GUI::render(unsigned int selectedIndex) {
             *out_text = (*v)[idx].c_str();
             return true;
         },
-        &sentences,
-        sentences.size(),
+        &(this->exampleTitles),
+        this->exampleTitles.size(),
         MAX_VISIBLE_ITEMS
     );
 

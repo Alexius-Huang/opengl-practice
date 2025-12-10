@@ -1,5 +1,14 @@
 #include "examples.h"
 
+vector<string> exampleTitles = {
+    _01_title,
+    _02_title,
+    _03_title,
+    _04_title,
+    _05_title,
+    _06_title
+};
+
 vector<ExampleFunc> examples = {
     _01_helloWorld,
     _02_elementBufferObject,

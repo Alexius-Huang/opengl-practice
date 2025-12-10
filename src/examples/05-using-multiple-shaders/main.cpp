@@ -1,5 +1,7 @@
 #include "main.h"
 
+string _05_title = "Using Multiple Shaders";
+
 void _05_usingMultipleShaders(Context* ctx) {
     unsigned int vertexShader = readShaderFile("./src/examples/05-using-multiple-shaders/vertex-shader.vert");
     unsigned int fragmentShader1 = readShaderFile("./src/examples/05-using-multiple-shaders/fragment-shader-1.frag");
