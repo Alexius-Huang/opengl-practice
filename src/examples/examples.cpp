@@ -7,7 +7,8 @@ vector<string> exampleTitles = {
     _04_title,
     _05_title,
     _06_title,
-    _07_title
+    _07_title,
+    _08_title
 };
 
 vector<ExampleFunc> examples = {
@@ -17,5 +18,6 @@ vector<ExampleFunc> examples = {
     _04_usingMultipleVAOAndVBO,
     _05_usingMultipleShaders,
     _06_passDataBetweenShaders,
-    _07_passDataUsingVertexAttributes
+    _07_passDataUsingVertexAttributes,
+    _08_passDataUsingUniforms
 };

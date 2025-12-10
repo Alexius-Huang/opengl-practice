@@ -1,10 +1,10 @@
 #include "main.h"
 
-string _07_title = "Passing Data Using Vertex Attributes";
+string _08_title = "Passing Data Using Uniforms";
 
-void _07_passDataUsingVertexAttributes(Context* ctx) {
-    unsigned int vertexShader = readShaderFile("./src/examples/07-pass-data-using-vertex-attributes/vertex-shader.vert");
-    unsigned int fragmentShader = readShaderFile("./src/examples/07-pass-data-using-vertex-attributes/fragment-shader.frag");
+void _08_passDataUsingUniforms(Context* ctx) {
+    unsigned int vertexShader = readShaderFile("./src/examples/08-pass-data-using-uniforms/vertex-shader.vert");
+    unsigned int fragmentShader = readShaderFile("./src/examples/08-pass-data-using-uniforms/fragment-shader.frag");
 
     ShaderProgram shaderProgram;
     shaderProgram.attachShader(vertexShader);
@@ -27,19 +27,9 @@ void _07_passDataUsingVertexAttributes(Context* ctx) {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // Selecting positions:
-    // - location = 0
-    // - every 3 data represent X, Y, Z
-    // - 6 data strides
-    // - offset = 0
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) 0);
     glEnableVertexAttribArray(0);
 
-    // Selecting colors:
-    // - location = 1
-    // - every 3 data represents R, G, B
-    // - 6 data strides
-    // - offset = 3 float data size
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
@@ -56,6 +46,11 @@ void _07_passDataUsingVertexAttributes(Context* ctx) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         shaderProgram.use();
+
+        // We can pass dynamic data into shader through uniform
+        float time = glfwGetTime();
+        shaderProgram.setUniformF("uTime", time);
+
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

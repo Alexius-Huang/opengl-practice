@@ -6,14 +6,16 @@
 #include <string>
 #include <stdexcept>
 
+using namespace std;
+
 class ShaderProgram {
 private:
-    std::vector<unsigned int> shaders;
+    vector<unsigned int> shaders;
     unsigned int program;
     bool hasAlreadyLinked = false;
 
-    void throwAlreadyLinkedError(const std::string& msg);
-    void throwNotLinkedYetError(const std::string& msg);
+    void throwAlreadyLinkedError(const string& msg);
+    void throwNotLinkedYetError(const string& msg);
 
 public:
     ShaderProgram();
@@ -21,6 +23,7 @@ public:
     void link();
     void use();
     void dispose();
+    void setUniformF(const char* uniformName, float uniformValue);
 };
 
 #endif // SHADER_PROGRAM_H

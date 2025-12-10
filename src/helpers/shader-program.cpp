@@ -4,15 +4,15 @@
 #include <stdexcept>
 #include "shader-program.h"
 
-void ShaderProgram::throwAlreadyLinkedError(const std::string& msg) {
-    throw std::runtime_error(
+void ShaderProgram::throwAlreadyLinkedError(const string& msg) {
+    throw runtime_error(
         "ERROR::SHADER_PROGRAM::PROGRAM_ALREADY_LINKED\n" +
         msg
     );
 }
 
-void ShaderProgram::throwNotLinkedYetError(const std::string& msg) {
-    throw std::runtime_error(
+void ShaderProgram::throwNotLinkedYetError(const string& msg) {
+    throw runtime_error(
         "ERROR::SHADER_PROGRAM::PROGRAM_NOT_LINKED_YET\n" +
         msg
     );
@@ -46,7 +46,7 @@ void ShaderProgram::link() {
     glGetProgramiv(program, GL_LINK_STATUS, &success); // Use 'program' member variable
     if (!success) {
         glGetProgramInfoLog(program, 1024, NULL, infoLog); // Use 'program' member variable
-        throw std::runtime_error("ERROR::SHADER_PROGRAM::LINK_FAILURE\n" + std::string(infoLog));
+        throw runtime_error("ERROR::SHADER_PROGRAM::LINK_FAILURE\n" + string(infoLog));
     }
 
     // After linking, detach the shaders
@@ -70,4 +70,9 @@ void ShaderProgram::dispose() {
         glDeleteProgram(program);
         program = 0; // Set to 0 to prevent double deletion
     }
+}
+
+void ShaderProgram::setUniformF(const char* uniformName, float uniformValue) {
+    GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
+    glUniform1f(uniformLocation, uniformValue);
 }
