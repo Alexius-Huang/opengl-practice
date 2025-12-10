@@ -11,6 +11,7 @@
 #include "04-using-multiple-vao-and-vbo/main.h"
 #include "05-using-multiple-shaders/main.h"
 #include "06-pass-data-between-shaders/main.h"
+#include "07-pass-data-using-vertex-attributes/main.h"
 
 using namespace std;
 
