@@ -5,7 +5,7 @@
 #include "./read-file.h"
 #include "./read-shader-file.h"
 
-namespace fs = std::__fs::filesystem;
+namespace fs = std::filesystem;
 
 unsigned int readShaderFile(fs::path path) {
     std::string fileExtension = path.extension();

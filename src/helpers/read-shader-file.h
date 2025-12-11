@@ -2,7 +2,7 @@
 #define READ_SHADER_FILE_H
 
 #include <filesystem>
-namespace fs = std::__fs::filesystem;
+namespace fs = std::filesystem;
 
 unsigned int readShaderFile(fs::path path);
 

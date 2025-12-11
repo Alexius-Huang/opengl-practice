@@ -4,7 +4,7 @@
 #include <iostream>
 #include <filesystem>
 #include "./read-file.h"
-namespace fs = std::__fs::filesystem;
+namespace fs = std::filesystem;
 
 std::string readFile(fs::path path) {
     std::ifstream file;

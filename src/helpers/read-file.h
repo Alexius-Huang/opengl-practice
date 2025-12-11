@@ -3,7 +3,7 @@
 
 #include <string>
 #include <filesystem>
-namespace fs = std::__fs::filesystem;
+namespace fs = std::filesystem;
 
 std::string readFile(fs::path path);
 
