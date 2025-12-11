@@ -8,6 +8,9 @@
 
 #include "context.h"
 
+// TODO: move to libs
+#include "../helpers/stb-image.h"
+
 #include "../initialize.h"
 #include "../helpers/read-shader-file.h"
 #include "../helpers/shader-program.h"

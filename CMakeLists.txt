@@ -18,6 +18,8 @@ find_package(OpenGL REQUIRED)
 add_library(glad STATIC libs/glad/src/glad.c)
 target_include_directories(glad PUBLIC libs/glad)
 
+# add_library(stb-image STATIC libs/stb/stb-image.cpp)
+
 # --- Dependency Management (FetchContent) ---
 include(FetchContent)
 

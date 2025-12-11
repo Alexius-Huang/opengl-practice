@@ -13,6 +13,7 @@
 #include "06-pass-data-between-shaders/main.h"
 #include "07-pass-data-using-vertex-attributes/main.h"
 #include "08-pass-data-using-uniforms/main.h"
+#include "09-using-texture/main.h"
 
 using namespace std;
 
