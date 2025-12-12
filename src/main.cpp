@@ -45,13 +45,14 @@ int main() {
         }
         examples.at(ctx.selectedExampleIndex)->run();
     }
-
     gui.dispose();
     glfwTerminate();
 
-    for (const auto* example : examples) {
-        delete &example;
-    }
-
+    // TODO: investigate why there is pointer being freed was not allocated
+    // int i = 0;
+    // for (const auto* example : examples) {
+    //     cout << "Deleting example " << i++ << ": " << example->getTitle() << endl;
+    //     delete &example;
+    // }
     return 0;
 }

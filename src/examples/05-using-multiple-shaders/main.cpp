@@ -46,7 +46,11 @@ void _05_UsingMultipleShaders::setup() {
 }
 
 void _05_UsingMultipleShaders::render() {
-    closeWindowOnEscPressed(ctx->window);
+    if (closeWindowOnEscPressed(ctx->window)) {
+        this->setShouldExit(true);
+        glfwSetWindowShouldClose(ctx->window, true);
+        return;
+    };
     togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
     if (switchExampleOnArrowKeyPressed(ctx)) {
         this->setShouldExit(true);

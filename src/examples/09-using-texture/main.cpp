@@ -81,7 +81,11 @@ void _09_UsingTexture::setup() {
 }
 
 void _09_UsingTexture::render() {
-    closeWindowOnEscPressed(ctx->window);
+    if (closeWindowOnEscPressed(ctx->window)) {
+        this->setShouldExit(true);
+        glfwSetWindowShouldClose(ctx->window, true);
+        return;
+    };
     togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
     if (switchExampleOnArrowKeyPressed(ctx)) {
         this->setShouldExit(true);

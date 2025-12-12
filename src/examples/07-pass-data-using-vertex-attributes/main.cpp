@@ -43,7 +43,11 @@ void _07_PassDataUsingVertexAttributes::setup() {
 }
 
 void _07_PassDataUsingVertexAttributes::render() {
-    closeWindowOnEscPressed(ctx->window);
+    if (closeWindowOnEscPressed(ctx->window)) {
+        this->setShouldExit(true);
+        glfwSetWindowShouldClose(ctx->window, true);
+        return;
+    };
     togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
     if (switchExampleOnArrowKeyPressed(ctx)) {
         this->setShouldExit(true);
