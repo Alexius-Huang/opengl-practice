@@ -19,8 +19,6 @@ int main() {
     ctx.gui = &gui;
     ctx.selectedExampleIndex = 0;
 
-    ctx.totalExamplesCount = examples.size();
-
     vector<Example*> examples = {
         new _01_HelloWorld(&ctx),
         new _02_ElementBufferObject(&ctx),
@@ -32,6 +30,7 @@ int main() {
         new _08_PassDataUsingUniforms(&ctx),
         new _09_UsingTexture(&ctx),
     };
+    ctx.totalExamplesCount = examples.size();
 
     vector<string> exampleTitles;
     for (const auto* example : examples) {

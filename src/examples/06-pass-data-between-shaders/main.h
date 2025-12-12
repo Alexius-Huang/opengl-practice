@@ -3,10 +3,6 @@
 
 #include "../includes.h"
 
-extern string _06_title;
-
-void _06_passDataBetweenShaders(Context* ctx);
-
 class _06_PassDataBetweenShaders : public Example {
 private:
     unsigned int vertexShader;

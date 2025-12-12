@@ -3,10 +3,6 @@
 
 #include "../includes.h"
 
-extern string _03_title;
-
-void _03_drawTwoTriangles(Context* ctx);
-
 class _03_DrawTwoTriangles : public Example {
 private:
     unsigned int vertexShader;

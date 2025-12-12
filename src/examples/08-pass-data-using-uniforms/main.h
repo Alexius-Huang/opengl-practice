@@ -3,10 +3,6 @@
 
 #include "../includes.h"
 
-extern string _08_title;
-
-void _08_passDataUsingUniforms(Context* ctx);
-
 class _08_PassDataUsingUniforms : public Example {
 private:
     unsigned int vertexShader;

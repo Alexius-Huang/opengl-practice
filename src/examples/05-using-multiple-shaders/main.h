@@ -3,10 +3,6 @@
 
 #include "../includes.h"
 
-extern string _05_title;
-
-void _05_usingMultipleShaders(Context* ctx);
-
 class _05_UsingMultipleShaders : public Example {
 private:
     unsigned int vertexShader;

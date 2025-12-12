@@ -3,10 +3,6 @@
 
 #include "../includes.h"
 
-extern string _02_title;
-
-void _02_elementBufferObject(Context *ctx);
-
 class _02_ElementBufferObject : public Example {
 private:
     unsigned int vertexShader;
@@ -26,4 +22,4 @@ public:
     void cleanup() override;
 };
 
-#endif // _02_ELEMENT_BUFFER_OBJECT_H
+#endif  // _02_ELEMENT_BUFFER_OBJECT_H

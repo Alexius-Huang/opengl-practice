@@ -3,10 +3,6 @@
 
 #include "../includes.h"
 
-extern string _09_title;
-
-void _09_usingTexture(Context* ctx);
-
 class _09_UsingTexture : public Example {
 private:
     unsigned int vertexShader;

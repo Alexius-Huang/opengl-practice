@@ -3,10 +3,6 @@
 
 #include "../includes.h"
 
-extern string _04_title;
-
-void _04_usingMultipleVAOAndVBO(Context* ctx);
-
 class _04_UsingMultipleVAOAndVBO : public Example {
 private:
     unsigned int vertexShader;

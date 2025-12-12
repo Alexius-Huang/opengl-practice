@@ -3,10 +3,6 @@
 
 #include "../includes.h"
 
-extern string _01_title;
-
-void _01_helloWorld(Context* ctx);
-
 class _01_HelloWorld : public Example {
 private:
     unsigned int vertexShader;
