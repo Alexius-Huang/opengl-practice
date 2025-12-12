@@ -10,12 +10,9 @@ int main() {
     windowSize.width = 1200;
     windowSize.height = 960;
 
-    GLFWwindow* window = initialize(
-        version,
-        windowSize
-    );
+    GLFWwindow* window = initialize(version, windowSize);
 
-    GUI gui { window, exampleTitles };
+    GUI gui{window, exampleTitles};
 
     Context ctx;
     ctx.window = window;
@@ -26,7 +23,14 @@ int main() {
 
     vector<Example*> examples = {
         new _01_HelloWorld(&ctx),
-        new _02_ElementBufferObject(&ctx)
+        new _02_ElementBufferObject(&ctx),
+        new _03_DrawTwoTriangles(&ctx),
+        new _04_UsingMultipleVAOAndVBO(&ctx),
+        new _05_UsingMultipleShaders(&ctx),
+        new _06_PassDataBetweenShaders(&ctx),
+        new _07_PassDataUsingVertexAttributes(&ctx),
+        new _08_PassDataUsingUniforms(&ctx),
+        new _09_UsingTexture(&ctx),
     };
 
     while (!glfwWindowShouldClose(ctx.window)) {

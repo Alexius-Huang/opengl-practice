@@ -4,40 +4,37 @@ string _06_title = "Passing Data Between Shaders";
 
 /**
  *  This example's code is almost the same as 01-hello-world, the important part resides
- *  in the shader, please inspect how shader's data is passed from vertex to fragment shader 
+ *  in the shader, please inspect how shader's data is passed from vertex to fragment shader
  */
 void _06_passDataBetweenShaders(Context* ctx) {
-    unsigned int vertexShader = readShaderFile("./src/examples/06-pass-data-between-shaders/vertex-shader.vert");
-    unsigned int fragmentShader = readShaderFile("./src/examples/06-pass-data-between-shaders/fragment-shader.frag");
+    unsigned int vertexShader =
+        readShaderFile("./src/examples/06-pass-data-between-shaders/vertex-shader.vert");
+    unsigned int fragmentShader =
+        readShaderFile("./src/examples/06-pass-data-between-shaders/fragment-shader.frag");
 
     ShaderProgram shaderProgram;
     shaderProgram.attachShader(vertexShader);
     shaderProgram.attachShader(fragmentShader);
     shaderProgram.link();
 
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f
-    };
+    float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
     unsigned int VBO;
-    glGenBuffers(1, &VBO); 
+    glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    while (!glfwWindowShouldClose(ctx->window))
-    {
+    while (!glfwWindowShouldClose(ctx->window)) {
         closeWindowOnEscPressed(ctx->window);
         togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
         if (switchExampleOnArrowKeyPressed(ctx)) break;
@@ -64,4 +61,65 @@ void _06_passDataBetweenShaders(Context* ctx) {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     shaderProgram.dispose();
+}
+
+void _06_PassDataBetweenShaders::setup() {
+    this->vertexShader =
+        readShaderFile("./src/examples/06-pass-data-between-shaders/vertex-shader.vert");
+    this->fragmentShader =
+        readShaderFile("./src/examples/06-pass-data-between-shaders/fragment-shader.frag");
+
+    this->shaderProgram = new ShaderProgram;
+    this->shaderProgram->attachShader(vertexShader);
+    this->shaderProgram->attachShader(fragmentShader);
+    this->shaderProgram->link();
+
+    float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
+
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+void _06_PassDataBetweenShaders::render() {
+    closeWindowOnEscPressed(ctx->window);
+    togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
+    if (switchExampleOnArrowKeyPressed(ctx)) {
+        this->setShouldExit(true);
+        return;
+    }
+
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    this->shaderProgram->use();
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    int index = ctx->gui->render(ctx->selectedExampleIndex);
+    if (index != ctx->selectedExampleIndex) {
+        ctx->selectedExampleIndex = index;
+        this->setShouldExit(true);
+        return;
+    }
+
+    glfwSwapBuffers(ctx->window);
+    glfwPollEvents();
+}
+
+void _06_PassDataBetweenShaders::cleanup() {
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    this->shaderProgram->dispose();
 }
