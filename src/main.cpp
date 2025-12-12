@@ -12,7 +12,7 @@ int main() {
 
     GLFWwindow* window = initialize(version, windowSize);
 
-    GUI gui{window, exampleTitles};
+    GUI gui{window};
 
     Context ctx;
     ctx.window = window;
@@ -32,6 +32,12 @@ int main() {
         new _08_PassDataUsingUniforms(&ctx),
         new _09_UsingTexture(&ctx),
     };
+
+    vector<string> exampleTitles;
+    for (const auto* example : examples) {
+        exampleTitles.push_back(example->getTitle());
+    }
+    gui.setExampleTitles(exampleTitles);
 
     while (!glfwWindowShouldClose(ctx.window)) {
         if (ctx.selectedExampleIndex < 0 || ctx.selectedExampleIndex >= examples.size()) {

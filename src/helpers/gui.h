@@ -18,7 +18,11 @@ private:
     bool isInitialized = false;
     vector<string> exampleTitles;
 public:
-    GUI(GLFWwindow* window, vector<string>& exampleTitles);
+    GUI(GLFWwindow* window);
+
+    void setExampleTitles(vector<string>& titles) {
+        this->exampleTitles = titles;
+    }
 
     // void init(GLFWwindow* window, vector<string>& exampleTitles);
     unsigned int render(unsigned int selectedIndex);

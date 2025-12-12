@@ -1,6 +1,6 @@
 #include "gui.h"
 
-GUI::GUI(GLFWwindow* window, vector<string>& exampleTitles): exampleTitles(exampleTitles) {
+GUI::GUI(GLFWwindow* window) {
     if (this->isInitialized) throw runtime_error("ERROR::GUI::GUI_ALREADY_INITIALIZED");
 
     IMGUI_CHECKVERSION();
