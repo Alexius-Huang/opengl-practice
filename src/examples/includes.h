@@ -3,10 +3,9 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <sstream>
 
-#include "context.h"
+#include "example.h"
 
 // TODO: move to libs
 #include "../helpers/stb-image.h"

@@ -24,16 +24,25 @@ int main() {
 
     ctx.totalExamplesCount = examples.size();
 
+    vector<Example*> examples = {
+        new _01_HelloWorld(&ctx),
+        new _02_ElementBufferObject(&ctx)
+    };
+
     while (!glfwWindowShouldClose(ctx.window)) {
         if (ctx.selectedExampleIndex < 0 || ctx.selectedExampleIndex >= examples.size()) {
             cout << "Index  " << ctx.selectedExampleIndex << " not existed" << endl;
             break;
         }
-        examples.at(ctx.selectedExampleIndex)(&ctx);
+        examples.at(ctx.selectedExampleIndex)->run();
     }
 
     gui.dispose();
     glfwTerminate();
+
+    for (const auto* example : examples) {
+        delete &example;
+    }
 
     return 0;
 }

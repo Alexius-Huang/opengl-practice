@@ -7,4 +7,24 @@ extern string _01_title;
 
 void _01_helloWorld(Context* ctx);
 
+class _01_HelloWorld : public Example {
+private:
+    unsigned int vertexShader;
+    unsigned int fragmentShader;
+    ShaderProgram* shaderProgram;
+    unsigned int VAO;
+    unsigned int VBO;
+
+public:
+    _01_HelloWorld(Context* ctx): Example("Hello World", ctx) {}
+
+    ~_01_HelloWorld() {
+        delete this->shaderProgram;
+    }
+
+    void setup() override;
+    void render() override;
+    void cleanup() override;
+};
+
 #endif // _01_HELLO_WORLD_H
