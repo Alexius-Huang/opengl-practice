@@ -1,18 +1,5 @@
 #include "main.h"
 
-// View might be resized, we need to generate projection matrix depend on aspect ratio
-void _12_CoordinateSystem::generateTransformationMatrix() {
-    float fov = glm::radians(45.0f);
-    float near = .1f;
-    float far = 100.0f;
-
-    int w, h;
-    glfwGetWindowSize(ctx->window, &w, &h);
-
-    float aspectRatio = (float)w / (float)h;
-    this->projection = glm::perspective(fov, aspectRatio, near, far);
-}
-
 void _12_CoordinateSystem::setup() {
     // Create model matrix to place and rotate our model around x axis
     this->model = glm::mat4(1.0f);
@@ -20,7 +7,9 @@ void _12_CoordinateSystem::setup() {
 
     // Create view matrix to place the modal away from camera
     this->view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    this->x = .0f;
+    this->y = .0f;
+    view = glm::translate(view, glm::vec3(this->x, this->y, -3.0f));
 
     // Create projection matrix for perspective projection
     this->generateTransformationMatrix();
@@ -98,7 +87,6 @@ void _12_CoordinateSystem::setup() {
 }
 
 void _12_CoordinateSystem::render() {
-
     if (closeWindowOnEscPressed(ctx->window)) {
         this->setShouldExit(true);
         glfwSetWindowShouldClose(ctx->window, true);
@@ -110,6 +98,8 @@ void _12_CoordinateSystem::render() {
         return;
     }
 
+    this->translateOnWASDKeyPressed();
+    
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -145,4 +135,40 @@ void _12_CoordinateSystem::cleanup() {
     delete this->shaderProgram;
     delete this->texture1;
     delete this->texture2;
+}
+
+// View might be resized, we need to generate projection matrix depend on aspect ratio
+void _12_CoordinateSystem::generateTransformationMatrix() {
+    float fov = glm::radians(45.0f);
+    float near = .1f;
+    float far = 100.0f;
+
+    int w, h;
+    glfwGetWindowSize(ctx->window, &w, &h);
+
+    float aspectRatio = (float)w / (float)h;
+    this->projection = glm::perspective(fov, aspectRatio, near, far);
+}
+
+void _12_CoordinateSystem::translateOnWASDKeyPressed() {
+    float dt = this->getDelta();
+    if (glfwGetKey(ctx->window, GLFW_KEY_D) == GLFW_PRESS) {
+        this->x += dt;
+    }
+    
+    if (glfwGetKey(ctx->window, GLFW_KEY_A) == GLFW_PRESS) {
+        this->x -= dt;
+    }
+
+    if (glfwGetKey(ctx->window, GLFW_KEY_W) == GLFW_PRESS) {
+        this->y += dt;
+    }
+
+    if (glfwGetKey(ctx->window, GLFW_KEY_S) == GLFW_PRESS) {
+        this->y -= dt;
+    }
+
+    this->view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(this->x, this->y, -3.0f));
+    this->shaderProgram->setUniformMat4("uView", glm::value_ptr(this->view));
 }

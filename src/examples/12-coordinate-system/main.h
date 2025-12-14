@@ -19,6 +19,9 @@ private:
     glm::mat4 view;
     glm::mat4 projection;
 
+    float x = 0.0f;
+    float y = 0.0f;
+
 public:
     _12_CoordinateSystem(Context* ctx) : Example("Coordinate System", ctx) {}
 
@@ -29,6 +32,8 @@ public:
     void cleanup() override;
 
     void generateTransformationMatrix();
+
+    void translateOnWASDKeyPressed();
 };
 
 #endif  // _12_COORDINATE_SYSTEM_H
