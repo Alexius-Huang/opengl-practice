@@ -7,6 +7,11 @@
 #include <string>
 #include <vector>
 
+// GLM - OpenGL Mathematics
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "example.h"
 
 // TODO: move to libs

@@ -23,8 +23,10 @@ public:
     void link();
     void use();
     void dispose();
+
     void setUniformF(const char* uniformName, float uniformValue);
     void setUniformI(const char* uniformName, int uniformValue);
+    void setUniformMat4(const char* uniformName, const float* matrixValue);
 };
 
 #endif // SHADER_PROGRAM_H

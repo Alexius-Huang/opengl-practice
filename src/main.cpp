@@ -30,6 +30,7 @@ int main() {
         new _08_PassDataUsingUniforms(&ctx),
         new _09_UsingTexture(&ctx),
         new _10_UsingMultipleTextures(&ctx),
+        new _11_Transformation(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 

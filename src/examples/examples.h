@@ -11,6 +11,7 @@
 #include "08-pass-data-using-uniforms/main.h"
 #include "09-using-texture/main.h"
 #include "10-using-multiple-textures/main.h"
+#include "11-transformation/main.h"
 #include "context.h"
 
 using namespace std;

@@ -81,3 +81,10 @@ void ShaderProgram::setUniformI(const char* uniformName, int uniformValue) {
     GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
     glUniform1i(uniformLocation, uniformValue);
 }
+
+void ShaderProgram::setUniformMat4(const char* uniformName, const float* matrixValue) {
+    GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
+
+    // Set 1 4x4 matrix, GL_FALSE indicates that the matrix should not transpose
+    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, matrixValue);
+}
