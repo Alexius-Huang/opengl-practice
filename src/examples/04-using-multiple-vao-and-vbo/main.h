@@ -3,8 +3,22 @@
 
 #include "../includes.h"
 
-extern string _04_title;
+class _04_UsingMultipleVAOAndVBO : public Example {
+private:
+    unsigned int vertexShader;
+    unsigned int fragmentShader;
+    ShaderProgram* shaderProgram;
+    unsigned int VAOs[2];
+    unsigned int VBOs[2];
 
-void _04_usingMultipleVAOAndVBO(Context* ctx);
+public:
+    _04_UsingMultipleVAOAndVBO(Context* ctx) : Example("Using Multiple VAOs and VBOs", ctx) {}
 
-#endif // _04_USING_MULTIPLE_VAO_AND_VBO_H
+    ~_04_UsingMultipleVAOAndVBO() { delete this->shaderProgram; }
+
+    void setup() override;
+    void render() override;
+    void cleanup() override;
+};
+
+#endif  // _04_USING_MULTIPLE_VAO_AND_VBO_H

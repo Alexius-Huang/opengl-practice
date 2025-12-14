@@ -1,6 +1,6 @@
 #include "gui.h"
 
-GUI::GUI(GLFWwindow* window, vector<string>& exampleTitles): exampleTitles(exampleTitles) {
+GUI::GUI(GLFWwindow* window) {
     if (this->isInitialized) throw runtime_error("ERROR::GUI::GUI_ALREADY_INITIALIZED");
 
     IMGUI_CHECKVERSION();
@@ -20,7 +20,7 @@ void GUI::dispose() {
     this->isInitialized = false; 
 }
 
-const int MAX_VISIBLE_ITEMS = 4;
+const int MAX_VISIBLE_ITEMS = 8;
 unsigned int GUI::render(unsigned int selectedIndex) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -33,7 +33,7 @@ unsigned int GUI::render(unsigned int selectedIndex) {
     );
     ImGui::SetNextWindowSizeConstraints(
         ImVec2(300, 0),          // min size
-        ImVec2(FLT_MAX, 115)   // max size (height = 300 pixels)
+        ImVec2(FLT_MAX, 200)   // max size (height = 300 pixels)
     );
 
     ImGui::Begin("OpenGL Example");

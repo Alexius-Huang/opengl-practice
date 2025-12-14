@@ -3,8 +3,22 @@
 
 #include "../includes.h"
 
-extern string _06_title;
+class _06_PassDataBetweenShaders : public Example {
+private:
+    unsigned int vertexShader;
+    unsigned int fragmentShader;
+    ShaderProgram* shaderProgram;
+    unsigned int VAO;
+    unsigned int VBO;
 
-void _06_passDataBetweenShaders(Context* ctx);
+public:
+    _06_PassDataBetweenShaders(Context* ctx) : Example("Passing Data Between Shaders", ctx) {}
 
-#endif // _06_PASS_DATA_BETWEEN_SHADERS_H
+    ~_06_PassDataBetweenShaders() { delete this->shaderProgram; }
+
+    void setup() override;
+    void render() override;
+    void cleanup() override;
+};
+
+#endif  // _06_PASS_DATA_BETWEEN_SHADERS_H

@@ -3,8 +3,23 @@
 
 #include "../includes.h"
 
-extern string _02_title;
+class _02_ElementBufferObject : public Example {
+private:
+    unsigned int vertexShader;
+    unsigned int fragmentShader;
+    ShaderProgram *shaderProgram;
+    unsigned int VAO;
+    unsigned int VBO;
+    unsigned int EBO;
 
-void _02_elementBufferObject(Context* ctx);
+public:
+    _02_ElementBufferObject(Context *ctx) : Example("Element Buffer Object", ctx) {}
 
-#endif // _02_ELEMENT_BUFFER_OBJECT_H
+    ~_02_ElementBufferObject() { delete this->shaderProgram; }
+
+    void setup() override;
+    void render() override;
+    void cleanup() override;
+};
+
+#endif  // _02_ELEMENT_BUFFER_OBJECT_H

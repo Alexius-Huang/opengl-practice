@@ -1,81 +1,70 @@
 #include "main.h"
 
-string _03_title = "Draw Two Triangles";
+void _03_DrawTwoTriangles::setup() {
+    this->vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
+    this->fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");
 
-void _03_drawTwoTriangles(Context* ctx) {
-    unsigned int vertexShader = readShaderFile("./src/shaders/01-hello-world.vert");
-    unsigned int fragmentShader = readShaderFile("./src/shaders/01-hello-world.frag");
+    this->shaderProgram = new ShaderProgram;
+    this->shaderProgram->attachShader(vertexShader);
+    this->shaderProgram->attachShader(fragmentShader);
+    this->shaderProgram->link();
 
-    ShaderProgram shaderProgram;
-    shaderProgram.attachShader(vertexShader);
-    shaderProgram.attachShader(fragmentShader);
-    shaderProgram.link();
+    float vertices[] = {/* top-left */
+                        -.5f, .5f, .0f, -.5f, -.5f, .0f, .5f, .5f, .0f,
 
-    float vertices[] = {
-        /* top-left */
-        -.5f, .5f, .0f,
-        -.5f, -.5f, .0f,
-        .5f, .5f, .0f,
+                        /* bottom-right */
+                        .5f, -.5f, .0f, .5f, .25f, .0f, -.25f, -.5f, .0f};
 
-        /* bottom-right */
-        .5f, -.5f, .0f,
-        .5f, .25f, .0f,
-        -.25f, -.5f, .0f
-    };
-
-    unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    unsigned int VBO;
-    glGenBuffers(1, &VBO); 
+    glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+}
 
-    while (!glfwWindowShouldClose(ctx->window))
-    {
-        // input
-        // -----
-        closeWindowOnEscPressed(ctx->window);
-        togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
-        if (switchExampleOnArrowKeyPressed(ctx)) break;
-
-        // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        shaderProgram.use();
-        glBindVertexArray(VAO);
-
-        // We have 6 vertices to draw
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        int index = ctx->gui->render(ctx->selectedExampleIndex);
-        if (index != ctx->selectedExampleIndex) {
-            // Switching to other examples
-            ctx->selectedExampleIndex = index;
-            break;
-        }
-
-        // glfw: swap buffers and poll IO events
-        // -------------------------------------
-        glfwSwapBuffers(ctx->window);
-        glfwPollEvents();
+void _03_DrawTwoTriangles::render() {
+    if (closeWindowOnEscPressed(ctx->window)) {
+        this->setShouldExit(true);
+        glfwSetWindowShouldClose(ctx->window, true);
+        return;
+    };
+    togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_TAB);
+    if (switchExampleOnArrowKeyPressed(ctx)) {
+        this->setShouldExit(true);
+        return;
     }
 
-    // Cleanup
-    // -------
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    this->shaderProgram->use();
+    glBindVertexArray(VAO);
+
+    // We have 6 vertices to draw
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    int index = ctx->gui->render(ctx->selectedExampleIndex);
+    if (index != ctx->selectedExampleIndex) {
+        ctx->selectedExampleIndex = index;
+        this->setShouldExit(true);
+        return;
+    }
+
+    glfwSwapBuffers(ctx->window);
+    glfwPollEvents();
+}
+
+void _03_DrawTwoTriangles::cleanup() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-    shaderProgram.dispose();
+    this->shaderProgram->dispose();
 }
-
