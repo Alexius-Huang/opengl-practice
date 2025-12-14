@@ -30,7 +30,8 @@ int main() {
         new _08_PassDataUsingUniforms(&ctx),
         new _09_UsingTexture(&ctx),
         new _10_UsingMultipleTextures(&ctx),
-        new _11_Transformation(&ctx)
+        new _11_Transformation(&ctx),
+        new _12_CoordinateSystem(&ctx),
     };
     ctx.totalExamplesCount = examples.size();
 
