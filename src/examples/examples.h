@@ -10,6 +10,7 @@
 #include "07-pass-data-using-vertex-attributes/main.h"
 #include "08-pass-data-using-uniforms/main.h"
 #include "09-using-texture/main.h"
+#include "10-using-multiple-textures/main.h"
 #include "context.h"
 
 using namespace std;

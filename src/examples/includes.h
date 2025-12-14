@@ -14,6 +14,7 @@
 #include "../helpers/read-shader-file.h"
 #include "../helpers/shader-program.h"
 #include "../helpers/stb-image.h"
+#include "../helpers/texture-2d.h"
 #include "../helpers/switch-example-on-arrow-key-pressed.h"
 #include "../helpers/toggle-polygon-mode-on-key-pressed.h"
 #include "../initialize.h"

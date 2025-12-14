@@ -1,49 +1,36 @@
 #include "main.h"
 
-void _09_UsingTexture::setup() {
-    // Creating a texture
-    glGenTextures(1, &texture);
+void _10_UsingMultipleTextures::setup() {
+    this->texture1 = new Texture2D(
+        GL_TEXTURE0,
+        "./assets/container.jpg",
+        GL_RGB
+    );
+    this->texture1->load();
 
-    // By default, texture is at texture unit 0, the following line is optional
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    this->texture2 = new Texture2D(
+        GL_TEXTURE1,
+        "./assets/awesome-face.png",
+        GL_RGBA
+    );
+    this->texture2->load();
 
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                    GL_REPEAT);  // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // Load the image for texture
-    int texWidth, texHeight, nrChannels;
-    unsigned char* imgData =
-        stbi_load("./assets/container.jpg", &texWidth, &texHeight, &nrChannels, 0);
-
-    if (imgData) {
-        const GLuint mipmapLevel = 0;
-        glTexImage2D(GL_TEXTURE_2D, mipmapLevel, GL_RGB, texWidth, texHeight,
-                     0,  // legacy stuff which simply we ignore it
-                     GL_RGB, GL_UNSIGNED_BYTE, imgData);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else {
-        throw runtime_error("ERROR::TEXTURE::CANNOT_LOAD_TEXTURE");
-    }
-
-    // clean up the image memory after generation of texture
-    stbi_image_free(imgData);
-
-    this->vertexShader = readShaderFile("./src/examples/09-using-texture/vertex-shader.vert");
-    this->fragmentShader = readShaderFile("./src/examples/09-using-texture/fragment-shader.frag");
+    this->vertexShader = readShaderFile("./src/examples/10-using-multiple-textures/vertex-shader.vert");
+    this->fragmentShader = readShaderFile("./src/examples/10-using-multiple-textures/fragment-shader.frag");
 
     this->shaderProgram = new ShaderProgram;
     this->shaderProgram->attachShader(vertexShader);
     this->shaderProgram->attachShader(fragmentShader);
     this->shaderProgram->link();
 
+    // Setup texture to uniform, but activate shader first!
+    this->shaderProgram->use();
+    this->shaderProgram->setUniformI("uTexture1", 0);
+    this->shaderProgram->setUniformI("uTexture2", 1);
+    this->shaderProgram->setUniformF("uMixPercentage", this->mixPercentage);
+
     float vertices[] = {
-        // positions          // colors           // texture coords
+        // positions        // colors         // texture coords
         0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right
         0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
@@ -82,7 +69,8 @@ void _09_UsingTexture::setup() {
     glBindVertexArray(0);
 }
 
-void _09_UsingTexture::render() {
+void _10_UsingMultipleTextures::render() {
+
     if (closeWindowOnEscPressed(ctx->window)) {
         this->setShouldExit(true);
         glfwSetWindowShouldClose(ctx->window, true);
@@ -94,13 +82,26 @@ void _09_UsingTexture::render() {
         return;
     }
 
+    accumulatedTime += this->getDelta();        
+    if (accumulatedTime >= .1f) {
+        if (glfwGetKey(ctx->window, GLFW_KEY_S) == GLFW_PRESS) {
+            accumulatedTime = .0f;
+            mixPercentage -= .1f;
+            if (mixPercentage <= 0.0f) mixPercentage = 0.0f; 
+            this->shaderProgram->setUniformF("uMixPercentage", mixPercentage);
+        } else if (glfwGetKey(ctx->window, GLFW_KEY_W) == GLFW_PRESS) {
+            accumulatedTime = .0f;
+            mixPercentage += .1f;
+            if (mixPercentage >= 1.0f) mixPercentage = 1.0f;
+            this->shaderProgram->setUniformF("uMixPercentage", mixPercentage);
+        }
+    }
+
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Bind texture first before using shader
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
+    this->texture1->use();
+    this->texture2->use();
     this->shaderProgram->use();
 
     glBindVertexArray(VAO);
@@ -117,14 +118,15 @@ void _09_UsingTexture::render() {
     glfwPollEvents();
 }
 
-void _09_UsingTexture::cleanup() {
+void _10_UsingMultipleTextures::cleanup() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-    glDeleteTextures(1, &texture);
 
     this->shaderProgram->dispose();
     delete this->shaderProgram;
+    delete this->texture1;
+    delete this->texture2;
 }

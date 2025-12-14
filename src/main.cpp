@@ -29,6 +29,7 @@ int main() {
         new _07_PassDataUsingVertexAttributes(&ctx),
         new _08_PassDataUsingUniforms(&ctx),
         new _09_UsingTexture(&ctx),
+        new _10_UsingMultipleTextures(&ctx),
     };
     ctx.totalExamplesCount = examples.size();
 

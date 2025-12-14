@@ -24,6 +24,7 @@ public:
     void use();
     void dispose();
     void setUniformF(const char* uniformName, float uniformValue);
+    void setUniformI(const char* uniformName, int uniformValue);
 };
 
 #endif // SHADER_PROGRAM_H
