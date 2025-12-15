@@ -13,6 +13,7 @@
 #include "10-using-multiple-textures/main.h"
 #include "11-transformation/main.h"
 #include "12-coordinate-system/main.h"
+#include "13-3d-cube/main.h"
 #include "context.h"
 
 using namespace std;

@@ -32,6 +32,7 @@ int main() {
         new _10_UsingMultipleTextures(&ctx),
         new _11_Transformation(&ctx),
         new _12_CoordinateSystem(&ctx),
+        new _13_3DCube(&ctx),
     };
     ctx.totalExamplesCount = examples.size();
 

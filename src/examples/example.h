@@ -45,6 +45,10 @@ public:
             this->render();
             this->time = glfwGetTime();
         }
+
+        // if depth test was enabled, disable it after example run
+        glDisable(GL_DEPTH_TEST);
+
         this->cleanup();
     }
 };
