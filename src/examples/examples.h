@@ -14,6 +14,7 @@
 #include "11-transformation/main.h"
 #include "12-coordinate-system/main.h"
 #include "13-3d-cube/main.h"
+#include "14-multiple-3d-cubes/main.h"
 #include "context.h"
 
 using namespace std;

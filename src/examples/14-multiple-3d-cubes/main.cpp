@@ -1,10 +1,6 @@
 #include "main.h"
 
-void _13_3DCube::setup() {
-    // Create model matrix to place and rotate our model around x axis
-    this->model = glm::mat4(1.0f);
-    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
+void _14_Multiple3DCubes::setup() {
     // Create view matrix to place the modal away from camera
     this->view = glm::mat4(1.0f);
     this->x = .0f;
@@ -28,8 +24,8 @@ void _13_3DCube::setup() {
     );
     this->texture2->load();
 
-    this->vertexShader = readShaderFile("./src/examples/13-3d-cube/vertex-shader.vert");
-    this->fragmentShader = readShaderFile("./src/examples/13-3d-cube/fragment-shader.frag");
+    this->vertexShader = readShaderFile("./src/examples/14-multiple-3d-cubes/vertex-shader.vert");
+    this->fragmentShader = readShaderFile("./src/examples/14-multiple-3d-cubes/fragment-shader.frag");
 
     this->shaderProgram = new ShaderProgram;
     this->shaderProgram->attachShader(vertexShader);
@@ -42,7 +38,6 @@ void _13_3DCube::setup() {
     this->shaderProgram->setUniformI("uTexture2", 1);
 
     // Pass in required matrices to shader
-    this->shaderProgram->setUniformMat4("uModel", glm::value_ptr(this->model));
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(this->view));
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
 
@@ -108,7 +103,7 @@ void _13_3DCube::setup() {
     glEnable(GL_DEPTH_TEST);
 }
 
-void _13_3DCube::render() {
+void _14_Multiple3DCubes::render() {
     if (closeWindowOnEscPressed(ctx->window)) {
         this->setShouldExit(true);
         glfwSetWindowShouldClose(ctx->window, true);
@@ -134,8 +129,17 @@ void _13_3DCube::render() {
     this->generateTransformationMatrix();
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
 
+    // Create model matrix to place cubes and rotate it randomly
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    for (int i = 0; i < 10; i++) {
+        glm::mat4 model = glm::mat4(1.0f);
+        float angle = 20.0f * i;
+        model = glm::translate(model, this->cubePositions[i]);
+        model = glm::rotate(model, glm::radians(angle + (float)glfwGetTime() * 10), glm::vec3(1.0f, 0.3f, 0.5f));
+        this->shaderProgram->setUniformMat4("uModel", glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
 
     int index = ctx->gui->render(ctx->selectedExampleIndex);
     if (index != ctx->selectedExampleIndex) {
@@ -148,7 +152,7 @@ void _13_3DCube::render() {
     glfwPollEvents();
 }
 
-void _13_3DCube::cleanup() {
+void _14_Multiple3DCubes::cleanup() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteShader(vertexShader);
@@ -161,7 +165,7 @@ void _13_3DCube::cleanup() {
 }
 
 // View might be resized, we need to generate projection matrix depend on aspect ratio
-void _13_3DCube::generateTransformationMatrix() {
+void _14_Multiple3DCubes::generateTransformationMatrix() {
     float fov = glm::radians(45.0f);
     float near = .1f;
     float far = 100.0f;
@@ -173,7 +177,7 @@ void _13_3DCube::generateTransformationMatrix() {
     this->projection = glm::perspective(fov, aspectRatio, near, far);
 }
 
-void _13_3DCube::translateOnWASDKeyPressed() {
+void _14_Multiple3DCubes::translateOnWASDKeyPressed() {
     float dt = this->getDelta();
     if (glfwGetKey(ctx->window, GLFW_KEY_D) == GLFW_PRESS) {
         this->x += dt;
