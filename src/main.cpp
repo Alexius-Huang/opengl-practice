@@ -33,7 +33,8 @@ int main() {
         new _11_Transformation(&ctx),
         new _12_CoordinateSystem(&ctx),
         new _13_3DCube(&ctx),
-        new _14_Multiple3DCubes(&ctx)
+        new _14_Multiple3DCubes(&ctx),
+        new _15_CameraLookAtMatrix(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
