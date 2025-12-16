@@ -1,9 +1,9 @@
-#ifndef _15_CAMERA_LOOK_AT_MATRIX_H
-#define _15_CAMERA_LOOK_AT_MATRIX_H
+#ifndef _16_CAMERA_CONTROL_H
+#define _16_CAMERA_CONTROL_H
 
 #include "../includes.h"
 
-class _15_CameraLookAtMatrix : public Example {
+class _16_CameraControl : public Example {
 private:
     unsigned int vertexShader;
     unsigned int fragmentShader;
@@ -30,12 +30,13 @@ private:
         glm::vec3(-1.3f,  1.0f, -1.5f)  
     };
     
-    const glm::vec3 cameraTarget = glm::vec3(.0f);
+    glm::vec3 cameraFront;
+    glm::vec3 cameraPosition;
 
 public:
-    _15_CameraLookAtMatrix(Context* ctx) : Example("Camera Look At Matrix", ctx) {}
+    _16_CameraControl(Context* ctx) : Example("Camera Control", ctx) {}
 
-    ~_15_CameraLookAtMatrix() { delete this->shaderProgram; }
+    ~_16_CameraControl() { delete this->shaderProgram; }
 
     void setup() override;
     void render() override;
@@ -44,4 +45,4 @@ public:
     void generateTransformationMatrix();
 };
 
-#endif  // _15_CAMERA_LOOK_AT_MATRIX_H
+#endif  // _16_CAMERA_CONTROL_H

@@ -34,7 +34,8 @@ int main() {
         new _12_CoordinateSystem(&ctx),
         new _13_3DCube(&ctx),
         new _14_Multiple3DCubes(&ctx),
-        new _15_CameraLookAtMatrix(&ctx)
+        new _15_CameraLookAtMatrix(&ctx),
+        new _16_CameraControl(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 

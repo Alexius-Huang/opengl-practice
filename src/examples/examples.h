@@ -16,6 +16,7 @@
 #include "13-3d-cube/main.h"
 #include "14-multiple-3d-cubes/main.h"
 #include "15-camera-look-at-matrix/main.h"
+#include "16-camera-control/main.h"
 #include "context.h"
 
 using namespace std;
