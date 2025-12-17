@@ -70,7 +70,6 @@ void _13_3DCube::render() {
 
     this->texture1->use();
     this->texture2->use();
-    this->shaderProgram->use();
 
     this->generateTransformationMatrix();
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));

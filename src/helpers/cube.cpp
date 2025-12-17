@@ -39,6 +39,7 @@ void Cube::render(ShaderProgram* program, const char* modelUniformName) {
     glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
     glBindVertexArray(this->VAO);
 
+    program->use();
     program->setUniformMat4(modelUniformName, glm::value_ptr(this->deriveModelMatrix()));
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
