@@ -88,14 +88,12 @@ void _15_CameraLookAtMatrix::render() {
     );
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
 
-    // Create model matrix to place cubes and rotate it randomly
+    // Renders cube which internally creates model matrix
     for (int i = 0; i < 10; i++) {
-        glm::mat4 model = glm::mat4(1.0f);
         float angle = 20.0f * i;
-        model = glm::translate(model, this->cubePositions[i]);
-        model = glm::rotate(model, glm::radians(angle + (float)glfwGetTime() * 10), glm::vec3(1.0f, 0.3f, 0.5f));
-        this->shaderProgram->setUniformMat4("uModel", glm::value_ptr(model));
-        this->cube->render();
+        this->cube->setPosition(this->cubePositions[i])
+            ->setRotation(angle + (float)glfwGetTime() * 10, glm::vec3(1.0f, 0.3f, 0.5f))
+            ->render(this->shaderProgram);
     }
 
     int index = ctx->gui->render(ctx->selectedExampleIndex);

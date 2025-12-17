@@ -3,10 +3,7 @@
 void _13_3DCube::setup() {
     // Initialize Cube
     this->cube = new Cube;
-
-    // Create model matrix to place and rotate our model around x axis
-    this->model = glm::mat4(1.0f);
-    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    this->cube->setRotation(-55.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 
     // Create view matrix to place the modal away from camera
     this->view = glm::mat4(1.0f);
@@ -45,7 +42,6 @@ void _13_3DCube::setup() {
     this->shaderProgram->setUniformI("uTexture2", 1);
 
     // Pass in required matrices to shader
-    this->shaderProgram->setUniformMat4("uModel", glm::value_ptr(this->model));
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(this->view));
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
 
@@ -80,7 +76,9 @@ void _13_3DCube::render() {
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
 
     // Render the cube which already binds VAO / VBO
-    this->cube->render();
+    // On the other hand, it internally creates model matrix and
+    // pass it to the shader's `uModel` uniform
+    this->cube->render(this->shaderProgram);
 
     int index = ctx->gui->render(ctx->selectedExampleIndex);
     if (index != ctx->selectedExampleIndex) {

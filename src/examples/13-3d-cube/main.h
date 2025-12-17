@@ -12,7 +12,7 @@ private:
     Texture2D* texture2;
 
     // Transformation matrices
-    glm::mat4 model;
+    // glm::mat4 model; model is controlled by Cube class!
     glm::mat4 view;
     glm::mat4 projection;
 
