@@ -22,11 +22,12 @@ private:
     Cube* cube;
 
 public:
-    _13_3DCube(Context* ctx) : Example("3D Cube", ctx) {
-        this->cube = new Cube;
-    }
+    _13_3DCube(Context* ctx) : Example("3D Cube", ctx) {}
 
-    ~_13_3DCube() { delete this->shaderProgram; }
+    ~_13_3DCube() {
+        delete this->shaderProgram;
+        delete this->cube;
+    }
 
     void setup() override;
     void render() override;

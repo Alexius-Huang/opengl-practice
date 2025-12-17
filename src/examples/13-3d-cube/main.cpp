@@ -1,6 +1,9 @@
 #include "main.h"
 
 void _13_3DCube::setup() {
+    // Initialize Cube
+    this->cube = new Cube;
+
     // Create model matrix to place and rotate our model around x axis
     this->model = glm::mat4(1.0f);
     model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -98,6 +101,7 @@ void _13_3DCube::cleanup() {
     delete this->shaderProgram;
     delete this->texture1;
     delete this->texture2;
+    delete this->cube;
 }
 
 // View might be resized, we need to generate projection matrix depend on aspect ratio

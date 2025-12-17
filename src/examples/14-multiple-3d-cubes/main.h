@@ -34,9 +34,7 @@ private:
     Cube* cube;
 
 public:
-    _14_Multiple3DCubes(Context* ctx) : Example("Multiple 3D Cubes", ctx) {
-        this->cube = new Cube;
-    }
+    _14_Multiple3DCubes(Context* ctx) : Example("Multiple 3D Cubes", ctx) {}
 
     ~_14_Multiple3DCubes() {
         delete this->shaderProgram;

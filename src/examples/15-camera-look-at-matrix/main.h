@@ -33,9 +33,7 @@ private:
     Cube* cube;
 
 public:
-    _15_CameraLookAtMatrix(Context* ctx) : Example("Camera Look At Matrix", ctx) {
-        this->cube = new Cube;
-    }
+    _15_CameraLookAtMatrix(Context* ctx) : Example("Camera Look At Matrix", ctx) {}
 
     ~_15_CameraLookAtMatrix() {
         delete this->shaderProgram;

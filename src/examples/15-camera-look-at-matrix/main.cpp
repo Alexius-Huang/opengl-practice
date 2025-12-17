@@ -1,6 +1,8 @@
 #include "main.h"
 
 void _15_CameraLookAtMatrix::setup() {
+    this->cube = new Cube;
+
     // Create projection matrix for perspective projection
     this->generateTransformationMatrix();
 
@@ -115,6 +117,7 @@ void _15_CameraLookAtMatrix::cleanup() {
     delete this->shaderProgram;
     delete this->texture1;
     delete this->texture2;
+    delete this->cube;
 }
 
 // View might be resized, we need to generate projection matrix depend on aspect ratio

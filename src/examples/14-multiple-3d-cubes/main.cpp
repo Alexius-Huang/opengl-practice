@@ -1,6 +1,8 @@
 #include "main.h"
 
 void _14_Multiple3DCubes::setup() {
+    this->cube = new Cube;
+
     // Create view matrix to place the modal away from camera
     this->view = glm::mat4(1.0f);
     this->x = .0f;
@@ -101,6 +103,7 @@ void _14_Multiple3DCubes::cleanup() {
     delete this->shaderProgram;
     delete this->texture1;
     delete this->texture2;
+    delete this->cube;
 }
 
 // View might be resized, we need to generate projection matrix depend on aspect ratio

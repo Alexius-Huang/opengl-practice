@@ -34,9 +34,7 @@ private:
     Cube* cube;
 
 public:
-    _16_CameraControl(Context* ctx) : Example("Camera Control", ctx) {
-        this->cube = new Cube;
-    }
+    _16_CameraControl(Context* ctx) : Example("Camera Control", ctx) {}
 
     ~_16_CameraControl() {
         delete this->shaderProgram;

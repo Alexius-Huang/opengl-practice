@@ -3,6 +3,8 @@
 using namespace std;
 
 void _16_CameraControl::setup() {
+    this->cube = new Cube;
+
     // Camera front is by default set to direction point to origin
     this->cameraFront = glm::normalize(glm::vec3(.0f, .0f, -.1f));
     this->cameraPosition = glm::vec3(.0f, .0f, 3.0f);
@@ -136,6 +138,7 @@ void _16_CameraControl::cleanup() {
     delete this->shaderProgram;
     delete this->texture1;
     delete this->texture2;
+    delete this->cube;
 }
 
 // View might be resized, we need to generate projection matrix depend on aspect ratio
