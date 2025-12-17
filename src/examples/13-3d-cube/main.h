@@ -8,8 +8,6 @@ private:
     unsigned int vertexShader;
     unsigned int fragmentShader;
     ShaderProgram* shaderProgram;
-    unsigned int VAO;
-    unsigned int VBO;
     Texture2D* texture1;
     Texture2D* texture2;
 
@@ -21,8 +19,12 @@ private:
     float x = 0.0f;
     float y = 0.0f;
 
+    Cube* cube;
+
 public:
-    _13_3DCube(Context* ctx) : Example("3D Cube", ctx) {}
+    _13_3DCube(Context* ctx) : Example("3D Cube", ctx) {
+        this->cube = new Cube;
+    }
 
     ~_13_3DCube() { delete this->shaderProgram; }
 

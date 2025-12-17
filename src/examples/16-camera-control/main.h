@@ -8,8 +8,6 @@ private:
     unsigned int vertexShader;
     unsigned int fragmentShader;
     ShaderProgram* shaderProgram;
-    unsigned int VAO;
-    unsigned int VBO;
     Texture2D* texture1;
     Texture2D* texture2;
 
@@ -33,10 +31,17 @@ private:
     glm::vec3 cameraFront;
     glm::vec3 cameraPosition;
 
-public:
-    _16_CameraControl(Context* ctx) : Example("Camera Control", ctx) {}
+    Cube* cube;
 
-    ~_16_CameraControl() { delete this->shaderProgram; }
+public:
+    _16_CameraControl(Context* ctx) : Example("Camera Control", ctx) {
+        this->cube = new Cube;
+    }
+
+    ~_16_CameraControl() {
+        delete this->shaderProgram;
+        delete this->cube;
+    }
 
     void setup() override;
     void render() override;

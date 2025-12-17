@@ -8,8 +8,6 @@ private:
     unsigned int vertexShader;
     unsigned int fragmentShader;
     ShaderProgram* shaderProgram;
-    unsigned int VAO;
-    unsigned int VBO;
     Texture2D* texture1;
     Texture2D* texture2;
 
@@ -32,10 +30,17 @@ private:
     
     const glm::vec3 cameraTarget = glm::vec3(.0f);
 
-public:
-    _15_CameraLookAtMatrix(Context* ctx) : Example("Camera Look At Matrix", ctx) {}
+    Cube* cube;
 
-    ~_15_CameraLookAtMatrix() { delete this->shaderProgram; }
+public:
+    _15_CameraLookAtMatrix(Context* ctx) : Example("Camera Look At Matrix", ctx) {
+        this->cube = new Cube;
+    }
+
+    ~_15_CameraLookAtMatrix() {
+        delete this->shaderProgram;
+        delete this->cube;
+    }
 
     void setup() override;
     void render() override;

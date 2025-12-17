@@ -8,8 +8,6 @@ private:
     unsigned int vertexShader;
     unsigned int fragmentShader;
     ShaderProgram* shaderProgram;
-    unsigned int VAO;
-    unsigned int VBO;
     Texture2D* texture1;
     Texture2D* texture2;
 
@@ -33,10 +31,17 @@ private:
         glm::vec3(-1.3f,  1.0f, -1.5f)  
     };
 
-public:
-    _14_Multiple3DCubes(Context* ctx) : Example("Multiple 3D Cubes", ctx) {}
+    Cube* cube;
 
-    ~_14_Multiple3DCubes() { delete this->shaderProgram; }
+public:
+    _14_Multiple3DCubes(Context* ctx) : Example("Multiple 3D Cubes", ctx) {
+        this->cube = new Cube;
+    }
+
+    ~_14_Multiple3DCubes() {
+        delete this->shaderProgram;
+        delete this->cube;
+    }
 
     void setup() override;
     void render() override;
