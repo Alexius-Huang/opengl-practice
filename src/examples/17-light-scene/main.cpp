@@ -18,6 +18,10 @@ namespace _17_ScrollEvent {
     float fov = 45.0f;
 }
 
+namespace _17_Config {
+    float ambiant = .5f;
+}
+
 void _17_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
     if (_17_MouseEvent::isFirstEvent) {
         _17_MouseEvent::lastX = xPos;
@@ -166,8 +170,21 @@ void _17_LightScene::render() {
         ->setPosition(this->lightPosition)
         ->setScale(this->lightScale)
         ->render(this->lightShaderProgram);
+    
+    int index = ctx->gui->render(ctx->selectedExampleIndex, []() {
+        ImGui::SetNextWindowPos(
+            ImVec2(10.0f, 200.0f),
+            ImGuiCond_Always
+        );
+        ImGui::SetNextWindowSizeConstraints(
+            ImVec2(300, 0),        // min size
+            ImVec2(FLT_MAX, 200)   // max size (height = 300 pixels)
+        );
 
-    int index = ctx->gui->render(ctx->selectedExampleIndex);
+        ImGui::Begin("Phong Light Configuration");
+        ImGui::SliderFloat("Ambiant", &(_17_Config::ambiant), 0.0f, 1.0f);
+        ImGui::End();
+    });
     if (index != ctx->selectedExampleIndex) {
         ctx->selectedExampleIndex = index;
         this->setShouldExit(true);

@@ -22,6 +22,10 @@ void GUI::dispose() {
 
 const int MAX_VISIBLE_ITEMS = 8;
 unsigned int GUI::render(unsigned int selectedIndex) {
+    return this->render(selectedIndex, []() {});
+}
+
+unsigned int GUI::render(unsigned int selectedIndex, GuiCallback callback) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
 
@@ -56,6 +60,8 @@ unsigned int GUI::render(unsigned int selectedIndex) {
     );
 
     ImGui::End();
+
+    callback();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

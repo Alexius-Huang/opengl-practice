@@ -10,8 +10,11 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <functional>
 
 using namespace std;
+
+typedef function<void()> GuiCallback;
 
 class GUI {
 private:
@@ -26,6 +29,7 @@ public:
 
     // void init(GLFWwindow* window, vector<string>& exampleTitles);
     unsigned int render(unsigned int selectedIndex);
+    unsigned int render(unsigned int selectedIndex, GuiCallback callback);
     void dispose();
 };
 
