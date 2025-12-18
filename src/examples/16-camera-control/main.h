@@ -28,10 +28,28 @@ private:
         glm::vec3(-1.3f,  1.0f, -1.5f)  
     };
     
-    glm::vec3 cameraFront;
-    glm::vec3 cameraPosition;
+    bool isPressingTab = false;
+
+    // Camera direction depends on:
+    // - pitch: rotation around x-axis (camera top-bottom direction)
+    // - yaw: rotation around y-axis (camera left-right direction)
+    // - roll: rotation around z-axis (direction of the camera), we do not implement this in example
+    float pitch = 0;
+    float yaw = -90;
+
+    glm::vec3 cameraPosition = glm::vec3(.0f, .0f, 3.0f);
 
     Cube* cube;
+
+    glm::vec3 deriveCameraFrontVector() {
+        glm::vec3 direction = glm::vec3(
+            cos(glm::radians(yaw)) * cos(glm::radians(pitch)),
+            sin(glm::radians(pitch)),
+            sin(glm::radians(yaw)) * cos(glm::radians(pitch))
+        );
+
+        return glm::normalize(direction);
+    }
 
 public:
     _16_CameraControl(Context* ctx) : Example("Camera Control", ctx) {}
