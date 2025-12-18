@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-namespace _16_MouseEvent {
+namespace _17_MouseEvent {
     float lastX = .0f;
     float lastY = .0f;
 
@@ -13,44 +13,41 @@ namespace _16_MouseEvent {
     bool isFirstEvent = false;
 }
 
-namespace _16_ScrollEvent {
+namespace _17_ScrollEvent {
     // Camera's field of view, useful for implementing zoom feature
     float fov = 45.0f;
 }
 
-void _16_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
-    if (_16_MouseEvent::isFirstEvent) {
-        _16_MouseEvent::lastX = xPos;
-        _16_MouseEvent::lastY = yPos;
-        _16_MouseEvent::isFirstEvent = false;
+void _17_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
+    if (_17_MouseEvent::isFirstEvent) {
+        _17_MouseEvent::lastX = xPos;
+        _17_MouseEvent::lastY = yPos;
+        _17_MouseEvent::isFirstEvent = false;
         return;
     }
 
     // Offset Y is reversed as y-coord range from bottom to top
-    float offsetX = xPos - _16_MouseEvent::lastX;
-    float offsetY = (yPos - _16_MouseEvent::lastY) * -1;
+    float offsetX = xPos - _17_MouseEvent::lastX;
+    float offsetY = (yPos - _17_MouseEvent::lastY) * -1;
 
     const float sensitivity = .1f;
-    _16_MouseEvent::offsetX = offsetX * sensitivity;
-    _16_MouseEvent::offsetY = offsetY * sensitivity;
-
-    cout << "offset x: " << _16_MouseEvent::offsetX << " offset y: " << _16_MouseEvent::offsetY << endl;
-
-    _16_MouseEvent::lastX = xPos;
-    _16_MouseEvent::lastY = yPos;
+    _17_MouseEvent::offsetX = offsetX * sensitivity;
+    _17_MouseEvent::offsetY = offsetY * sensitivity;
+    _17_MouseEvent::lastX = xPos;
+    _17_MouseEvent::lastY = yPos;
 };
 
-void _16_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _16_ScrollEvent::fov -= (float)yOffset;
+void _17_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
+    _17_ScrollEvent::fov -= (float)yOffset;
 
-    if (_16_ScrollEvent::fov < 1.0f) {
-        _16_ScrollEvent::fov = 1.0f;
-    } else if (_16_ScrollEvent::fov > 45.0f) {
-        _16_ScrollEvent::fov = 45.0f;
+    if (_17_ScrollEvent::fov < 1.0f) {
+        _17_ScrollEvent::fov = 1.0f;
+    } else if (_17_ScrollEvent::fov > 45.0f) {
+        _17_ScrollEvent::fov = 45.0f;
     }
 }
 
-void _16_CameraControl::setup() {
+void _17_LightScene::setup() {
     this->cube = new Cube;
 
     // Create projection matrix for perspective projection
@@ -90,7 +87,7 @@ void _16_CameraControl::setup() {
     glEnable(GL_DEPTH_TEST);
 }
 
-void _16_CameraControl::render() {
+void _17_LightScene::render() {
     if (closeWindowOnEscPressed(ctx->window)) {
         this->setShouldExit(true);
         glfwSetWindowShouldClose(ctx->window, true);
@@ -101,25 +98,25 @@ void _16_CameraControl::render() {
         // Prevent from long press and capture single first Tab press
         if (!this->isPressingTab) {
             this->isPressingTab = true;
-            _16_MouseEvent::isCapturingEvent = !_16_MouseEvent::isCapturingEvent;
+            _17_MouseEvent::isCapturingEvent = !_17_MouseEvent::isCapturingEvent;
             glfwSetInputMode(
                 this->ctx->window,
                 GLFW_CURSOR,
-                _16_MouseEvent::isCapturingEvent ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL
+                _17_MouseEvent::isCapturingEvent ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL
             );
 
             glfwSetCursorPosCallback(
                 this->ctx->window,
-                _16_MouseEvent::isCapturingEvent ? _16_onMouseMove : nullptr
+                _17_MouseEvent::isCapturingEvent ? _17_onMouseMove : nullptr
             );
 
             glfwSetScrollCallback(
                 this->ctx->window,
-                _16_MouseEvent::isCapturingEvent ? _16_onScroll : nullptr
+                _17_MouseEvent::isCapturingEvent ? _17_onScroll : nullptr
             );
 
-            if (_16_MouseEvent::isCapturingEvent) {
-                _16_MouseEvent::isFirstEvent = true;
+            if (_17_MouseEvent::isCapturingEvent) {
+                _17_MouseEvent::isFirstEvent = true;
             }
         }
     } else {
@@ -154,12 +151,12 @@ void _16_CameraControl::render() {
     float cameraSpeed = 2.5f;
 
     // When mouse is moving change yaw and pitch
-    this->yaw += _16_MouseEvent::offsetX;
-    this->pitch += _16_MouseEvent::offsetY;
+    this->yaw += _17_MouseEvent::offsetX;
+    this->pitch += _17_MouseEvent::offsetY;
 
     // reset to prevent from using the current offset to move the pitch / yaw in next frame
-    _16_MouseEvent::offsetX = .0f;
-    _16_MouseEvent::offsetY = .0f;
+    _17_MouseEvent::offsetX = .0f;
+    _17_MouseEvent::offsetY = .0f;
 
     // Constraint pitch to not be able to pitch backward
     if (this->pitch > 89.0f) {
@@ -215,7 +212,7 @@ void _16_CameraControl::render() {
     glfwPollEvents();
 }
 
-void _16_CameraControl::cleanup() {
+void _17_LightScene::cleanup() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
@@ -227,8 +224,8 @@ void _16_CameraControl::cleanup() {
 }
 
 // View might be resized, we need to generate projection matrix depend on aspect ratio
-void _16_CameraControl::generateTransformationMatrix() {
-    float fov = glm::radians(_16_ScrollEvent::fov);
+void _17_LightScene::generateTransformationMatrix() {
+    float fov = glm::radians(_17_ScrollEvent::fov);
     float near = .1f;
     float far = 100.0f;
 
