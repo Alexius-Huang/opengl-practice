@@ -53,22 +53,8 @@ void _17_LightScene::setup() {
     // Create projection matrix for perspective projection
     this->generateTransformationMatrix();
 
-    this->texture1 = new Texture2D(
-        GL_TEXTURE0,
-        "./assets/container.jpg",
-        GL_RGB
-    );
-    this->texture1->load();
-
-    this->texture2 = new Texture2D(
-        GL_TEXTURE1,
-        "./assets/awesome-face.png",
-        GL_RGBA
-    );
-    this->texture2->load();
-
-    this->vertexShader = readShaderFile("./src/examples/16-camera-control/vertex-shader.vert");
-    this->fragmentShader = readShaderFile("./src/examples/16-camera-control/fragment-shader.frag");
+    this->vertexShader = readShaderFile("./src/examples/17-light-scene/vertex-shader.vert");
+    this->fragmentShader = readShaderFile("./src/examples/17-light-scene/fragment-shader.frag");
 
     this->shaderProgram = new ShaderProgram;
     this->shaderProgram->attachShader(vertexShader);
@@ -77,8 +63,6 @@ void _17_LightScene::setup() {
 
     // Setup texture to uniform, but activate shader first!
     this->shaderProgram->use();
-    this->shaderProgram->setUniformI("uTexture1", 0);
-    this->shaderProgram->setUniformI("uTexture2", 1);
 
     // Pass in required matrices to shader
     // this->shaderProgram->setUniformMat4("uView", glm::value_ptr(this->view));
@@ -128,13 +112,8 @@ void _17_LightScene::render() {
         return;
     }
     
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
-    // When depth bugger is enabled, we need to clear depth buffer bit as well
+    glClearColor(.0f, .0f, .0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    this->texture1->use();
-    this->texture2->use();
 
     this->generateTransformationMatrix();
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
@@ -218,8 +197,6 @@ void _17_LightScene::cleanup() {
 
     this->shaderProgram->dispose();
     delete this->shaderProgram;
-    delete this->texture1;
-    delete this->texture2;
     delete this->cube;
 }
 

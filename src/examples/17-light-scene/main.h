@@ -27,6 +27,8 @@ private:
         glm::vec3( 1.5f,  0.2f, -1.5f), 
         glm::vec3(-1.3f,  1.0f, -1.5f)  
     };
+
+    glm::vec3 objectColor = glm::vec3(1.0f, 0.5f, 0.31f);
     
     bool isPressingTab = false;
 
