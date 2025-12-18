@@ -27,14 +27,9 @@ private:
 
     bool isPressingTab = false;
 
-    // Camera direction depends on:
-    // - pitch: rotation around x-axis (camera top-bottom direction)
-    // - yaw: rotation around y-axis (camera left-right direction)
-    // - roll: rotation around z-axis (direction of the camera), we do not implement this in example
-    float pitch = 0;
-    float yaw = -90;
-
-    glm::vec3 cameraPosition = glm::vec3(.0f, .0f, 3.0f);
+    float pitch = -30;
+    float yaw = -110;
+    glm::vec3 cameraPosition = glm::vec3(1.5f, 3.0f, 5.0f);
 
     Cube* cube;
 
