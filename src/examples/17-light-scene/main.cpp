@@ -19,7 +19,7 @@ namespace _17_ScrollEvent {
 }
 
 namespace _17_Config {
-    float ambiant = .5f;
+    float ambient = .5f;
 }
 
 void _17_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
@@ -77,6 +77,7 @@ void _17_LightScene::setup() {
     this->shaderProgram->use();
     this->shaderProgram->setUniformVec3("uObjectColor", glm::value_ptr(this->objectColor));
     this->shaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
+    this->shaderProgram->setUniformF("uAmbientStrength", _17_Config::ambient);
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
 
@@ -156,6 +157,7 @@ void _17_LightScene::render() {
     this->shaderProgram->use();
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
+    this->shaderProgram->setUniformF("uAmbientStrength", _17_Config::ambient);
     this->cube
         ->setPosition(this->objectPosition)
         ->setScale(this->objectScale)
@@ -182,7 +184,7 @@ void _17_LightScene::render() {
         );
 
         ImGui::Begin("Phong Light Configuration");
-        ImGui::SliderFloat("Ambiant", &(_17_Config::ambiant), 0.0f, 1.0f);
+        ImGui::SliderFloat("Ambient", &(_17_Config::ambient), 0.0f, 1.0f);
         ImGui::End();
     });
     if (index != ctx->selectedExampleIndex) {
