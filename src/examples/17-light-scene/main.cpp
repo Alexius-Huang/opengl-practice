@@ -19,7 +19,9 @@ namespace _17_ScrollEvent {
 }
 
 namespace _17_Config {
-    float ambient = .5f;
+    float ambient = .2f;
+    float specularStength = .5f;
+    int specularPower = 32;
 }
 
 void _17_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
@@ -55,9 +57,9 @@ void _17_LightScene::setup() {
     this->cube = new Cube;
     this->camera = new PerspectiveCamera(
         this->ctx->window,
-        glm::vec3(1.5f, 3.0f, 5.0f),
-        -30.0f,
-        -110.0f,
+        glm::vec3(-1.7f, -1.25f, 2.5f),
+        25.9f,
+        -35.0f,
         _17_ScrollEvent::fov,
         .1,
         1000
@@ -78,7 +80,10 @@ void _17_LightScene::setup() {
     this->shaderProgram->setUniformVec3("uObjectColor", glm::value_ptr(this->objectColor));
     this->shaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
     this->shaderProgram->setUniformVec3("uLightPosition", glm::value_ptr(this->lightPosition));
+    this->shaderProgram->setUniformVec3("uViewPosition", glm::value_ptr(this->camera->position));
     this->shaderProgram->setUniformF("uAmbientStrength", _17_Config::ambient);
+    this->shaderProgram->setUniformF("uSpecularStrength", _17_Config::specularStength);
+    this->shaderProgram->setUniformI("uSpecularPower", _17_Config::specularPower);
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
 
@@ -103,7 +108,7 @@ void _17_LightScene::render() {
         return;
     };
 
-    if (glfwGetKey(this->ctx->window, GLFW_KEY_TAB) == GLFW_PRESS) {
+    if (glfwGetKey(this->ctx->window, GLFW_KEY_1) == GLFW_PRESS) {
         // Prevent from long press and capture single first Tab press
         if (!this->isPressingTab) {
             this->isPressingTab = true;
@@ -159,6 +164,9 @@ void _17_LightScene::render() {
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
     this->shaderProgram->setUniformF("uAmbientStrength", _17_Config::ambient);
+    this->shaderProgram->setUniformF("uSpecularStrength", _17_Config::specularStength);
+    this->shaderProgram->setUniformI("uSpecularPower", _17_Config::specularPower);
+    this->shaderProgram->setUniformVec3("uViewPosition", glm::value_ptr(this->camera->position));
     this->cube
         ->setPosition(this->objectPosition)
         ->setScale(this->objectScale)
@@ -173,7 +181,7 @@ void _17_LightScene::render() {
         ->setPosition(this->lightPosition)
         ->setScale(this->lightScale)
         ->render(this->lightShaderProgram);
-    
+
     int index = ctx->gui->render(ctx->selectedExampleIndex, []() {
         ImGui::SetNextWindowPos(
             ImVec2(10.0f, 200.0f),
@@ -181,11 +189,14 @@ void _17_LightScene::render() {
         );
         ImGui::SetNextWindowSizeConstraints(
             ImVec2(300, 0),        // min size
-            ImVec2(FLT_MAX, 200)   // max size (height = 300 pixels)
+            ImVec2(300, 300)   // max size (height = 300 pixels)
         );
 
         ImGui::Begin("Phong Light Configuration");
         ImGui::SliderFloat("Ambient", &(_17_Config::ambient), 0.0f, 1.0f);
+        ImGui::SliderFloat("Specular Strength", &(_17_Config::specularStength), 0.0f, 1.0f);
+        ImGui::SliderInt("Specular Power", &(_17_Config::specularPower), 1, 128);
+
         ImGui::End();
     });
     if (index != ctx->selectedExampleIndex) {
