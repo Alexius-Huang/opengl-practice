@@ -77,6 +77,7 @@ void _17_LightScene::setup() {
     this->shaderProgram->use();
     this->shaderProgram->setUniformVec3("uObjectColor", glm::value_ptr(this->objectColor));
     this->shaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
+    this->shaderProgram->setUniformVec3("uLightPosition", glm::value_ptr(this->lightPosition));
     this->shaderProgram->setUniformF("uAmbientStrength", _17_Config::ambient);
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
