@@ -13,9 +13,7 @@ private:
     Texture2D* texture1;
     Texture2D* texture2;
 
-    // Transformation matrices
-    glm::mat4 view;
-    glm::mat4 projection;
+    PerspectiveCamera* camera;
 
     glm::vec3 objectColor = glm::vec3(1.0f, 0.5f, 0.31f);
     glm::vec3 objectPosition = glm::vec3(.0f);
@@ -27,21 +25,7 @@ private:
 
     bool isPressingTab = false;
 
-    float pitch = -30;
-    float yaw = -110;
-    glm::vec3 cameraPosition = glm::vec3(1.5f, 3.0f, 5.0f);
-
     Cube* cube;
-
-    glm::vec3 deriveCameraFrontVector() {
-        glm::vec3 direction = glm::vec3(
-            cos(glm::radians(yaw)) * cos(glm::radians(pitch)),
-            sin(glm::radians(pitch)),
-            sin(glm::radians(yaw)) * cos(glm::radians(pitch))
-        );
-
-        return glm::normalize(direction);
-    }
 
 public:
     _17_LightScene(Context* ctx) : Example("Light Scene", ctx) {}
@@ -54,8 +38,6 @@ public:
     void setup() override;
     void render() override;
     void cleanup() override;
-
-    void generateTransformationMatrix();
 };
 
 #endif  // _17_LIGHT_SCENE_H

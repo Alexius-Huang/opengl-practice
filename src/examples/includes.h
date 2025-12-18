@@ -19,6 +19,7 @@
 #include "../helpers/read-shader-file.h"
 #include "../helpers/shader-program.h"
 #include "../helpers/cube.h"
+#include "../helpers/perspective-camera.h"
 #include "../helpers/stb-image.h"
 #include "../helpers/texture-2d.h"
 #include "../helpers/switch-example-on-arrow-key-pressed.h"

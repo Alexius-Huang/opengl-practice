@@ -49,9 +49,18 @@ void _17_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
 
 void _17_LightScene::setup() {
     this->cube = new Cube;
+    this->camera = new PerspectiveCamera(
+        this->ctx->window,
+        glm::vec3(1.5f, 3.0f, 5.0f),
+        -30.0f,
+        -110.0f,
+        _17_ScrollEvent::fov,
+        .1,
+        1000
+    );
 
-    // Create projection matrix for perspective projection
-    this->generateTransformationMatrix();
+    glm::mat4 view = this->camera->deriveViewMetrix();
+    glm::mat4 projection = this->camera->deriveProjectionMatrix();
 
     this->vertexShader = readShaderFile("./src/examples/17-light-scene/vertex-shader.vert");
     this->fragmentShader = readShaderFile("./src/examples/17-light-scene/fragment-shader.frag");
@@ -62,17 +71,19 @@ void _17_LightScene::setup() {
     this->shaderProgram->attachShader(fragmentShader);
     this->shaderProgram->link();
     this->shaderProgram->use();
-    this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
     this->shaderProgram->setUniformVec3("uObjectColor", glm::value_ptr(this->objectColor));
     this->shaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
+    this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
+    this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
 
     this->lightShaderProgram = new ShaderProgram;
     this->lightShaderProgram->attachShader(vertexShader);
     this->lightShaderProgram->attachShader(lightFragmentShader);
     this->lightShaderProgram->link();
     this->lightShaderProgram->use();
-    this->lightShaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
     this->lightShaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
+    this->lightShaderProgram->setUniformMat4("uView", glm::value_ptr(view));
+    this->lightShaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
 
     glUseProgram(0);
 
@@ -123,63 +134,23 @@ void _17_LightScene::render() {
     glClearColor(.0f, .0f, .0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Create look at matrix which applies the transformation to the view matrix
-    float radius { 10.0f };
-    glm::vec3 cameraPosition = glm::vec3(
-        sin(glfwGetTime()) * radius,
-        0,
-        cos(glfwGetTime()) * radius
-    );
-
-    // Check input and move camera
-    float cameraSpeed = 2.5f;
-
     // When mouse is moving change yaw and pitch
-    this->yaw += _17_MouseEvent::offsetX;
-    this->pitch += _17_MouseEvent::offsetY;
+    float newPitch = this->camera->getPitch() + _17_MouseEvent::offsetY;
+    this->camera->setPitch(newPitch);
+    this->camera->yaw += _17_MouseEvent::offsetX;
 
     // reset to prevent from using the current offset to move the pitch / yaw in next frame
     _17_MouseEvent::offsetX = .0f;
     _17_MouseEvent::offsetY = .0f;
 
-    // Constraint pitch to not be able to pitch backward
-    if (this->pitch > 89.0f) {
-        this->pitch = 89.0f;
-    } else if (this->pitch < -89.0f) {
-        this->pitch = -89.0f;
-    }
+    this->camera->update(this->getDelta());
 
-    // Gram-Schmidt Process of deriving camera's coordinate
-    glm::vec3 cameraFront = this->deriveCameraFrontVector();
-    glm::vec3 up = glm::vec3(.0f, 1.0f, .0f);
-    glm::vec3 cameraRight = glm::normalize(glm::cross(cameraFront, up));
-    glm::vec3 cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront));
-
-    float delta = this->getDelta();
-    if (glfwGetKey(ctx->window, GLFW_KEY_W) == GLFW_PRESS) {
-        this->cameraPosition += cameraFront * cameraSpeed * delta;
-    }
-    if (glfwGetKey(ctx->window, GLFW_KEY_S) == GLFW_PRESS) {
-        this->cameraPosition -= cameraFront * cameraSpeed * delta;
-    }
-    if (glfwGetKey(ctx->window, GLFW_KEY_D) == GLFW_PRESS) {
-        this->cameraPosition += cameraRight * cameraSpeed * delta;
-    }
-    if (glfwGetKey(ctx->window, GLFW_KEY_A) == GLFW_PRESS) {
-        this->cameraPosition -= cameraRight * cameraSpeed * delta;
-    }
-
-    // Derive look at & perspective transformation matrix
-    glm::mat4 view = glm::lookAt(
-        this->cameraPosition,
-        this->cameraPosition + cameraFront,
-        cameraUp
-    );
-    this->generateTransformationMatrix();
+    glm::mat4 view = this->camera->deriveViewMetrix();
+    glm::mat4 projection = this->camera->deriveProjectionMatrix();
 
     // Render object
     this->shaderProgram->use();
-    this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
+    this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
     this->cube
         ->setPosition(this->objectPosition)
@@ -188,8 +159,9 @@ void _17_LightScene::render() {
 
     // Render light source
     this->lightShaderProgram->use();
-    this->lightShaderProgram->setUniformMat4("uProjecton", glm::value_ptr(this->projection));
+    this->lightShaderProgram->setUniformMat4("uProjecton", glm::value_ptr(projection));
     this->lightShaderProgram->setUniformMat4("uView", glm::value_ptr(view));
+    this->lightShaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
     this->cube
         ->setPosition(this->lightPosition)
         ->setScale(this->lightScale)
@@ -216,17 +188,5 @@ void _17_LightScene::cleanup() {
     delete this->shaderProgram;
     delete this->lightShaderProgram;
     delete this->cube;
-}
-
-// View might be resized, we need to generate projection matrix depend on aspect ratio
-void _17_LightScene::generateTransformationMatrix() {
-    float fov = glm::radians(_17_ScrollEvent::fov);
-    float near = .1f;
-    float far = 100.0f;
-
-    int w, h;
-    glfwGetWindowSize(ctx->window, &w, &h);
-
-    float aspectRatio = (float)w / (float)h;
-    this->projection = glm::perspective(fov, aspectRatio, near, far);
+    delete this->camera;
 }
