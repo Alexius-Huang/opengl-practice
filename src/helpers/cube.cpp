@@ -36,11 +36,12 @@ void Cube::render(ShaderProgram* program) {
 }
 
 void Cube::render(ShaderProgram* program, const char* modelUniformName) {
+    program->use();
+    program->setUniformMat4(modelUniformName, glm::value_ptr(this->deriveModelMatrix()));
+
     glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
     glBindVertexArray(this->VAO);
 
-    program->use();
-    program->setUniformMat4(modelUniformName, glm::value_ptr(this->deriveModelMatrix()));
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
     // Unbind everything after being rendered

@@ -55,18 +55,26 @@ void _17_LightScene::setup() {
 
     this->vertexShader = readShaderFile("./src/examples/17-light-scene/vertex-shader.vert");
     this->fragmentShader = readShaderFile("./src/examples/17-light-scene/fragment-shader.frag");
+    this->lightFragmentShader = readShaderFile("./src/examples/17-light-scene/light-shader.frag");
 
     this->shaderProgram = new ShaderProgram;
     this->shaderProgram->attachShader(vertexShader);
     this->shaderProgram->attachShader(fragmentShader);
     this->shaderProgram->link();
-
-    // Setup texture to uniform, but activate shader first!
     this->shaderProgram->use();
-
-    // Pass in required matrices to shader
-    // this->shaderProgram->setUniformMat4("uView", glm::value_ptr(this->view));
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
+    this->shaderProgram->setUniformVec3("uObjectColor", glm::value_ptr(this->objectColor));
+    this->shaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
+
+    this->lightShaderProgram = new ShaderProgram;
+    this->lightShaderProgram->attachShader(vertexShader);
+    this->lightShaderProgram->attachShader(lightFragmentShader);
+    this->lightShaderProgram->link();
+    this->lightShaderProgram->use();
+    this->lightShaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
+    this->lightShaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
+
+    glUseProgram(0);
 
     glEnable(GL_DEPTH_TEST);
 }
@@ -115,9 +123,6 @@ void _17_LightScene::render() {
     glClearColor(.0f, .0f, .0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    this->generateTransformationMatrix();
-    this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
-
     // Create look at matrix which applies the transformation to the view matrix
     float radius { 10.0f };
     glm::vec3 cameraPosition = glm::vec3(
@@ -164,21 +169,31 @@ void _17_LightScene::render() {
         this->cameraPosition -= cameraRight * cameraSpeed * delta;
     }
 
-    // Derive look at transformation matrix
+    // Derive look at & perspective transformation matrix
     glm::mat4 view = glm::lookAt(
         this->cameraPosition,
         this->cameraPosition + cameraFront,
         cameraUp
     );
-    this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
+    this->generateTransformationMatrix();
 
-    // Renders cube which internally creates model matrix
-    for (int i = 0; i < 10; i++) {
-        float angle = 20.0f * i;
-        this->cube->setPosition(this->cubePositions[i])
-            ->setRotation(angle + (float)glfwGetTime() * 10, glm::vec3(1.0f, 0.3f, 0.5f))
-            ->render(this->shaderProgram);
-    }
+    // Render object
+    this->shaderProgram->use();
+    this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->projection));
+    this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
+    this->cube
+        ->setPosition(this->objectPosition)
+        ->setScale(this->objectScale)
+        ->render(this->shaderProgram);
+
+    // Render light source
+    this->lightShaderProgram->use();
+    this->lightShaderProgram->setUniformMat4("uProjecton", glm::value_ptr(this->projection));
+    this->lightShaderProgram->setUniformMat4("uView", glm::value_ptr(view));
+    this->cube
+        ->setPosition(this->lightPosition)
+        ->setScale(this->lightScale)
+        ->render(this->lightShaderProgram);
 
     int index = ctx->gui->render(ctx->selectedExampleIndex);
     if (index != ctx->selectedExampleIndex) {
@@ -194,9 +209,12 @@ void _17_LightScene::render() {
 void _17_LightScene::cleanup() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+    glDeleteShader(lightFragmentShader);
 
     this->shaderProgram->dispose();
+    this->lightShaderProgram->dispose();
     delete this->shaderProgram;
+    delete this->lightShaderProgram;
     delete this->cube;
 }
 

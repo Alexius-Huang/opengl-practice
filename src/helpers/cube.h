@@ -58,7 +58,7 @@ private:
     glm::vec3 scale = glm::vec3(1.0f);
 
     float rotateAngle = .0f;
-    glm::vec3 rotateAxis = glm::vec3(.0f);
+    glm::vec3 rotateAxis = glm::vec3(1.0f, .0f, .0f);
 
     glm::mat4 deriveModelMatrix();
 
