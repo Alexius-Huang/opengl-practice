@@ -82,6 +82,11 @@ void ShaderProgram::setUniformI(const char* uniformName, int uniformValue) {
     glUniform1i(uniformLocation, uniformValue);
 }
 
+void ShaderProgram::setUniformVec3(const char* uniformName, const float* vectorValue) {
+    GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
+    glUniform3fv(uniformLocation, 1, vectorValue);
+}
+
 void ShaderProgram::setUniformMat4(const char* uniformName, const float* matrixValue) {
     GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
 
