@@ -37,7 +37,8 @@ int main() {
         new _15_CameraLookAtMatrix(&ctx),
         new _16_CameraControl(&ctx),
         new _17_LightScene(&ctx),
-        new _18_MovingLightSource(&ctx)
+        new _18_MovingLightSource(&ctx),
+        new _19_Material(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
