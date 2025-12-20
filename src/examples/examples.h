@@ -18,6 +18,7 @@
 #include "15-camera-look-at-matrix/main.h"
 #include "16-camera-control/main.h"
 #include "17-light-scene/main.h"
+#include "18-moving-light-source/main.h"
 #include "context.h"
 
 using namespace std;

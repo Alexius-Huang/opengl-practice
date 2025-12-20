@@ -36,7 +36,8 @@ int main() {
         new _14_Multiple3DCubes(&ctx),
         new _15_CameraLookAtMatrix(&ctx),
         new _16_CameraControl(&ctx),
-        new _17_LightScene(&ctx)
+        new _17_LightScene(&ctx),
+        new _18_MovingLightSource(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
