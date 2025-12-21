@@ -40,7 +40,8 @@ int main() {
         new _18_MovingLightSource(&ctx),
         new _19_Material(&ctx),
         new _20_DifferentMaterials(&ctx),
-        new _21_LightMaps(&ctx)
+        new _21_LightMaps(&ctx),
+        new _22_DirectionalLight(&ctx),
     };
     ctx.totalExamplesCount = examples.size();
 
