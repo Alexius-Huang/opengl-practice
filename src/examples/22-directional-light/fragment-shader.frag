@@ -10,14 +10,15 @@ struct Material {
 };
 uniform Material uMaterial;
 
-// For light source, it also has its own intensity on different component
-struct Light {
-    vec3 position;
+struct DirectionalLight {
+    // Instead of light position, direcitonal light has uniform direction
+    vec3 direction;
+
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 };
-uniform Light uLight;
+uniform DirectionalLight uLight;
 
 in vec3 vNormal;
 in vec3 vFragmentPosition;
@@ -29,12 +30,13 @@ void main() {
     vec3 materialDiffuseColor = vec3(texture(uMaterial.diffuse, vTexCoords));
     vec3 materialSpecularColor = vec3(texture(uMaterial.specular, vTexCoords));
 
+    vec3 lightDirection = normalize(-uLight.direction);
+
     // Deriving ambient component
     vec3 ambient = uLight.ambient * materialDiffuseColor;
 
     // Deriving diffuse component
     vec3 norm = normalize(vNormal);
-    vec3 lightDirection = normalize(uLight.position - vFragmentPosition);
     vec3 diffuse = uLight.diffuse * max(dot(norm, lightDirection), 0.0) * materialDiffuseColor;
 
     // Derive specular component

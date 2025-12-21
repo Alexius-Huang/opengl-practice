@@ -64,7 +64,6 @@ void _22_DirectionalLight::setup() {
 
     this->vertexShader = readShaderFile("./src/examples/22-directional-light/vertex-shader.vert");
     this->fragmentShader = readShaderFile("./src/examples/22-directional-light/fragment-shader.frag");
-    this->lightFragmentShader = readShaderFile("./src/examples/22-directional-light/light-shader.frag");
 
     // Read light map textures
     this->diffuseMap = new Texture2D(
@@ -85,8 +84,7 @@ void _22_DirectionalLight::setup() {
     this->shaderProgram->link();
     this->shaderProgram->use();
     this->shaderProgram->setUniformVec3("uViewPosition", glm::value_ptr(this->camera->position));
-
-    this->shaderProgram->setUniformVec3("uLight.position", glm::value_ptr(this->lightPosition));
+    this->shaderProgram->setUniformVec3("uLight.direction", glm::value_ptr(this->lightDirection));
     this->shaderProgram->setUniformVec3("uLight.ambient", glm::value_ptr(glm::vec3(.2f, .2f, .2f)));
     this->shaderProgram->setUniformVec3("uLight.diffuse", glm::value_ptr(glm::vec3(.5f, .5f, .5f)));
     this->shaderProgram->setUniformVec3("uLight.specular", glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
@@ -98,15 +96,6 @@ void _22_DirectionalLight::setup() {
 
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
-
-    this->lightShaderProgram = new ShaderProgram;
-    this->lightShaderProgram->attachShader(vertexShader);
-    this->lightShaderProgram->attachShader(lightFragmentShader);
-    this->lightShaderProgram->link();
-    this->lightShaderProgram->use();
-    this->lightShaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
-    this->lightShaderProgram->setUniformMat4("uView", glm::value_ptr(view));
-    this->lightShaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
 
     glUseProgram(0);
 
@@ -189,16 +178,6 @@ void _22_DirectionalLight::render() {
             ->render(this->shaderProgram);
     }
 
-    // Render light source
-    this->lightShaderProgram->use();
-    this->lightShaderProgram->setUniformMat4("uProjecton", glm::value_ptr(projection));
-    this->lightShaderProgram->setUniformMat4("uView", glm::value_ptr(view));
-    this->lightShaderProgram->setUniformVec3("uLightColor", glm::value_ptr(this->lightColor));
-    this->cube
-        ->setPosition(this->lightPosition)
-        ->setScale(this->lightScale)
-        ->render(this->lightShaderProgram);
-
     int index = ctx->gui->render(ctx->selectedExampleIndex);
     if (index != ctx->selectedExampleIndex) {
         ctx->selectedExampleIndex = index;
@@ -213,12 +192,9 @@ void _22_DirectionalLight::render() {
 void _22_DirectionalLight::cleanup() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-    glDeleteShader(lightFragmentShader);
 
     this->shaderProgram->dispose();
-    this->lightShaderProgram->dispose();
     delete this->shaderProgram;
-    delete this->lightShaderProgram;
     delete this->cube;
     delete this->diffuseMap;
     delete this->specularMap;
