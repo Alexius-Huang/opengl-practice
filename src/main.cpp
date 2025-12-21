@@ -39,7 +39,8 @@ int main() {
         new _17_LightScene(&ctx),
         new _18_MovingLightSource(&ctx),
         new _19_Material(&ctx),
-        new _20_DifferentMaterials(&ctx)
+        new _20_DifferentMaterials(&ctx),
+        new _21_LightMaps(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 

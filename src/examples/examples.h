@@ -21,6 +21,7 @@
 #include "18-moving-light-source/main.h"
 #include "19-material/main.h"
 #include "20-different-materials/main.h"
+#include "21-light-maps/main.h"
 #include "context.h"
 
 using namespace std;

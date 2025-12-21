@@ -23,7 +23,10 @@ public:
     Texture2D(
         GLuint unit,
         string imagePath,
+        
+        // TODO: maybe we can deprecate this format property
         GLuint format = GL_RGB,
+
         GLuint mipmapLevel = 0,
         GLuint dataType = GL_UNSIGNED_BYTE
     ):  unit(unit),
@@ -73,14 +76,22 @@ public:
 
         if (!imgData) throw runtime_error("ERROR::TEXTURE_2D::CANNOT_LOAD_TEXTURE");
 
+        GLenum format;
+        if (nrChannels == 1)
+            format = GL_RED;
+        else if (nrChannels == 3)
+            format = GL_RGB;
+        else if (nrChannels == 4)
+            format = GL_RGBA;
+
         glTexImage2D(
             GL_TEXTURE_2D,
             this->mipmapLevel,
-            this->format,
+            format,
             texWidth,
             texHeight,
             0,  // legacy stuff which simply we ignore it
-            this->format,
+            format,
             this->dataType,
             imgData
         );
