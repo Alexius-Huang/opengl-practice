@@ -9,6 +9,9 @@ struct Material {
     sampler2D diffuse;
     sampler2D specular;
     float shininess;
+
+    // Custom emission map which shows the emission result
+    sampler2D emission;
 };
 uniform Material uMaterial;
 
@@ -30,6 +33,7 @@ in vec2 vTexCoords;
 void main() {
     vec3 materialDiffuseColor = vec3(texture(uMaterial.diffuse, vTexCoords));
     vec3 materialSpecularColor = vec3(texture(uMaterial.specular, vTexCoords));
+    vec3 emissionColor = vec3(texture(uMaterial.emission, vTexCoords));
 
     // Deriving ambient component
     vec3 ambient = uLight.ambient * materialDiffuseColor;
@@ -45,7 +49,10 @@ void main() {
     float spec = pow(max(dot(reflected, viewDirection), 0.0), uMaterial.shininess);
     vec3 specular = uLight.specular * spec * materialSpecularColor;
 
+    // Custom emission only to show emission on the wooden part
+    vec3 emission = emissionColor * (1.0 - step(0.01, materialSpecularColor));
+
     // Phong Lighting System is the sum of ambient, diffuse and specular
-    vec3 objectColor = ambient + diffuse + specular;
+    vec3 objectColor = ambient + diffuse + specular + emission;
     FragColor = vec4(objectColor, 1.0);
 }

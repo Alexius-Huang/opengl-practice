@@ -27,6 +27,7 @@ private:
 
     Texture2D* diffuseMap;
     Texture2D* specularMap;
+    Texture2D* emissionMap;
 
 public:
     _21_LightMaps(Context* ctx) : Example("Light Maps", ctx) {}

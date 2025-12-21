@@ -69,8 +69,7 @@ void _21_LightMaps::setup() {
     // Read light map textures
     this->diffuseMap = new Texture2D(
         GL_TEXTURE0,
-        "./assets/container2.png",
-        GL_RGBA
+        "./assets/container2.png"
     );
     this->diffuseMap->load();
 
@@ -79,6 +78,12 @@ void _21_LightMaps::setup() {
         "./assets/container2_specular.png"
     );
     this->specularMap->load();
+
+    this->emissionMap = new Texture2D(
+        GL_TEXTURE2,
+        "./assets/matrix.jpg"
+    );
+    this->emissionMap->load();
 
     this->shaderProgram = new ShaderProgram;
     this->shaderProgram->attachShader(vertexShader);
@@ -92,9 +97,10 @@ void _21_LightMaps::setup() {
     this->shaderProgram->setUniformVec3("uLight.diffuse", glm::value_ptr(glm::vec3(.5f, .5f, .5f)));
     this->shaderProgram->setUniformVec3("uLight.specular", glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
 
-    // Setup diffuse map to texture unit 0 and specular map to unit 1
+    // Setup diffuse map to texture unit 0, specular map to unit 1 and emission map to 2
     this->shaderProgram->setUniformI("uMaterial.diffuse", 0);
     this->shaderProgram->setUniformI("uMaterial.specular", 1);
+    this->shaderProgram->setUniformI("uMaterial.emission", 2);
     this->shaderProgram->setUniformF("uMaterial.shininess", 32.0f);
 
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
@@ -218,5 +224,6 @@ void _21_LightMaps::cleanup() {
     delete this->cube;
     delete this->diffuseMap;
     delete this->specularMap;
+    delete this->emissionMap;
     delete this->camera;
 }
