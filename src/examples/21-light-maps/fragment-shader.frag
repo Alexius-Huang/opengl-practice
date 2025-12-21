@@ -7,7 +7,7 @@ uniform vec3 uViewPosition;
 struct Material {
     // The ambient color is anyways the same as diffuse color
     sampler2D diffuse;
-    vec3 specular;
+    sampler2D specular;
     float shininess;
 };
 uniform Material uMaterial;
@@ -29,6 +29,7 @@ in vec2 vTexCoords;
 
 void main() {
     vec3 materialDiffuseColor = vec3(texture(uMaterial.diffuse, vTexCoords));
+    vec3 materialSpecularColor = vec3(texture(uMaterial.specular, vTexCoords));
 
     // Deriving ambient component
     vec3 ambient = uLight.ambient * materialDiffuseColor;
@@ -42,7 +43,7 @@ void main() {
     vec3 viewDirection = normalize(uViewPosition - vFragmentPosition);
     vec3 reflected = reflect(-lightDirection, norm);
     float spec = pow(max(dot(reflected, viewDirection), 0.0), uMaterial.shininess);
-    vec3 specular = uLight.specular * spec * uMaterial.specular;
+    vec3 specular = uLight.specular * spec * materialSpecularColor;
 
     // Phong Lighting System is the sum of ambient, diffuse and specular
     vec3 objectColor = ambient + diffuse + specular;

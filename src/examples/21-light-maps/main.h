@@ -25,7 +25,8 @@ private:
 
     Cube* cube;
 
-    Texture2D* diffuseTexture;
+    Texture2D* diffuseMap;
+    Texture2D* specularMap;
 
 public:
     _21_LightMaps(Context* ctx) : Example("Light Maps", ctx) {}

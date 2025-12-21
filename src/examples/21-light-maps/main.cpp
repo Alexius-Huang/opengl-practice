@@ -67,12 +67,18 @@ void _21_LightMaps::setup() {
     this->lightFragmentShader = readShaderFile("./src/examples/21-light-maps/light-shader.frag");
 
     // Read light map textures
-    this->diffuseTexture = new Texture2D(
+    this->diffuseMap = new Texture2D(
         GL_TEXTURE0,
         "./assets/container2.png",
         GL_RGBA
     );
-    this->diffuseTexture->load();
+    this->diffuseMap->load();
+
+    this->specularMap = new Texture2D(
+        GL_TEXTURE1,
+        "./assets/container2_specular.png"
+    );
+    this->specularMap->load();
 
     this->shaderProgram = new ShaderProgram;
     this->shaderProgram->attachShader(vertexShader);
@@ -86,9 +92,9 @@ void _21_LightMaps::setup() {
     this->shaderProgram->setUniformVec3("uLight.diffuse", glm::value_ptr(glm::vec3(.5f, .5f, .5f)));
     this->shaderProgram->setUniformVec3("uLight.specular", glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
 
-    // Setup diffuse map to texture unit 0
+    // Setup diffuse map to texture unit 0 and specular map to unit 1
     this->shaderProgram->setUniformI("uMaterial.diffuse", 0);
-    this->shaderProgram->setUniformVec3("uMaterial.specular", glm::value_ptr(glm::vec3(0.5f, 0.5f, 0.5f)));
+    this->shaderProgram->setUniformI("uMaterial.specular", 1);
     this->shaderProgram->setUniformF("uMaterial.shininess", 32.0f);
 
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
@@ -167,13 +173,12 @@ void _21_LightMaps::render() {
     glm::mat4 projection = this->camera->deriveProjectionMatrix();
 
     // Render object
-    this->diffuseTexture->use();
+    this->diffuseMap->use();
+    this->specularMap->use();
     this->shaderProgram->use();
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
     this->shaderProgram->setUniformVec3("uViewPosition", glm::value_ptr(this->camera->position));
-
-    this->shaderProgram->setUniformVec3("uMaterial.specular", glm::value_ptr(glm::vec3(0.5f, 0.5f, 0.5f)));
 
     this->cube
         ->setPosition(this->objectPosition)
@@ -211,6 +216,7 @@ void _21_LightMaps::cleanup() {
     delete this->shaderProgram;
     delete this->lightShaderProgram;
     delete this->cube;
-    delete this->diffuseTexture;
+    delete this->diffuseMap;
+    delete this->specularMap;
     delete this->camera;
 }
