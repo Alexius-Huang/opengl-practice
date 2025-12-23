@@ -89,6 +89,7 @@ void _24_SpotLight::setup() {
     this->shaderProgram->setUniformVec3("uLight.position", glm::value_ptr(this->camera->position));
     this->shaderProgram->setUniformVec3("uLight.direction", glm::value_ptr(this->camera->deriveCameraFrontVector()));
     this->shaderProgram->setUniformF("uLight.cutoff", glm::cos(glm::radians(12.5f)));
+    this->shaderProgram->setUniformF("uLight.outerCutoff", glm::cos(glm::radians(17.5f)));
 
     this->shaderProgram->setUniformVec3("uLight.ambient", glm::value_ptr(glm::vec3(.2f, .2f, .2f)));
     this->shaderProgram->setUniformVec3("uLight.diffuse", glm::value_ptr(glm::vec3(.5f, .5f, .5f)));

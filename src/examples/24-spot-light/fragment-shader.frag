@@ -15,6 +15,7 @@ struct SpotLight {
     vec3 position;
     vec3 direction;
     float cutoff;
+    float outerCutoff;
 
     vec3 ambient;
     vec3 diffuse;
@@ -42,11 +43,24 @@ void main() {
     // We calculate the cosine value 
     float cosineLight = dot(lightDirection, -normalize(uLight.direction));
 
-    // Our of spotlight range, we only use ambient color
-    if (cosineLight < uLight.cutoff) {
+    // Out of spotlight range, we only use ambient color
+    if (uLight.outerCutoff > cosineLight) {
         FragColor = vec4(ambient, 1.0);
         return;
     }
+
+    // outer to inner cutoff ratio to represent the transition of the light
+    float fadeInRatio = min(
+        (cosineLight - uLight.outerCutoff) / (uLight.cutoff - uLight.outerCutoff),
+        1.0
+    );
+
+    // Or using clamp:
+    // float fadeInRatio = clamp(
+    //     (cosineLight - uLight.outerCutoff) / (uLight.cutoff - uLight.outerCutoff),
+    //     0.0,
+    //     1.0
+    // );
 
     // Deriving diffuse component
     vec3 norm = normalize(vNormal);
@@ -59,6 +73,6 @@ void main() {
     vec3 specular = uLight.specular * spec * materialSpecularColor;
 
     // Phong Lighting System is the sum of ambient, diffuse and specular
-    vec3 objectColor = ambient + diffuse + specular;
+    vec3 objectColor = ambient + (diffuse + specular) * fadeInRatio;
     FragColor = vec4(objectColor, 1.0);
 }
