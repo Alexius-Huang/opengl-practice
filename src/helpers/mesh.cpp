@@ -40,7 +40,6 @@ void Mesh::render(ShaderProgram* program) {
     // where model shader should have their texture name to be texture_diffuse / texture_specular
     unsigned int diffuseTexNum = 1;
     unsigned int specularTexNum = 1;
-    
     for (size_t i = 0; i < this->textures.size(); i++) {
         std::string number;
         std::string name = this->textures[i].type;

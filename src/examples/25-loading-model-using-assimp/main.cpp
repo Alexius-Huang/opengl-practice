@@ -48,7 +48,6 @@ void _25_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
 }
 
 void _25_LoadingModelUsingAssimp::setup() {
-    this->cube = new Cube;
     this->camera = new PerspectiveCamera(
         this->ctx->window,
         glm::vec3(.0f, .0f, 3.0f),
@@ -64,19 +63,6 @@ void _25_LoadingModelUsingAssimp::setup() {
 
     this->vertexShader = readShaderFile("./src/examples/25-loading-model-using-assimp/vertex-shader.vert");
     this->fragmentShader = readShaderFile("./src/examples/25-loading-model-using-assimp/fragment-shader.frag");
-
-    // Read light map textures
-    this->diffuseMap = new Texture2D(
-        GL_TEXTURE0,
-        "./assets/container2.png"
-    );
-    this->diffuseMap->load();
-
-    this->specularMap = new Texture2D(
-        GL_TEXTURE1,
-        "./assets/container2_specular.png"
-    );
-    this->specularMap->load();
 
     this->shaderProgram = new ShaderProgram;
     this->shaderProgram->attachShader(vertexShader);
@@ -105,7 +91,7 @@ void _25_LoadingModelUsingAssimp::setup() {
 
     glUseProgram(0);
 
-    this->model = new Model("./assets/backpack.obj");
+    this->model = new Model("./assets/backpack/backpack.obj");
 
     glEnable(GL_DEPTH_TEST);
 }
@@ -151,7 +137,7 @@ void _25_LoadingModelUsingAssimp::render() {
         return;
     }
     
-    glClearColor(.0f, .0f, .0f, 1.0f);
+    glClearColor(.05f, .05f, .05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // When mouse is moving change yaw and pitch
@@ -170,30 +156,10 @@ void _25_LoadingModelUsingAssimp::render() {
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
 
-    // Render object
-    // this->diffuseMap->use();
-    // this->specularMap->use();
-    // this->shaderProgram->use();
-    // this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
-    // this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
-    // this->shaderProgram->setUniformVec3("uViewPosition", glm::value_ptr(this->camera->position));
-    // this->shaderProgram->setUniformVec3("uLight.position", glm::value_ptr(this->camera->position));
-    // this->shaderProgram->setUniformVec3("uLight.direction", glm::value_ptr(this->camera->deriveCameraFrontVector()));
-
-    // for (int i = 0; i < 10; i++) {
-    //     float angle = 20.0f * i;
-
-    //     this->cube
-    //         ->setPosition(this->cubePositions[i])
-    //         ->setScale(this->objectScale)
-    //         ->setRotation(angle + (float)glfwGetTime() * 10.0f, glm::vec3(1.0f, 0.3f, 0.5f))
-    //         ->render(this->shaderProgram);
-    // }
-
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
     model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
-    this->shaderProgram->setUniformMat4("model", glm::value_ptr(model));
+    this->shaderProgram->setUniformMat4("uModel", glm::value_ptr(model));
     this->model->render(this->shaderProgram);
 
     int index = ctx->gui->render(ctx->selectedExampleIndex);
@@ -213,9 +179,6 @@ void _25_LoadingModelUsingAssimp::cleanup() {
 
     this->shaderProgram->dispose();
     delete this->shaderProgram;
-    delete this->cube;
-    delete this->diffuseMap;
-    delete this->specularMap;
     delete this->camera;
     delete this->model;
 }
