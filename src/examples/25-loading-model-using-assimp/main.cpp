@@ -58,9 +58,6 @@ void _25_LoadingModelUsingAssimp::setup() {
         2000.0f
     );
 
-    glm::mat4 view = this->camera->deriveViewMetrix();
-    glm::mat4 projection = this->camera->deriveProjectionMatrix();
-
     this->vertexShader = readShaderFile("./src/examples/25-loading-model-using-assimp/vertex-shader.vert");
     this->fragmentShader = readShaderFile("./src/examples/25-loading-model-using-assimp/fragment-shader.frag");
 
@@ -69,23 +66,9 @@ void _25_LoadingModelUsingAssimp::setup() {
     this->shaderProgram->attachShader(fragmentShader);
     this->shaderProgram->link();
     this->shaderProgram->use();
-    // this->shaderProgram->setUniformVec3("uViewPosition", glm::value_ptr(this->camera->position));
 
-    // Set spot light position and direction based on camera
-    // this->shaderProgram->setUniformVec3("uLight.position", glm::value_ptr(this->camera->position));
-    // this->shaderProgram->setUniformVec3("uLight.direction", glm::value_ptr(this->camera->deriveCameraFrontVector()));
-    // this->shaderProgram->setUniformF("uLight.cutoff", glm::cos(glm::radians(12.5f)));
-    // this->shaderProgram->setUniformF("uLight.outerCutoff", glm::cos(glm::radians(17.5f)));
-
-    // this->shaderProgram->setUniformVec3("uLight.ambient", glm::value_ptr(glm::vec3(.2f, .2f, .2f)));
-    // this->shaderProgram->setUniformVec3("uLight.diffuse", glm::value_ptr(glm::vec3(.5f, .5f, .5f)));
-    // this->shaderProgram->setUniformVec3("uLight.specular", glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
-
-    // Setup diffuse map to texture unit 0, specular map to unit 1
-    // this->shaderProgram->setUniformI("uMaterial.diffuse", 0);
-    // this->shaderProgram->setUniformI("uMaterial.specular", 1);
-    // this->shaderProgram->setUniformF("uMaterial.shininess", 32.0f);
-
+    glm::mat4 view = this->camera->deriveViewMetrix();
+    glm::mat4 projection = this->camera->deriveProjectionMatrix();
     this->shaderProgram->setUniformMat4("uView", glm::value_ptr(view));
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(projection));
 
