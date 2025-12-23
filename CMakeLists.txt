@@ -30,8 +30,16 @@ FetchContent_Declare(
     GIT_TAG        v1.92.5 # Pin to a specific, stable version
 )
 
-# Make the dependency available
-FetchContent_MakeAvailable(imgui)
+# Declare assimp dependency
+FetchContent_Declare(
+    assimp
+    GIT_REPOSITORY https://github.com/assimp/assimp.git
+    GIT_TAG        v5.4.1
+)
+
+# Make the dependencies available
+FetchContent_MakeAvailable(imgui assimp)
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 
 # --- ImGui Build ---
 # Define the source files for the ImGui library using the path from FetchContent
@@ -57,7 +65,7 @@ file(GLOB_RECURSE APP_SOURCES "src/*.cpp")
 add_executable(opengl_practice ${APP_SOURCES})
 
 # Link libraries
-target_link_libraries(opengl_practice PRIVATE glfw glm::glm glad OpenGL::GL imgui)
+target_link_libraries(opengl_practice PRIVATE glfw glm::glm glad OpenGL::GL imgui assimp::assimp)
 
 # On macOS, we need to add the CoreFoundation framework
 if (APPLE)

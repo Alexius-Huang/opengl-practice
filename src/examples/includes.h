@@ -25,6 +25,8 @@
 #include "../helpers/texture-2d.h"
 #include "../helpers/switch-example-on-arrow-key-pressed.h"
 #include "../helpers/toggle-polygon-mode-on-key-pressed.h"
+#include "../helpers/mesh.h"
+#include "../helpers/model.h"
 #include "../initialize.h"
 
 #endif
