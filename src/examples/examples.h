@@ -24,6 +24,7 @@
 #include "21-light-maps/main.h"
 #include "22-directional-light/main.h"
 #include "23-point-light/main.h"
+#include "24-spot-light/main.h"
 #include "context.h"
 
 using namespace std;

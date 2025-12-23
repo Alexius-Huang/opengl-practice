@@ -43,6 +43,7 @@ int main() {
         new _21_LightMaps(&ctx),
         new _22_DirectionalLight(&ctx),
         new _23_PointLight(&ctx),
+        new _24_SpotLight(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
