@@ -13,6 +13,12 @@ private:
 
     bool isPressingTab = false;
 
+    // 1: default mode
+    // 2: visualize depth buffer
+    // 3: visualize linearized depth buffer
+    // 4: custom, the deeper the object, it faded into background
+    int depthMode = 1;
+
     Cube* cube;
     Plane* floor;
     PerspectiveCamera* camera;

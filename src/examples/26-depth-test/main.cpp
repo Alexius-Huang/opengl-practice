@@ -91,6 +91,9 @@ void _26_DepthTest::setup() {
     this->shaderProgram->setUniformMat4("uProjection", glm::value_ptr(this->camera->deriveProjectionMatrix()));
 
     glEnable(GL_DEPTH_TEST);
+
+    // Use depth-function to adjust depth test
+    glDepthFunc(GL_LESS);
 }
 
 void _26_DepthTest::render() {
@@ -128,6 +131,17 @@ void _26_DepthTest::render() {
     } else {
         this->isPressingTab = false;
     }
+
+    if (glfwGetKey(this->ctx->window, GLFW_KEY_1) == GLFW_PRESS) {
+        this->depthMode = 1;
+    } else if (glfwGetKey(this->ctx->window, GLFW_KEY_2) == GLFW_PRESS) {
+        this->depthMode = 2;
+    } else if (glfwGetKey(this->ctx->window, GLFW_KEY_3) == GLFW_PRESS) {
+        this->depthMode = 3;
+    } else if (glfwGetKey(this->ctx->window, GLFW_KEY_4) == GLFW_PRESS) {
+        this->depthMode = 4;
+    }
+    this->shaderProgram->setUniformI("uMode", this->depthMode);
 
     if (switchExampleOnArrowKeyPressed(ctx)) {
         this->setShouldExit(true);
