@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <map>
 
 // GLM - OpenGL Mathematics
 #include <glm/glm.hpp>
