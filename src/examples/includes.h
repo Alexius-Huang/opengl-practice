@@ -19,6 +19,7 @@
 #include "../helpers/read-shader-file.h"
 #include "../helpers/shader-program.h"
 #include "../helpers/cube.h"
+#include "../helpers/plane.h"
 #include "../helpers/perspective-camera.h"
 #include "../helpers/material.h"
 #include "../helpers/stb-image.h"

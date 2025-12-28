@@ -49,6 +49,7 @@ void _26_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
 
 void _26_DepthTest::setup() {
     this->cube = new Cube;
+    this->floor = new Plane(5.0f);
     this->camera = new PerspectiveCamera(
         this->ctx->window,
         glm::vec3(0, 0, 3),
@@ -58,31 +59,6 @@ void _26_DepthTest::setup() {
         .1f,
         1000.0f
     );
-
-    // Prepare for plane VAO and VBO
-    glGenVertexArrays(1, &(this->floorVAO));
-    glBindVertexArray(this->floorVAO);
-
-    glGenBuffers(1, &(this->floorVBO));
-    glBindBuffer(GL_ARRAY_BUFFER, this->floorVBO);
-    glBufferData(
-        GL_ARRAY_BUFFER,
-        sizeof(this->planeVertices),
-        this->planeVertices,
-        GL_STATIC_DRAW
-    );
-
-    // Selecting positions:
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Selecting texture coordinates:
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    // Unbind everything before being used
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
 
     this->textureCube = new Texture2D(
         GL_TEXTURE0,
@@ -186,19 +162,11 @@ void _26_DepthTest::render() {
         ->setRotation(.0f, glm::vec3(1.0f, .0f, .0f))
         ->render(this->shaderProgram);
 
-    // Render floor
+    // Render floor:
     this->shaderProgram->setUniformI("uTexture", 1);
-    glm::mat4 floorModel = glm::mat4(1.0f);
-    this->shaderProgram->setUniformMat4("uModel", glm::value_ptr(floorModel));
-
-    glBindBuffer(GL_ARRAY_BUFFER, this->floorVBO);
-    glBindVertexArray(this->floorVAO);
-
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    // Unbind everything after being rendered
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    this->floor->setPosition(glm::vec3(.0f, -.5f, .0f))
+        ->setRotation(.0f, glm::vec3(1.0f, .0f, .0f))
+        ->render(this->shaderProgram);
 
     int index = ctx->gui->render(ctx->selectedExampleIndex);
     if (index != ctx->selectedExampleIndex) {
@@ -220,5 +188,6 @@ void _26_DepthTest::cleanup() {
     delete this->textureCube;
     delete this->textureFloor;
     delete this->cube;
+    delete this->floor;
 }
 
