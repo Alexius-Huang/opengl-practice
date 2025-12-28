@@ -49,7 +49,7 @@ void _27_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
 
 void _27_StencilTest::setup() {
     this->cube = new Cube;
-    this->floor = new Plane(5.0f);
+    this->floor = new Plane(10.0f);
     this->camera = new PerspectiveCamera(
         this->ctx->window,
         glm::vec3(0, 0, 3),

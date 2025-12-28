@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-namespace _26_MouseEvent {
+namespace _28_MouseEvent {
     float lastX = .0f;
     float lastY = .0f;
 
@@ -13,48 +13,52 @@ namespace _26_MouseEvent {
     bool isFirstEvent = false;
 }
 
-namespace _26_ScrollEvent {
+namespace _28_ScrollEvent {
     // Camera's field of view, useful for implementing zoom feature
     float fov = 45.0f;
 }
 
-void _26_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
-    if (_26_MouseEvent::isFirstEvent) {
-        _26_MouseEvent::lastX = xPos;
-        _26_MouseEvent::lastY = yPos;
-        _26_MouseEvent::isFirstEvent = false;
+void _28_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
+    if (_28_MouseEvent::isFirstEvent) {
+        _28_MouseEvent::lastX = xPos;
+        _28_MouseEvent::lastY = yPos;
+        _28_MouseEvent::isFirstEvent = false;
         return;
     }
 
     // Offset Y is reversed as y-coord range from bottom to top
-    float offsetX = xPos - _26_MouseEvent::lastX;
-    float offsetY = (yPos - _26_MouseEvent::lastY) * -1;
+    float offsetX = xPos - _28_MouseEvent::lastX;
+    float offsetY = (yPos - _28_MouseEvent::lastY) * -1;
 
     const float sensitivity = .1f;
-    _26_MouseEvent::offsetX = offsetX * sensitivity;
-    _26_MouseEvent::offsetY = offsetY * sensitivity;
-    _26_MouseEvent::lastX = xPos;
-    _26_MouseEvent::lastY = yPos;
+    _28_MouseEvent::offsetX = offsetX * sensitivity;
+    _28_MouseEvent::offsetY = offsetY * sensitivity;
+    _28_MouseEvent::lastX = xPos;
+    _28_MouseEvent::lastY = yPos;
 };
 
-void _26_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _26_ScrollEvent::fov -= (float)yOffset;
+void _28_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
+    _28_ScrollEvent::fov -= (float)yOffset;
 
-    if (_26_ScrollEvent::fov < 1.0f) {
-        _26_ScrollEvent::fov = 1.0f;
-    } else if (_26_ScrollEvent::fov > 45.0f) {
-        _26_ScrollEvent::fov = 45.0f;
+    if (_28_ScrollEvent::fov < 1.0f) {
+        _28_ScrollEvent::fov = 1.0f;
+    } else if (_28_ScrollEvent::fov > 45.0f) {
+        _28_ScrollEvent::fov = 45.0f;
     }
 }
 
-void _26_DepthTest::setup() {
+void _28_DiscardingFragment::setup() {
     this->cube = new Cube;
     this->floor = new Plane(10.0f);
+    
+    // We will render grass on plane with alpha channel enabled
+    this->grass = new Plane;
+    
     this->camera = new PerspectiveCamera(
         this->ctx->window,
-        glm::vec3(0, 0, 3),
+        glm::vec3(-4.5f, 0.0f, 0.5f),
         0.0f,
-        -90.0f,
+        -30.0f,
         45,
         .1f,
         1000.0f
@@ -74,8 +78,20 @@ void _26_DepthTest::setup() {
     );
     this->textureFloor->load();
 
-    this->vertexShader = readShaderFile("./src/examples/26-depth-test/vertex-shader.vert");
-    this->fragmentShader = readShaderFile("./src/examples/26-depth-test/fragment-shader.frag");
+    this->textureGrass = new Texture2D(
+        GL_TEXTURE2,
+        "./assets/grass.png",
+        GL_RGBA
+    );
+    // Avoid edge interpolation when using alpha channel of the texture on border
+    this->textureGrass->setTextureWrap(
+        GL_CLAMP_TO_EDGE,
+        GL_CLAMP_TO_EDGE
+    );
+    this->textureGrass->load();
+
+    this->vertexShader = readShaderFile("./src/examples/28-discarding-fragment/vertex-shader.vert");
+    this->fragmentShader = readShaderFile("./src/examples/28-discarding-fragment/fragment-shader.frag");
 
     this->shaderProgram = new ShaderProgram;
     this->shaderProgram->attachShader(vertexShader);
@@ -96,7 +112,7 @@ void _26_DepthTest::setup() {
     glDepthFunc(GL_LESS);
 }
 
-void _26_DepthTest::render() {
+void _28_DiscardingFragment::render() {
     if (closeWindowOnEscPressed(ctx->window)) {
         this->setShouldExit(true);
         glfwSetWindowShouldClose(ctx->window, true);
@@ -107,41 +123,30 @@ void _26_DepthTest::render() {
         // Prevent from long press and capture single first Tab press
         if (!this->isPressingTab) {
             this->isPressingTab = true;
-            _26_MouseEvent::isCapturingEvent = !_26_MouseEvent::isCapturingEvent;
+            _28_MouseEvent::isCapturingEvent = !_28_MouseEvent::isCapturingEvent;
             glfwSetInputMode(
                 this->ctx->window,
                 GLFW_CURSOR,
-                _26_MouseEvent::isCapturingEvent ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL
+                _28_MouseEvent::isCapturingEvent ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL
             );
 
             glfwSetCursorPosCallback(
                 this->ctx->window,
-                _26_MouseEvent::isCapturingEvent ? _26_onMouseMove : nullptr
+                _28_MouseEvent::isCapturingEvent ? _28_onMouseMove : nullptr
             );
 
             glfwSetScrollCallback(
                 this->ctx->window,
-                _26_MouseEvent::isCapturingEvent ? _26_onScroll : nullptr
+                _28_MouseEvent::isCapturingEvent ? _28_onScroll : nullptr
             );
 
-            if (_26_MouseEvent::isCapturingEvent) {
-                _26_MouseEvent::isFirstEvent = true;
+            if (_28_MouseEvent::isCapturingEvent) {
+                _28_MouseEvent::isFirstEvent = true;
             }
         }
     } else {
         this->isPressingTab = false;
     }
-
-    if (glfwGetKey(this->ctx->window, GLFW_KEY_1) == GLFW_PRESS) {
-        this->depthMode = 1;
-    } else if (glfwGetKey(this->ctx->window, GLFW_KEY_2) == GLFW_PRESS) {
-        this->depthMode = 2;
-    } else if (glfwGetKey(this->ctx->window, GLFW_KEY_3) == GLFW_PRESS) {
-        this->depthMode = 3;
-    } else if (glfwGetKey(this->ctx->window, GLFW_KEY_4) == GLFW_PRESS) {
-        this->depthMode = 4;
-    }
-    this->shaderProgram->setUniformI("uMode", this->depthMode);
 
     if (switchExampleOnArrowKeyPressed(ctx)) {
         this->setShouldExit(true);
@@ -156,11 +161,11 @@ void _26_DepthTest::render() {
     this->textureCube->use();
     this->textureFloor->use();
 
-    float newPitch = this->camera->getPitch() + _26_MouseEvent::offsetY;
+    float newPitch = this->camera->getPitch() + _28_MouseEvent::offsetY;
     this->camera->setPitch(newPitch);
-    this->camera->yaw += _26_MouseEvent::offsetX;
-    _26_MouseEvent::offsetX = .0f;
-    _26_MouseEvent::offsetY = .0f;
+    this->camera->yaw += _28_MouseEvent::offsetX;
+    _28_MouseEvent::offsetX = .0f;
+    _28_MouseEvent::offsetY = .0f;
 
     this->camera->update(this->getDelta());
 
@@ -182,6 +187,15 @@ void _26_DepthTest::render() {
         ->setRotation(.0f, glm::vec3(1.0f, .0f, .0f))
         ->render(this->shaderProgram);
 
+    // Render grasses:
+    this->shaderProgram->setUniformI("uTexture", 2);
+    for (const auto grassPosition : this->grassPositions) {
+        this->grass->setPosition(grassPosition)
+            ->setRotation(90.0f, glm::vec3(.0f, 1.0f, .0f))
+            ->setRotation(90.0f, glm::vec3(1.0f, .0f, .0f))
+            ->render(this->shaderProgram);
+    }
+
     int index = ctx->gui->render(ctx->selectedExampleIndex);
     if (index != ctx->selectedExampleIndex) {
         ctx->selectedExampleIndex = index;
@@ -193,7 +207,7 @@ void _26_DepthTest::render() {
     glfwPollEvents();
 }
 
-void _26_DepthTest::cleanup() {
+void _28_DiscardingFragment::cleanup() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
@@ -201,7 +215,9 @@ void _26_DepthTest::cleanup() {
     delete this->shaderProgram;
     delete this->textureCube;
     delete this->textureFloor;
+    delete this->textureGrass;
     delete this->cube;
     delete this->floor;
+    delete this->grass;
 }
 

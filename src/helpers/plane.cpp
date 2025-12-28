@@ -57,6 +57,8 @@ void Plane::render(ShaderProgram* program, const char* modelUniformName) {
     // Unbind everything after being rendered
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    this->clearTransformation();
 }
 
 Plane* Plane::setPosition(glm::vec3 p) {
@@ -69,16 +71,23 @@ Plane* Plane::setScale(glm::vec3 s) {
     return this;
 }
 
+// TODO: currently we are using local space to perform transformation, it would
+//       be better to convert using world space to control it
 Plane* Plane::setRotation(float angle, glm::vec3 axis) {
-    this->rotateAngle = angle;
-    this->rotateAxis = axis;
+    this->rotateAngles.push_back(angle);
+    this->rotateAxis.push_back(axis);
     return this;
 }
 
 glm::mat4 Plane::deriveModelMatrix() {
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, this->position);
+
+    model = glm::translate(model, this->position);    
     model = glm::scale(model, this->scale);
-    model = glm::rotate(model, glm::radians(this->rotateAngle), this->rotateAxis);
+
+    for (size_t i = 0; i < this->rotateAngles.size(); i++) {
+        model = glm::rotate(model, glm::radians(this->rotateAngles.at(i)), this->rotateAxis.at(i));
+    }
+
     return model;
 }

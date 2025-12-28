@@ -28,6 +28,7 @@
 #include "25-loading-model-using-assimp/main.h"
 #include "26-depth-test/main.h"
 #include "27-stencil-test/main.h"
+#include "28-discarding-fragment/main.h"
 #include "context.h"
 
 using namespace std;

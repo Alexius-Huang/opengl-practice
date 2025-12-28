@@ -46,7 +46,8 @@ int main() {
         new _24_SpotLight(&ctx),
         new _25_LoadingModelUsingAssimp(&ctx),
         new _26_DepthTest(&ctx),
-        new _27_StencilTest(&ctx)
+        new _27_StencilTest(&ctx),
+        new _28_DiscardingFragment(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
