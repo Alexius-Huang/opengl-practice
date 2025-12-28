@@ -44,13 +44,15 @@ int main() {
         new _22_DirectionalLight(&ctx),
         new _23_PointLight(&ctx),
         new _24_SpotLight(&ctx),
-        new _25_LoadingModelUsingAssimp(&ctx)
+        new _25_LoadingModelUsingAssimp(&ctx),
+        new _26_DepthTest(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
     vector<string> exampleTitles;
+    int i = 1;
     for (const auto* example : examples) {
-        exampleTitles.push_back(example->getTitle());
+        exampleTitles.push_back(to_string(i++) + ". " + example->getTitle());
     }
     gui.setExampleTitles(exampleTitles);
 
