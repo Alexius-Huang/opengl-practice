@@ -30,6 +30,7 @@
 #include "27-stencil-test/main.h"
 #include "28-discarding-fragment/main.h"
 #include "29-blending/main.h"
+#include "30-face-culling/main.h"
 #include "context.h"
 
 using namespace std;

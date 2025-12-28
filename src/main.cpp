@@ -48,7 +48,8 @@ int main() {
         new _26_DepthTest(&ctx),
         new _27_StencilTest(&ctx),
         new _28_DiscardingFragment(&ctx),
-        new _29_Blending(&ctx)
+        new _29_Blending(&ctx),
+        new _30_FaceCulling(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
