@@ -65,6 +65,8 @@ int main() {
             cout << "Index  " << ctx.selectedExampleIndex << " not existed" << endl;
             break;
         }
+
+        MouseMoveEvent::reset();
         examples.at(ctx.selectedExampleIndex)->run();
     }
     gui.dispose();

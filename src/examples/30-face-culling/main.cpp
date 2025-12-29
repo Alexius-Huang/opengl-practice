@@ -2,40 +2,10 @@
 #include <iostream>
 using namespace std;
 
-namespace _30_MouseEvent {
-    float lastX = .0f;
-    float lastY = .0f;
-
-    float offsetX = .0f;
-    float offsetY = .0f;
-
-    bool isCapturingEvent = false;
-    bool isFirstEvent = false;
-}
-
 namespace _30_ScrollEvent {
     // Camera's field of view, useful for implementing zoom feature
     float fov = 45.0f;
 }
-
-void _30_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
-    if (_30_MouseEvent::isFirstEvent) {
-        _30_MouseEvent::lastX = xPos;
-        _30_MouseEvent::lastY = yPos;
-        _30_MouseEvent::isFirstEvent = false;
-        return;
-    }
-
-    // Offset Y is reversed as y-coord range from bottom to top
-    float offsetX = xPos - _30_MouseEvent::lastX;
-    float offsetY = (yPos - _30_MouseEvent::lastY) * -1;
-
-    const float sensitivity = .1f;
-    _30_MouseEvent::offsetX = offsetX * sensitivity;
-    _30_MouseEvent::offsetY = offsetY * sensitivity;
-    _30_MouseEvent::lastX = xPos;
-    _30_MouseEvent::lastY = yPos;
-};
 
 void _30_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
     _30_ScrollEvent::fov -= (float)yOffset;
@@ -103,26 +73,18 @@ void _30_FaceCulling::render() {
         // Prevent from long press and capture single first Tab press
         if (!this->isPressingTab) {
             this->isPressingTab = true;
-            _30_MouseEvent::isCapturingEvent = !_30_MouseEvent::isCapturingEvent;
-            glfwSetInputMode(
-                this->ctx->window,
-                GLFW_CURSOR,
-                _30_MouseEvent::isCapturingEvent ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL
-            );
+            this->isListeningMouseEvents = !this->isListeningMouseEvents;
 
-            glfwSetCursorPosCallback(
-                this->ctx->window,
-                _30_MouseEvent::isCapturingEvent ? _30_onMouseMove : nullptr
-            );
+            if (this->isListeningMouseEvents) {
+                MouseMoveEvent::listen(this->ctx->window);
+            } else {
+                MouseMoveEvent::dismiss(this->ctx->window);
+            }
 
             glfwSetScrollCallback(
                 this->ctx->window,
-                _30_MouseEvent::isCapturingEvent ? _30_onScroll : nullptr
+                this->isListeningMouseEvents ? _30_onScroll : nullptr
             );
-
-            if (_30_MouseEvent::isCapturingEvent) {
-                _30_MouseEvent::isFirstEvent = true;
-            }
         }
     } else {
         this->isPressingTab = false;
@@ -157,11 +119,9 @@ void _30_FaceCulling::render() {
 
     this->textureCube->use();
 
-    float newPitch = this->camera->getPitch() + _30_MouseEvent::offsetY;
+    float newPitch = this->camera->getPitch() + MouseMoveEvent::offsetY;
     this->camera->setPitch(newPitch);
-    this->camera->yaw += _30_MouseEvent::offsetX;
-    _30_MouseEvent::offsetX = .0f;
-    _30_MouseEvent::offsetY = .0f;
+    this->camera->yaw += MouseMoveEvent::offsetX;
 
     this->camera->update(this->getDelta());
 
@@ -181,11 +141,13 @@ void _30_FaceCulling::render() {
         return;
     }
 
+    MouseMoveEvent::clearOffset();
     glfwSwapBuffers(ctx->window);
     glfwPollEvents();
 }
 
 void _30_FaceCulling::cleanup() {
+    MouseMoveEvent::dismiss(this->ctx->window);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     glCullFace(GL_BACK);

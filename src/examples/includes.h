@@ -29,6 +29,7 @@
 #include "../helpers/toggle-polygon-mode-on-key-pressed.h"
 #include "../helpers/mesh.h"
 #include "../helpers/model.h"
+#include "../helpers/mouse-move-event.h"
 #include "../initialize.h"
 
 #endif

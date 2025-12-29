@@ -11,6 +11,7 @@ private:
     Texture2D* textureCube;
 
     bool isPressingTab = false;
+    bool isListeningMouseEvents = false;
 
     Cube* cube;
     PerspectiveCamera* camera;
