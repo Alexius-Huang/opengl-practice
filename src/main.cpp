@@ -51,7 +51,8 @@ int main() {
         new _28_DiscardingFragment(&ctx),
         new _29_Blending(&ctx),
         new _30_FaceCulling(&ctx),
-        new _31_FrameBuffer(&ctx)
+        new _31_FrameBuffer(&ctx),
+        new _32_Postprocessing(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
