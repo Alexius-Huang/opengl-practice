@@ -1,6 +1,4 @@
 #include "main.h"
-#include <iostream>
-using namespace std;
 
 namespace _30_ScrollEvent {
     // Camera's field of view, useful for implementing zoom feature

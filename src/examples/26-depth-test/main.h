@@ -12,6 +12,7 @@ private:
     Texture2D* textureFloor;
 
     bool isPressingTab = false;
+    bool isListeningMouseEvent = false;
 
     // 1: default mode
     // 2: visualize depth buffer

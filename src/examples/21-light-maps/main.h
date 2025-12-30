@@ -22,6 +22,7 @@ private:
     glm::vec3 lightScale = glm::vec3(.2f);
 
     bool isPressingTab = false;
+    bool isListeningMouseEvent = false;
 
     Cube* cube;
 

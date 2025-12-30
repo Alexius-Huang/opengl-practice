@@ -19,6 +19,7 @@ private:
     glm::vec3 lightScale = glm::vec3(.2f);
 
     bool isPressingTab = false;
+    bool isListeningMouseEvent = false;
 
     const glm::vec3 cubePositions[10] = {
         glm::vec3( 0.0f,  0.0f,  0.0f), 

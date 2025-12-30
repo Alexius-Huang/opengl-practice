@@ -21,6 +21,7 @@ private:
     glm::vec3 lightAttenuation = glm::vec3(1.0f, .09f, .032f);
 
     bool isPressingTab = false;
+    bool isListeningMouseEvent = false;
 
     const glm::vec3 cubePositions[10] = {
         glm::vec3( 0.0f,  0.0f,  0.0f), 

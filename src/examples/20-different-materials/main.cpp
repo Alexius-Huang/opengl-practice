@@ -1,17 +1,4 @@
 #include "main.h"
-#include <iostream>
-using namespace std;
-
-namespace _20_MouseEvent {
-    float lastX = .0f;
-    float lastY = .0f;
-
-    float offsetX = .0f;
-    float offsetY = .0f;
-
-    bool isCapturingEvent = false;
-    bool isFirstEvent = false;
-}
 
 namespace _20_ScrollEvent {
     // Camera's field of view, useful for implementing zoom feature
@@ -21,25 +8,6 @@ namespace _20_ScrollEvent {
 namespace _20_Config {
     MaterialType selectedMaterialType { MaterialType::Emerald };
 }
-
-void _20_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
-    if (_20_MouseEvent::isFirstEvent) {
-        _20_MouseEvent::lastX = xPos;
-        _20_MouseEvent::lastY = yPos;
-        _20_MouseEvent::isFirstEvent = false;
-        return;
-    }
-
-    // Offset Y is reversed as y-coord range from bottom to top
-    float offsetX = xPos - _20_MouseEvent::lastX;
-    float offsetY = (yPos - _20_MouseEvent::lastY) * -1;
-
-    const float sensitivity = .1f;
-    _20_MouseEvent::offsetX = offsetX * sensitivity;
-    _20_MouseEvent::offsetY = offsetY * sensitivity;
-    _20_MouseEvent::lastX = xPos;
-    _20_MouseEvent::lastY = yPos;
-};
 
 void _20_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
     _20_ScrollEvent::fov -= (float)yOffset;
@@ -112,26 +80,18 @@ void _20_DifferentMaterials::render() {
         // Prevent from long press and capture single first Tab press
         if (!this->isPressingTab) {
             this->isPressingTab = true;
-            _20_MouseEvent::isCapturingEvent = !_20_MouseEvent::isCapturingEvent;
-            glfwSetInputMode(
-                this->ctx->window,
-                GLFW_CURSOR,
-                _20_MouseEvent::isCapturingEvent ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL
-            );
+            this->isListeningMouseEvent = !this->isListeningMouseEvent;
 
-            glfwSetCursorPosCallback(
-                this->ctx->window,
-                _20_MouseEvent::isCapturingEvent ? _20_onMouseMove : nullptr
-            );
+            if (this->isListeningMouseEvent) {
+                MouseMoveEvent::listen(this->ctx->window);
+            } else {
+                MouseMoveEvent::dismiss(this->ctx->window);
+            }
 
             glfwSetScrollCallback(
                 this->ctx->window,
-                _20_MouseEvent::isCapturingEvent ? _20_onScroll : nullptr
+                this->isListeningMouseEvent ? _20_onScroll : nullptr
             );
-
-            if (_20_MouseEvent::isCapturingEvent) {
-                _20_MouseEvent::isFirstEvent = true;
-            }
         }
     } else {
         this->isPressingTab = false;
@@ -146,13 +106,9 @@ void _20_DifferentMaterials::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // When mouse is moving change yaw and pitch
-    float newPitch = this->camera->getPitch() + _20_MouseEvent::offsetY;
+    float newPitch = this->camera->getPitch() + MouseMoveEvent::offsetY;
     this->camera->setPitch(newPitch);
-    this->camera->yaw += _20_MouseEvent::offsetX;
-
-    // reset to prevent from using the current offset to move the pitch / yaw in next frame
-    _20_MouseEvent::offsetX = .0f;
-    _20_MouseEvent::offsetY = .0f;
+    this->camera->yaw += MouseMoveEvent::offsetX;
 
     this->camera->update(this->getDelta());
 
@@ -227,11 +183,13 @@ void _20_DifferentMaterials::render() {
         return;
     }
 
+    MouseMoveEvent::clearOffset();
     glfwSwapBuffers(ctx->window);
     glfwPollEvents();
 }
 
 void _20_DifferentMaterials::cleanup() {
+    MouseMoveEvent::dismiss(this->ctx->window);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     glDeleteShader(lightFragmentShader);

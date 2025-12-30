@@ -1,41 +1,9 @@
 #include "main.h"
-#include <iostream>
-using namespace std;
-
-namespace _21_MouseEvent {
-    float lastX = .0f;
-    float lastY = .0f;
-
-    float offsetX = .0f;
-    float offsetY = .0f;
-
-    bool isCapturingEvent = false;
-    bool isFirstEvent = false;
-}
 
 namespace _21_ScrollEvent {
     // Camera's field of view, useful for implementing zoom feature
     float fov = 45.0f;
 }
-
-void _21_onMouseMove(GLFWwindow* window, double xPos, double yPos) {
-    if (_21_MouseEvent::isFirstEvent) {
-        _21_MouseEvent::lastX = xPos;
-        _21_MouseEvent::lastY = yPos;
-        _21_MouseEvent::isFirstEvent = false;
-        return;
-    }
-
-    // Offset Y is reversed as y-coord range from bottom to top
-    float offsetX = xPos - _21_MouseEvent::lastX;
-    float offsetY = (yPos - _21_MouseEvent::lastY) * -1;
-
-    const float sensitivity = .1f;
-    _21_MouseEvent::offsetX = offsetX * sensitivity;
-    _21_MouseEvent::offsetY = offsetY * sensitivity;
-    _21_MouseEvent::lastX = xPos;
-    _21_MouseEvent::lastY = yPos;
-};
 
 void _21_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
     _21_ScrollEvent::fov -= (float)yOffset;
@@ -131,26 +99,18 @@ void _21_LightMaps::render() {
         // Prevent from long press and capture single first Tab press
         if (!this->isPressingTab) {
             this->isPressingTab = true;
-            _21_MouseEvent::isCapturingEvent = !_21_MouseEvent::isCapturingEvent;
-            glfwSetInputMode(
-                this->ctx->window,
-                GLFW_CURSOR,
-                _21_MouseEvent::isCapturingEvent ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL
-            );
+            this->isListeningMouseEvent = !this->isListeningMouseEvent;
 
-            glfwSetCursorPosCallback(
-                this->ctx->window,
-                _21_MouseEvent::isCapturingEvent ? _21_onMouseMove : nullptr
-            );
+            if (this->isListeningMouseEvent) {
+                MouseMoveEvent::listen(this->ctx->window);
+            } else {
+                MouseMoveEvent::dismiss(this->ctx->window);
+            }
 
             glfwSetScrollCallback(
                 this->ctx->window,
-                _21_MouseEvent::isCapturingEvent ? _21_onScroll : nullptr
+                this->isListeningMouseEvent ? _21_onScroll : nullptr
             );
-
-            if (_21_MouseEvent::isCapturingEvent) {
-                _21_MouseEvent::isFirstEvent = true;
-            }
         }
     } else {
         this->isPressingTab = false;
@@ -165,13 +125,9 @@ void _21_LightMaps::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // When mouse is moving change yaw and pitch
-    float newPitch = this->camera->getPitch() + _21_MouseEvent::offsetY;
+    float newPitch = this->camera->getPitch() + MouseMoveEvent::offsetY;
     this->camera->setPitch(newPitch);
-    this->camera->yaw += _21_MouseEvent::offsetX;
-
-    // reset to prevent from using the current offset to move the pitch / yaw in next frame
-    _21_MouseEvent::offsetX = .0f;
-    _21_MouseEvent::offsetY = .0f;
+    this->camera->yaw += MouseMoveEvent::offsetX;
 
     this->camera->update(this->getDelta());
 
@@ -208,11 +164,13 @@ void _21_LightMaps::render() {
         return;
     }
 
+    MouseMoveEvent::clearOffset();
     glfwSwapBuffers(ctx->window);
     glfwPollEvents();
 }
 
 void _21_LightMaps::cleanup() {
+    MouseMoveEvent::dismiss(this->ctx->window);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     glDeleteShader(lightFragmentShader);

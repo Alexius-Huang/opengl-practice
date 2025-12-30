@@ -21,6 +21,7 @@ private:
     };
 
     bool isPressingTab = false;
+    bool isListeningMouseEvent = false;
 
     Cube* cube;
     Plane* floor;

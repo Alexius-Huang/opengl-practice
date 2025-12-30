@@ -12,6 +12,7 @@ private:
     PerspectiveCamera* camera;
 
     bool isPressingTab = false;
+    bool isListeningMouseEvent = false;
 
     Model* model;
 
