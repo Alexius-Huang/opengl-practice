@@ -122,6 +122,8 @@ void _32_Postprocessing::render() {
         this->uMode = 1;
     } else if (glfwGetKey(this->ctx->window, GLFW_KEY_2) == GLFW_PRESS) {
         this->uMode = 2;
+    } else if (glfwGetKey(this->ctx->window, GLFW_KEY_3) == GLFW_PRESS) {
+        this->uMode = 3;
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, this->FBO);

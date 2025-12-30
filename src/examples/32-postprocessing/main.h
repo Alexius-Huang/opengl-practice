@@ -34,6 +34,7 @@ private:
 
     // 1 = default
     // 2 = inversion
+    // 3 = grayscale
     int uMode = 1;
 
     bool isPressingTab = false;
