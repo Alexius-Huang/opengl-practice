@@ -1,27 +1,12 @@
 #include "main.h"
 
-namespace _25_ScrollEvent {
-    // Camera's field of view, useful for implementing zoom feature
-    float fov = 45.0f;
-}
-
-void _25_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _25_ScrollEvent::fov -= (float)yOffset;
-
-    if (_25_ScrollEvent::fov < 1.0f) {
-        _25_ScrollEvent::fov = 1.0f;
-    } else if (_25_ScrollEvent::fov > 45.0f) {
-        _25_ScrollEvent::fov = 45.0f;
-    }
-}
-
 void _25_LoadingModelUsingAssimp::setup() {
     this->camera = new PerspectiveCamera(
         this->ctx->window,
         glm::vec3(.0f, .0f, 3.0f),
         .0f,
         -90.0f,
-        _25_ScrollEvent::fov,
+        45.0f,
         .1,
         2000.0f
     );
@@ -65,11 +50,6 @@ void _25_LoadingModelUsingAssimp::render() {
             } else {
                 MouseMoveEvent::dismiss(this->ctx->window);
             }
-
-            glfwSetScrollCallback(
-                this->ctx->window,
-                this->isListeningMouseEvent ? _25_onScroll : nullptr
-            );
         }
     } else {
         this->isPressingTab = false;

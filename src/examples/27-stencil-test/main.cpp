@@ -1,20 +1,5 @@
 #include "main.h"
 
-namespace _27_ScrollEvent {
-    // Camera's field of view, useful for implementing zoom feature
-    float fov = 45.0f;
-}
-
-void _27_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _27_ScrollEvent::fov -= (float)yOffset;
-
-    if (_27_ScrollEvent::fov < 1.0f) {
-        _27_ScrollEvent::fov = 1.0f;
-    } else if (_27_ScrollEvent::fov > 45.0f) {
-        _27_ScrollEvent::fov = 45.0f;
-    }
-}
-
 void _27_StencilTest::setup() {
     this->cube = new Cube;
     this->floor = new Plane(10.0f);
@@ -97,11 +82,6 @@ void _27_StencilTest::render() {
             } else {
                 MouseMoveEvent::dismiss(this->ctx->window);
             }
-
-            glfwSetScrollCallback(
-                this->ctx->window,
-                this->isListeningMouseEvent ? _27_onScroll : nullptr
-            );
         }
     } else {
         this->isPressingTab = false;

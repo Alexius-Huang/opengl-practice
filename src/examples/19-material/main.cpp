@@ -1,20 +1,5 @@
 #include "main.h"
 
-namespace _19_ScrollEvent {
-    // Camera's field of view, useful for implementing zoom feature
-    float fov = 45.0f;
-}
-
-void _19_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _19_ScrollEvent::fov -= (float)yOffset;
-
-    if (_19_ScrollEvent::fov < 1.0f) {
-        _19_ScrollEvent::fov = 1.0f;
-    } else if (_19_ScrollEvent::fov > 45.0f) {
-        _19_ScrollEvent::fov = 45.0f;
-    }
-}
-
 void _19_Material::setup() {
     this->cube = new Cube;
     this->camera = new PerspectiveCamera(
@@ -22,7 +7,7 @@ void _19_Material::setup() {
         glm::vec3(-1.7f, -1.25f, 2.5f),
         25.9f,
         -35.0f,
-        _19_ScrollEvent::fov,
+        45.0f,
         .1,
         2000.0f
     );
@@ -86,11 +71,6 @@ void _19_Material::render() {
             } else {
                 MouseMoveEvent::dismiss(this->ctx->window);
             }
-
-            glfwSetScrollCallback(
-                this->ctx->window,
-                this->isListeningMouseEvent ? _19_onScroll : nullptr
-            );
         }
     } else {
         this->isPressingTab = false;

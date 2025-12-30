@@ -1,20 +1,5 @@
 #include "main.h"
 
-namespace _24_ScrollEvent {
-    // Camera's field of view, useful for implementing zoom feature
-    float fov = 45.0f;
-}
-
-void _24_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _24_ScrollEvent::fov -= (float)yOffset;
-
-    if (_24_ScrollEvent::fov < 1.0f) {
-        _24_ScrollEvent::fov = 1.0f;
-    } else if (_24_ScrollEvent::fov > 45.0f) {
-        _24_ScrollEvent::fov = 45.0f;
-    }
-}
-
 void _24_SpotLight::setup() {
     this->cube = new Cube;
     this->camera = new PerspectiveCamera(
@@ -22,7 +7,7 @@ void _24_SpotLight::setup() {
         glm::vec3(.0f, .0f, 3.0f),
         .0f,
         -90.0f,
-        _24_ScrollEvent::fov,
+        45.0f,
         .1,
         2000.0f
     );
@@ -94,11 +79,6 @@ void _24_SpotLight::render() {
             } else {
                 MouseMoveEvent::dismiss(this->ctx->window);
             }
-
-            glfwSetScrollCallback(
-                this->ctx->window,
-                this->isListeningMouseEvent ? _24_onScroll : nullptr
-            );
         }
     } else {
         this->isPressingTab = false;

@@ -1,20 +1,5 @@
 #include "main.h"
 
-namespace _26_ScrollEvent {
-    // Camera's field of view, useful for implementing zoom feature
-    float fov = 45.0f;
-}
-
-void _26_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _26_ScrollEvent::fov -= (float)yOffset;
-
-    if (_26_ScrollEvent::fov < 1.0f) {
-        _26_ScrollEvent::fov = 1.0f;
-    } else if (_26_ScrollEvent::fov > 45.0f) {
-        _26_ScrollEvent::fov = 45.0f;
-    }
-}
-
 void _26_DepthTest::setup() {
     this->cube = new Cube;
     this->floor = new Plane(10.0f);
@@ -82,11 +67,6 @@ void _26_DepthTest::render() {
             } else {
                 MouseMoveEvent::dismiss(this->ctx->window);
             }
-
-            glfwSetScrollCallback(
-                this->ctx->window,
-                this->isListeningMouseEvent ? _26_onScroll : nullptr
-            );
         }
     } else {
         this->isPressingTab = false;

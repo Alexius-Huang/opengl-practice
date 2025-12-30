@@ -19,3 +19,7 @@ imgui.ini
 
 # static assets
 /assets
+
+# CMake files
+CMakeFiles
+_deps

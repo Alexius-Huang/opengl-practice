@@ -1,20 +1,5 @@
 #include "main.h"
 
-namespace _28_ScrollEvent {
-    // Camera's field of view, useful for implementing zoom feature
-    float fov = 45.0f;
-}
-
-void _28_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _28_ScrollEvent::fov -= (float)yOffset;
-
-    if (_28_ScrollEvent::fov < 1.0f) {
-        _28_ScrollEvent::fov = 1.0f;
-    } else if (_28_ScrollEvent::fov > 45.0f) {
-        _28_ScrollEvent::fov = 45.0f;
-    }
-}
-
 void _28_DiscardingFragment::setup() {
     this->cube = new Cube;
     this->floor = new Plane(10.0f);
@@ -98,11 +83,6 @@ void _28_DiscardingFragment::render() {
             } else {
                 MouseMoveEvent::dismiss(this->ctx->window);
             }
-
-            glfwSetScrollCallback(
-                this->ctx->window,
-                this->isListeningMouseEvent ? _28_onScroll : nullptr
-            );
         }
     } else {
         this->isPressingTab = false;
@@ -180,5 +160,3 @@ void _28_DiscardingFragment::cleanup() {
     delete this->floor;
     delete this->grass;
 }
-
-

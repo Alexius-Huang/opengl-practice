@@ -1,24 +1,8 @@
 #include "main.h"
-
-namespace _17_ScrollEvent {
-    // Camera's field of view, useful for implementing zoom feature
-    float fov = 45.0f;
-}
-
 namespace _17_Config {
     float ambient = .2f;
     float specularStength = .5f;
     int specularPower = 32;
-}
-
-void _17_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _17_ScrollEvent::fov -= (float)yOffset;
-
-    if (_17_ScrollEvent::fov < 1.0f) {
-        _17_ScrollEvent::fov = 1.0f;
-    } else if (_17_ScrollEvent::fov > 45.0f) {
-        _17_ScrollEvent::fov = 45.0f;
-    }
 }
 
 void _17_LightScene::setup() {
@@ -28,7 +12,7 @@ void _17_LightScene::setup() {
         glm::vec3(-1.7f, -1.25f, 2.5f),
         25.9f,
         -35.0f,
-        _17_ScrollEvent::fov,
+        45.0f,
         .1,
         1000
     );
@@ -87,11 +71,6 @@ void _17_LightScene::render() {
             } else {
                 MouseMoveEvent::dismiss(this->ctx->window);
             }
-
-            glfwSetScrollCallback(
-                this->ctx->window,
-                this->isListeningMouseEvent ? _17_onScroll : nullptr
-            );
         }
     } else {
         this->isPressingTab = false;

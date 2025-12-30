@@ -1,20 +1,5 @@
 #include "main.h"
 
-namespace _30_ScrollEvent {
-    // Camera's field of view, useful for implementing zoom feature
-    float fov = 45.0f;
-}
-
-void _30_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _30_ScrollEvent::fov -= (float)yOffset;
-
-    if (_30_ScrollEvent::fov < 1.0f) {
-        _30_ScrollEvent::fov = 1.0f;
-    } else if (_30_ScrollEvent::fov > 45.0f) {
-        _30_ScrollEvent::fov = 45.0f;
-    }
-}
-
 void _30_FaceCulling::setup() {
     this->cube = new Cube;
     
@@ -78,11 +63,6 @@ void _30_FaceCulling::render() {
             } else {
                 MouseMoveEvent::dismiss(this->ctx->window);
             }
-
-            glfwSetScrollCallback(
-                this->ctx->window,
-                this->isListeningMouseEvents ? _30_onScroll : nullptr
-            );
         }
     } else {
         this->isPressingTab = false;
@@ -157,4 +137,3 @@ void _30_FaceCulling::cleanup() {
     delete this->textureCube;
     delete this->cube;
 }
-

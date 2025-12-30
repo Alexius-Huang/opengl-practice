@@ -1,20 +1,5 @@
 #include "main.h"
 
-namespace _22_ScrollEvent {
-    // Camera's field of view, useful for implementing zoom feature
-    float fov = 45.0f;
-}
-
-void _22_onScroll(GLFWwindow* window, double xOffset, double yOffset) {
-    _22_ScrollEvent::fov -= (float)yOffset;
-
-    if (_22_ScrollEvent::fov < 1.0f) {
-        _22_ScrollEvent::fov = 1.0f;
-    } else if (_22_ScrollEvent::fov > 45.0f) {
-        _22_ScrollEvent::fov = 45.0f;
-    }
-}
-
 void _22_DirectionalLight::setup() {
     this->cube = new Cube;
     this->camera = new PerspectiveCamera(
@@ -22,7 +7,7 @@ void _22_DirectionalLight::setup() {
         glm::vec3(.0f, .0f, 3.0f),
         .0f,
         -90.0f,
-        _22_ScrollEvent::fov,
+        45.0f,
         .1,
         2000.0f
     );
@@ -88,11 +73,6 @@ void _22_DirectionalLight::render() {
             } else {
                 MouseMoveEvent::dismiss(this->ctx->window);
             }
-
-            glfwSetScrollCallback(
-                this->ctx->window,
-                this->isListeningMouseEvent ? _22_onScroll : nullptr
-            );
         }
     } else {
         this->isPressingTab = false;
