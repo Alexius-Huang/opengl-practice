@@ -13,18 +13,10 @@ void _26_DepthTest::setup() {
         1000.0f
     );
 
-    this->textureCube = new Texture2D(
-        GL_TEXTURE0,
-        "./assets/marble.jpg",
-        GL_RGB
-    );
+    this->textureCube = new Texture2D(GL_TEXTURE0, "./assets/marble.jpg");
     this->textureCube->load();
 
-    this->textureFloor = new Texture2D(
-        GL_TEXTURE1,
-        "./assets/metal.png",
-        GL_RGBA
-    );
+    this->textureFloor = new Texture2D(GL_TEXTURE1, "./assets/metal.png");
     this->textureFloor->load();
 
     this->vertexShader = readShaderFile("./src/examples/26-depth-test/vertex-shader.vert");
@@ -144,4 +136,3 @@ void _26_DepthTest::cleanup() {
     delete this->cube;
     delete this->floor;
 }
-

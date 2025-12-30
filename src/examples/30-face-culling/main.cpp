@@ -13,11 +13,7 @@ void _30_FaceCulling::setup() {
         1000.0f
     );
 
-    this->textureCube = new Texture2D(
-        GL_TEXTURE0,
-        "./assets/marble.jpg",
-        GL_RGB
-    );
+    this->textureCube = new Texture2D(GL_TEXTURE0, "./assets/marble.jpg");
     this->textureCube->load();
 
     this->vertexShader = readShaderFile("./src/examples/30-face-culling/vertex-shader.vert");

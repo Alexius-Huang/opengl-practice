@@ -20,22 +20,13 @@ void _21_LightMaps::setup() {
     this->lightFragmentShader = readShaderFile("./src/examples/21-light-maps/light-shader.frag");
 
     // Read light map textures
-    this->diffuseMap = new Texture2D(
-        GL_TEXTURE0,
-        "./assets/container2.png"
-    );
+    this->diffuseMap = new Texture2D(GL_TEXTURE0, "./assets/container2.png");
     this->diffuseMap->load();
 
-    this->specularMap = new Texture2D(
-        GL_TEXTURE1,
-        "./assets/container2_specular.png"
-    );
+    this->specularMap = new Texture2D(GL_TEXTURE1, "./assets/container2_specular.png");
     this->specularMap->load();
 
-    this->emissionMap = new Texture2D(
-        GL_TEXTURE2,
-        "./assets/matrix.jpg"
-    );
+    this->emissionMap = new Texture2D(GL_TEXTURE2, "./assets/matrix.jpg");
     this->emissionMap->load();
 
     this->shaderProgram = new ShaderProgram;

@@ -16,24 +16,18 @@ private:
     GLuint texture;
     GLuint unit;
     GLuint mipmapLevel;
-    GLuint format;
     GLuint dataType;
 
 public:
     Texture2D(
         GLuint unit,
         string imagePath,
-        
-        // TODO: maybe we can deprecate this format property
-        GLuint format = GL_RGB,
-
         GLuint mipmapLevel = 0,
         GLuint dataType = GL_UNSIGNED_BYTE
     ):  unit(unit),
         imagePath(imagePath),
         mipmapLevel(mipmapLevel),
-        dataType(dataType),
-        format(format)
+        dataType(dataType)
     {
         glGenTextures(1, &texture);
         glActiveTexture(unit);

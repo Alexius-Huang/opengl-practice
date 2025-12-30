@@ -1,18 +1,10 @@
 #include "main.h"
 
 void _10_UsingMultipleTextures::setup() {
-    this->texture1 = new Texture2D(
-        GL_TEXTURE0,
-        "./assets/container.jpg",
-        GL_RGB
-    );
+    this->texture1 = new Texture2D(GL_TEXTURE0, "./assets/container.jpg");
     this->texture1->load();
 
-    this->texture2 = new Texture2D(
-        GL_TEXTURE1,
-        "./assets/awesome-face.png",
-        GL_RGBA
-    );
+    this->texture2 = new Texture2D(GL_TEXTURE1, "./assets/awesome-face.png");
     this->texture2->load();
 
     this->vertexShader = readShaderFile("./src/examples/10-using-multiple-textures/vertex-shader.vert");

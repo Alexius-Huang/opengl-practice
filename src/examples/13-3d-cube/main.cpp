@@ -14,18 +14,10 @@ void _13_3DCube::setup() {
     // Create projection matrix for perspective projection
     this->generateTransformationMatrix();
 
-    this->texture1 = new Texture2D(
-        GL_TEXTURE0,
-        "./assets/container.jpg",
-        GL_RGB
-    );
+    this->texture1 = new Texture2D(GL_TEXTURE0, "./assets/container.jpg");
     this->texture1->load();
 
-    this->texture2 = new Texture2D(
-        GL_TEXTURE1,
-        "./assets/awesome-face.png",
-        GL_RGBA
-    );
+    this->texture2 = new Texture2D(GL_TEXTURE1, "./assets/awesome-face.png");
     this->texture2->load();
 
     this->vertexShader = readShaderFile("./src/examples/13-3d-cube/vertex-shader.vert");

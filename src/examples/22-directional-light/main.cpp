@@ -19,16 +19,10 @@ void _22_DirectionalLight::setup() {
     this->fragmentShader = readShaderFile("./src/examples/22-directional-light/fragment-shader.frag");
 
     // Read light map textures
-    this->diffuseMap = new Texture2D(
-        GL_TEXTURE0,
-        "./assets/container2.png"
-    );
+    this->diffuseMap = new Texture2D(GL_TEXTURE0, "./assets/container2.png");
     this->diffuseMap->load();
 
-    this->specularMap = new Texture2D(
-        GL_TEXTURE1,
-        "./assets/container2_specular.png"
-    );
+    this->specularMap = new Texture2D(GL_TEXTURE1, "./assets/container2_specular.png");
     this->specularMap->load();
 
     this->shaderProgram = new ShaderProgram;

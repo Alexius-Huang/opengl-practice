@@ -17,25 +17,13 @@ void _29_Blending::setup() {
         1000.0f
     );
 
-    this->textureCube = new Texture2D(
-        GL_TEXTURE0,
-        "./assets/marble.jpg",
-        GL_RGB
-    );
+    this->textureCube = new Texture2D(GL_TEXTURE0, "./assets/marble.jpg");
     this->textureCube->load();
 
-    this->textureFloor = new Texture2D(
-        GL_TEXTURE1,
-        "./assets/metal.png",
-        GL_RGBA
-    );
+    this->textureFloor = new Texture2D(GL_TEXTURE1, "./assets/metal.png");
     this->textureFloor->load();
 
-    this->textureWindow = new Texture2D(
-        GL_TEXTURE2,
-        "./assets/window.png",
-        GL_RGBA
-    );
+    this->textureWindow = new Texture2D(GL_TEXTURE2, "./assets/window.png");
     // Avoid edge interpolation when using alpha channel of the texture on border
     this->textureWindow->setTextureWrap(
         GL_CLAMP_TO_EDGE,
