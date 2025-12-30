@@ -44,19 +44,21 @@ void _31_FrameBuffer::setup() {
     this->frameBufferShaderProgram->link();
 
     this->frameBufferShaderProgram->use();
-    this->frameBufferShaderProgram->setUniformI("uScreenTexture", 2);
+    this->frameBufferShaderProgram->setUniformI("uScreenTexture", 0);
 
     // Generate Frame buffer object
     glGenFramebuffers(1, &(this->FBO));
     glBindFramebuffer(GL_FRAMEBUFFER, this->FBO);
 
+    // Get correct framebuffer size
+    int fbWidth, fbHeight;
+    glfwGetFramebufferSize(ctx->window, &fbWidth, &fbHeight);
+
     // Create color attachment texture
     glGenTextures(1, &(this->textureColorBuffer));
-    glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, this->textureColorBuffer);
 
-    // TODO: Sync window size 1200x900 from main program
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1200, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, fbWidth, fbHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->textureColorBuffer, 0);
@@ -64,7 +66,7 @@ void _31_FrameBuffer::setup() {
     // Create Render buffer object
     glGenRenderbuffers(1, &(this->RBO));
     glBindRenderbuffer(GL_RENDERBUFFER, this->RBO);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1200, 900); // use a single renderbuffer object for both a depth AND stencil buffer.
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, fbWidth, fbHeight); // use a single renderbuffer object for both a depth AND stencil buffer.
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, this->RBO); // now actually attach it
 
     // now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
@@ -73,22 +75,11 @@ void _31_FrameBuffer::setup() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // Generate Quad's VAO and VBO
-    float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-        // positions   // texCoords
-        -1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-
-        -1.0f,  1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f, 1.0f
-    };
-
     glGenVertexArrays(1, &(this->quadVAO));
     glGenBuffers(1, &(this->quadVBO));
     glBindVertexArray(this->quadVAO);
     glBindBuffer(GL_ARRAY_BUFFER, this->quadVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(QUAD_VERTICES), &QUAD_VERTICES, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
@@ -105,6 +96,9 @@ void _31_FrameBuffer::render() {
         glfwSetWindowShouldClose(ctx->window, true);
         return;
     };
+
+    // Press 1 to check the polygon mode on quad
+    togglePolygonModeOnKeyPressed(ctx->window, GLFW_KEY_1);
 
     if (glfwGetKey(this->ctx->window, GLFW_KEY_TAB) == GLFW_PRESS) {
         // Prevent from long press and capture single first Tab press
@@ -176,7 +170,7 @@ void _31_FrameBuffer::render() {
 
     this->frameBufferShaderProgram->use();
     glBindVertexArray(this->quadVAO);
-    glActiveTexture(GL_TEXTURE2);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->textureColorBuffer);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
