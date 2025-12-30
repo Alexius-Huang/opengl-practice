@@ -52,7 +52,8 @@ int main() {
         new _29_Blending(&ctx),
         new _30_FaceCulling(&ctx),
         new _31_FrameBuffer(&ctx),
-        new _32_Postprocessing(&ctx)
+        new _32_Postprocessing(&ctx),
+        new _33_KernelEffects(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 

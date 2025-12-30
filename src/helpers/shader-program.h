@@ -27,6 +27,7 @@ public:
     void setUniformF(const char* uniformName, float uniformValue);
     void setUniformI(const char* uniformName, int uniformValue);
     void setUniformVec3(const char* uniformName, const float* vectorValue);
+    void setUniformMat3(const char* uniformName, const float* matrixValue);
     void setUniformMat4(const char* uniformName, const float* matrixValue);
 };
 

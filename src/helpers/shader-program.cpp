@@ -87,6 +87,13 @@ void ShaderProgram::setUniformVec3(const char* uniformName, const float* vectorV
     glUniform3fv(uniformLocation, 1, vectorValue);
 }
 
+void ShaderProgram::setUniformMat3(const char* uniformName, const float* matrixValue) {
+    GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
+
+    // Set 1 4x4 matrix, GL_FALSE indicates that the matrix should not transpose
+    glUniformMatrix3fv(uniformLocation, 1, GL_FALSE, matrixValue);
+}
+
 void ShaderProgram::setUniformMat4(const char* uniformName, const float* matrixValue) {
     GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
 

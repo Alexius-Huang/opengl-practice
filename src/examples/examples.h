@@ -33,6 +33,7 @@
 #include "30-face-culling/main.h"
 #include "31-frame-buffer/main.h"
 #include "32-postprocessing/main.h"
+#include "33-kernel-effects/main.h"
 #include "context.h"
 
 using namespace std;
