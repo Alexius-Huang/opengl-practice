@@ -6,6 +6,7 @@ int main() {
     version.major = 3;
     version.minor = 3;
 
+    // TODO: sync window size into Context
     OpenGLWindowSize windowSize;
     windowSize.width = 1200;
     windowSize.height = 960;
@@ -49,7 +50,8 @@ int main() {
         new _27_StencilTest(&ctx),
         new _28_DiscardingFragment(&ctx),
         new _29_Blending(&ctx),
-        new _30_FaceCulling(&ctx)
+        new _30_FaceCulling(&ctx),
+        new _31_FrameBuffer(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
