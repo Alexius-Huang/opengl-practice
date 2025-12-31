@@ -53,7 +53,8 @@ int main() {
         new _30_FaceCulling(&ctx),
         new _31_FrameBuffer(&ctx),
         new _32_Postprocessing(&ctx),
-        new _33_KernelEffects(&ctx)
+        new _33_KernelEffects(&ctx),
+        new _34_CreateSkyboxUsingCubemap(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 

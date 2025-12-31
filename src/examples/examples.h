@@ -34,6 +34,7 @@
 #include "31-frame-buffer/main.h"
 #include "32-postprocessing/main.h"
 #include "33-kernel-effects/main.h"
+#include "34-create-skybox-using-cubemap/main.h"
 #include "context.h"
 
 using namespace std;
