@@ -2,6 +2,9 @@
 
 void _34_CreateSkyboxUsingCubemap::setup() {
     this->cube = new Cube;
+    this->textureCube = new Texture2D(GL_TEXTURE0, "./assets/container.jpg");
+    this->textureCube->load();
+
     this->camera = new PerspectiveCamera(
         this->ctx->window,
         glm::vec3(.0f, .0f, 3.0f),
@@ -25,7 +28,8 @@ void _34_CreateSkyboxUsingCubemap::setup() {
         ->link()
         ->use()
         ->setUniformMat4("uView", glm::value_ptr(view))
-        ->setUniformMat4("uProjection", glm::value_ptr(projection));
+        ->setUniformMat4("uProjection", glm::value_ptr(projection))
+        ->setUniformI("uTexture", 0);
 
     // Create Skybox VAO, VBO
     glGenVertexArrays(1, &(this->skyboxVAO));
@@ -47,6 +51,9 @@ void _34_CreateSkyboxUsingCubemap::setup() {
     glBindTexture(GL_TEXTURE_CUBE_MAP, this->textureSkybox);
 
     // Load skybox texture
+    // This is manually set due to in Texture2D by default it flips textures
+    // but in skybox special case we do not need to do it!
+    stbi_set_flip_vertically_on_load(false);
     int texWidth, texHeight, nrChannels;
     std::vector<std::string> faces {
         "right.jpg",
@@ -166,6 +173,7 @@ void _34_CreateSkyboxUsingCubemap::render() {
     glDepthMask(GL_TRUE);
 
     // Render object
+    this->textureCube->use();
     this->shaderProgram->use()
         ->setUniformMat4("uProjection", glm::value_ptr(projection))
         ->setUniformMat4("uView", glm::value_ptr(view));

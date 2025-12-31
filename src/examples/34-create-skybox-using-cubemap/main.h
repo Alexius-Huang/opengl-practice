@@ -19,6 +19,7 @@ private:
     bool isListeningMouseEvent = false;
 
     Cube* cube;
+    Texture2D* textureCube;
 
     const float SKYBOX_VERTICES[108] {
         // positions          
