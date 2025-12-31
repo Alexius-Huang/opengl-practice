@@ -31,7 +31,8 @@ void _35_EnvironmentMapping::setup() {
         ->setUniformMat4("uProjection", glm::value_ptr(projection))
         ->setUniformVec3("uCameraPosition", glm::value_ptr(this->camera->position))
         ->setUniformI("uTexture", 0)
-        ->setUniformI("uSkyboxTexture", 1);
+        ->setUniformI("uSkyboxTexture", 1)
+        ->setUniformI("uMode", this->mode);
 
     // Create Skybox VAO, VBO
     glGenVertexArrays(1, &(this->skyboxVAO));
@@ -134,7 +135,7 @@ void _35_EnvironmentMapping::render() {
         return;
     };
 
-    if (glfwGetKey(this->ctx->window, GLFW_KEY_1) == GLFW_PRESS) {
+    if (glfwGetKey(this->ctx->window, GLFW_KEY_TAB) == GLFW_PRESS) {
         // Prevent from long press and capture single first Tab press
         if (!this->isPressingTab) {
             this->isPressingTab = true;
@@ -148,6 +149,12 @@ void _35_EnvironmentMapping::render() {
         }
     } else {
         this->isPressingTab = false;
+    }
+
+    if (glfwGetKey(this->ctx->window, GLFW_KEY_1) == GLFW_PRESS) {
+        this->mode = 1;
+    } else if (glfwGetKey(this->ctx->window, GLFW_KEY_2) == GLFW_PRESS) {
+        this->mode = 2;
     }
 
     if (switchExampleOnArrowKeyPressed(ctx)) {
@@ -177,7 +184,8 @@ void _35_EnvironmentMapping::render() {
     this->shaderProgram->use()
         ->setUniformMat4("uProjection", glm::value_ptr(projection))
         ->setUniformMat4("uView", glm::value_ptr(view))
-        ->setUniformVec3("uCameraPosition", glm::value_ptr(this->camera->position));
+        ->setUniformVec3("uCameraPosition", glm::value_ptr(this->camera->position))
+        ->setUniformI("uMode", this->mode);
     this->cube
         ->setPosition(glm::vec3(.0f, .0f, .0f))
         ->render(this->shaderProgram);

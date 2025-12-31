@@ -70,6 +70,10 @@ private:
     unsigned int skyboxVBO;
     unsigned int textureSkybox;
 
+    // 1: reflection
+    // 2: refraction
+    unsigned int mode = 1;
+
 public:
     _35_EnvironmentMapping(Context* ctx) : Example("Environment Mapping", ctx) {}
 
