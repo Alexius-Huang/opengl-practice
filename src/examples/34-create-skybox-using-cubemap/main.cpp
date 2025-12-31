@@ -117,6 +117,10 @@ void _34_CreateSkyboxUsingCubemap::setup() {
 
     glUseProgram(0);
     glEnable(GL_DEPTH_TEST);
+
+    // We change to LEQUAL as skybox's depth value will always be filled with 1.0
+    // by default in perspective division (checkout vertex shader of skybox)
+    glDepthFunc(GL_LEQUAL);
 }
 
 void _34_CreateSkyboxUsingCubemap::render() {
@@ -160,6 +164,15 @@ void _34_CreateSkyboxUsingCubemap::render() {
     glm::mat4 view = this->camera->deriveViewMetrix();
     glm::mat4 projection = this->camera->deriveProjectionMatrix();
 
+    // Render object
+    this->textureCube->use();
+    this->shaderProgram->use()
+        ->setUniformMat4("uProjection", glm::value_ptr(projection))
+        ->setUniformMat4("uView", glm::value_ptr(view));
+    this->cube
+        ->setPosition(glm::vec3(.0f, .0f, .0f))
+        ->render(this->shaderProgram);
+
     // Draw Skybox
     glDepthMask(GL_FALSE);
     glm::mat4 skyboxView = glm::mat4(glm::mat3(view));
@@ -171,15 +184,6 @@ void _34_CreateSkyboxUsingCubemap::render() {
     glBindTexture(GL_TEXTURE_CUBE_MAP, this->textureSkybox);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glDepthMask(GL_TRUE);
-
-    // Render object
-    this->textureCube->use();
-    this->shaderProgram->use()
-        ->setUniformMat4("uProjection", glm::value_ptr(projection))
-        ->setUniformMat4("uView", glm::value_ptr(view));
-    this->cube
-        ->setPosition(glm::vec3(.0f, .0f, .0f))
-        ->render(this->shaderProgram);
 
     int index = ctx->gui->render(ctx->selectedExampleIndex);
     if (index != ctx->selectedExampleIndex) {
@@ -194,6 +198,8 @@ void _34_CreateSkyboxUsingCubemap::render() {
 }
 
 void _34_CreateSkyboxUsingCubemap::cleanup() {
+    glDepthFunc(GL_LESS);
+
     MouseMoveEvent::dismiss(this->ctx->window);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
