@@ -19,16 +19,16 @@ private:
 
 public:
     ShaderProgram();
-    void attachShader(unsigned int shader);
-    void link();
-    void use();
+    ShaderProgram* attachShader(unsigned int shader);
+    ShaderProgram* link();
+    ShaderProgram* use();
     void dispose();
 
-    void setUniformF(const char* uniformName, float uniformValue);
-    void setUniformI(const char* uniformName, int uniformValue);
-    void setUniformVec3(const char* uniformName, const float* vectorValue);
-    void setUniformMat3(const char* uniformName, const float* matrixValue);
-    void setUniformMat4(const char* uniformName, const float* matrixValue);
+    ShaderProgram* setUniformF(const char* uniformName, float uniformValue);
+    ShaderProgram* setUniformI(const char* uniformName, int uniformValue);
+    ShaderProgram* setUniformVec3(const char* uniformName, const float* vectorValue);
+    ShaderProgram* setUniformMat3(const char* uniformName, const float* matrixValue);
+    ShaderProgram* setUniformMat4(const char* uniformName, const float* matrixValue);
 };
 
 #endif // SHADER_PROGRAM_H

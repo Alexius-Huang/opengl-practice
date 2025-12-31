@@ -8,19 +8,66 @@ private:
     unsigned int vertexShader;
     unsigned int fragmentShader;
     ShaderProgram* shaderProgram;
-    Texture2D* texture1;
-    Texture2D* texture2;
+
+    unsigned int skyboxVertexShader;
+    unsigned int skyboxFragmentShader;
+    ShaderProgram* skyboxShaderProgram;
 
     PerspectiveCamera* camera;
-
-    glm::vec3 objectColor = glm::vec3(1.0f, 0.5f, 0.31f);
-    glm::vec3 objectPosition = glm::vec3(.0f);
-    glm::vec3 objectScale = glm::vec3(1.0f, 1.0, 1.0f);
 
     bool isPressingTab = false;
     bool isListeningMouseEvent = false;
 
     Cube* cube;
+
+    const float SKYBOX_VERTICES[108] {
+        // positions          
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        -1.0f,  1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f
+    };
+
+    unsigned int skyboxVAO;
+    unsigned int skyboxVBO;
+    unsigned int textureSkybox;
 
 public:
     _34_CreateSkyboxUsingCubemap(Context* ctx) : Example("Create Skybox Using Cubemap", ctx) {}

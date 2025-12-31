@@ -22,15 +22,16 @@ ShaderProgram::ShaderProgram() {
     program = glCreateProgram();
 }
 
-void ShaderProgram::attachShader(unsigned int shader) {
+ShaderProgram* ShaderProgram::attachShader(unsigned int shader) {
     if (hasAlreadyLinked) throwAlreadyLinkedError(
         "Unable to attach new shader as the shader program is already linked"
     );
 
     shaders.push_back(shader);
+    return this;
 }
 
-void ShaderProgram::link() {
+ShaderProgram* ShaderProgram::link() {
     if (hasAlreadyLinked) throwAlreadyLinkedError(
         "Unable to link shader program because it is already linked"
     );
@@ -56,13 +57,15 @@ void ShaderProgram::link() {
     shaders.clear(); // Clear the vector
 
     hasAlreadyLinked = true;
+    return this;
 }
 
-void ShaderProgram::use() {
+ShaderProgram* ShaderProgram::use() {
     if (!hasAlreadyLinked) throwNotLinkedYetError(
         "Shader program cannot be used as it is not linked yet"
     );
     glUseProgram(program);
+    return this;
 }
 
 void ShaderProgram::dispose() {
@@ -72,31 +75,36 @@ void ShaderProgram::dispose() {
     }
 }
 
-void ShaderProgram::setUniformF(const char* uniformName, float uniformValue) {
+ShaderProgram* ShaderProgram::setUniformF(const char* uniformName, float uniformValue) {
     GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
     glUniform1f(uniformLocation, uniformValue);
+    return this;
 }
 
-void ShaderProgram::setUniformI(const char* uniformName, int uniformValue) {
+ShaderProgram* ShaderProgram::setUniformI(const char* uniformName, int uniformValue) {
     GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
     glUniform1i(uniformLocation, uniformValue);
+    return this;
 }
 
-void ShaderProgram::setUniformVec3(const char* uniformName, const float* vectorValue) {
+ShaderProgram* ShaderProgram::setUniformVec3(const char* uniformName, const float* vectorValue) {
     GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
     glUniform3fv(uniformLocation, 1, vectorValue);
+    return this;
 }
 
-void ShaderProgram::setUniformMat3(const char* uniformName, const float* matrixValue) {
+ShaderProgram* ShaderProgram::setUniformMat3(const char* uniformName, const float* matrixValue) {
     GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
 
     // Set 1 4x4 matrix, GL_FALSE indicates that the matrix should not transpose
     glUniformMatrix3fv(uniformLocation, 1, GL_FALSE, matrixValue);
+    return this;
 }
 
-void ShaderProgram::setUniformMat4(const char* uniformName, const float* matrixValue) {
+ShaderProgram* ShaderProgram::setUniformMat4(const char* uniformName, const float* matrixValue) {
     GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
 
     // Set 1 4x4 matrix, GL_FALSE indicates that the matrix should not transpose
     glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, matrixValue);
+    return this;
 }
