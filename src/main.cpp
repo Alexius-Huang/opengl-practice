@@ -57,7 +57,8 @@ int main() {
         new _34_CreateSkyboxUsingCubemap(&ctx),
         new _35_EnvironmentMapping(&ctx),
         new _36_GeometryShader(&ctx),
-        new _37_ExplosionEffectUsingGeometryShader(&ctx)
+        new _37_ExplosionEffectUsingGeometryShader(&ctx),
+        new _38_VisualizingNormals(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 
