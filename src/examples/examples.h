@@ -40,6 +40,7 @@
 #include "37-explosion-effect-using-geometry-shader/main.h"
 #include "38-visualizing-normals/main.h"
 #include "39-instancing/main.h"
+#include "40-instancing-through-instanced-arrays/main.h"
 #include "context.h"
 
 using namespace std;
