@@ -37,7 +37,9 @@ unsigned int readShaderFile(fs::path path) {
 
         std::string shaderName = shaderType == GL_VERTEX_SHADER
             ? "VERTEX"
-            : "FRAGMENT";
+            : shaderType == GL_FRAGMENT_SHADER
+            ? "FRAGMENT"
+            : "GEOMETRY";
 
         throw std::runtime_error(
             "ERROR::SHADER::" + shaderName + "::COMPILATION_FAILED\n" + infoLog

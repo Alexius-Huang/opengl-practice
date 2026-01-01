@@ -70,5 +70,6 @@ void _36_GeometryShader::cleanup() {
     glDeleteBuffers(1, &VBO);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+    glDeleteShader(geometryShader);
     shaderProgram->dispose();
 }
