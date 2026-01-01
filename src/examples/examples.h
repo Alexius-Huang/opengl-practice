@@ -39,6 +39,7 @@
 #include "36-geometry-shader/main.h"
 #include "37-explosion-effect-using-geometry-shader/main.h"
 #include "38-visualizing-normals/main.h"
+#include "39-instancing/main.h"
 #include "context.h"
 
 using namespace std;

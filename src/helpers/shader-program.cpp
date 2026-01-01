@@ -87,6 +87,12 @@ ShaderProgram* ShaderProgram::setUniformI(const char* uniformName, int uniformVa
     return this;
 }
 
+ShaderProgram* ShaderProgram::setUniformVec2(const char* uniformName, const float* vectorValue) {
+    GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
+    glUniform2fv(uniformLocation, 1, vectorValue);
+    return this;
+}
+
 ShaderProgram* ShaderProgram::setUniformVec3(const char* uniformName, const float* vectorValue) {
     GLint uniformLocation = glGetUniformLocation(this->program, uniformName);
     glUniform3fv(uniformLocation, 1, vectorValue);

@@ -26,6 +26,7 @@ public:
 
     ShaderProgram* setUniformF(const char* uniformName, float uniformValue);
     ShaderProgram* setUniformI(const char* uniformName, int uniformValue);
+    ShaderProgram* setUniformVec2(const char* uniformName, const float* vectorValue);
     ShaderProgram* setUniformVec3(const char* uniformName, const float* vectorValue);
     ShaderProgram* setUniformMat3(const char* uniformName, const float* matrixValue);
     ShaderProgram* setUniformMat4(const char* uniformName, const float* matrixValue);
