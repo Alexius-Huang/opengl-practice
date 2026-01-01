@@ -36,6 +36,7 @@
 #include "33-kernel-effects/main.h"
 #include "34-create-skybox-using-cubemap/main.h"
 #include "35-environment-mapping/main.h"
+#include "36-geometry-shader/main.h"
 #include "context.h"
 
 using namespace std;

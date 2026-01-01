@@ -55,7 +55,8 @@ int main() {
         new _32_Postprocessing(&ctx),
         new _33_KernelEffects(&ctx),
         new _34_CreateSkyboxUsingCubemap(&ctx),
-        new _35_EnvironmentMapping(&ctx)
+        new _35_EnvironmentMapping(&ctx),
+        new _36_GeometryShader(&ctx)
     };
     ctx.totalExamplesCount = examples.size();
 

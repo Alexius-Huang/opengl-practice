@@ -15,6 +15,8 @@ unsigned int readShaderFile(fs::path path) {
         shaderType = GL_VERTEX_SHADER;
     } else if (fileExtension == ".frag") {
         shaderType = GL_FRAGMENT_SHADER;
+    } else if (fileExtension == ".geom") {
+        shaderType = GL_GEOMETRY_SHADER;
     } else {
         std::string err = "Unrecognized shader file extension: ";
         throw std::runtime_error(err + fileExtension);
