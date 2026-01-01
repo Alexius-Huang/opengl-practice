@@ -23,11 +23,7 @@ void _28_DiscardingFragment::setup() {
     this->textureFloor = new Texture2D(GL_TEXTURE1, "./assets/metal.png");
     this->textureFloor->load();
 
-    this->textureGrass = new Texture2D(
-        GL_TEXTURE2,
-        "./assets/grass.png",
-        GL_RGBA
-    );
+    this->textureGrass = new Texture2D(GL_TEXTURE2, "./assets/grass.png");
     // Avoid edge interpolation when using alpha channel of the texture on border
     this->textureGrass->setTextureWrap(
         GL_CLAMP_TO_EDGE,
